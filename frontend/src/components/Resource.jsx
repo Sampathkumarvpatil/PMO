@@ -1,0 +1,45 @@
+import React, { useState,useEffect,edit} from 'react'
+import { useParams } from 'react-router-dom';
+
+const Resource = ({heading,item,edit}) => {
+  const [resource, setResource] = useState('-');
+  const [editing, setEditing] = useState(false)
+  
+  
+  const {taskId} = useParams()
+  
+  useEffect(() => {
+    const storedTasks = JSON.parse(localStorage.getItem(`${taskId}`)) || {};
+    setResource(storedTasks[item.id][`${heading}`])
+  }, []);
+
+  const onChangeHandler = (e)=>{  
+    setResource(e.target.value)
+  }
+  return (
+    <div style={{ width: '100px' }} className='flex justify-center'>
+         {/* R{heading}:   */}
+         <br />
+          {edit ? 
+          
+            <input 
+            className='border-gray-400 w-full h-full border-2 box-border shadow-md text-center'
+            value={resource}
+            onChange={(e)=>{
+              const newResource = e.target.value
+              const storedTasks = JSON.parse(localStorage.getItem(`${taskId}`)) || {};
+              storedTasks[item.id][`${heading}`]=newResource
+              
+              localStorage.setItem(`${taskId}`, JSON.stringify(storedTasks));
+              setResource(newResource)
+            }}
+            />
+            
+           : 
+          <span className='text-emerald-600 font-bold ml-2'>{resource}</span>
+           }
+    </div>
+  )
+}
+
+export default Resource

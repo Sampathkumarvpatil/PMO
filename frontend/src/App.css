@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600&family=Poppins&family=Roboto+Slab:wght@300&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  font-family: 'Manrope', sans-serif;
+}
+
+.task-row:hover {
+  background-color: #c2c9c9; /* Change to gray when hovered */
+}
+
+td {
+  box-sizing: border-box;
+}
+.input-field {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.hero {
+  background-image: url("https://conceptboard.com/wp-content/uploads/Header_retro_article_V2-01.png");
+  background-size: cover;
+  position: relative;
+  right: 15%;
+}
+
+
+.note-btn-primary,
+.note-btn-secondary {
+  display: inline-block;
+  width: 100%;
+  padding: 15px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.note-btn-primary {
+  background-color: #FFD700; /* Yellow */
+  color: #333;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
+}
+
+.note-btn-secondary {
+  background-color: #9ACD32; /* YellowGreen */
+  color: #333;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+}

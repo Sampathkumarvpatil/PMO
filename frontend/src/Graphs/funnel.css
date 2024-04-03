@@ -1,0 +1,3 @@
+.header-box h1 {
+    transition: opacity 1s ease; /* Smooth transition for opacity */
+}

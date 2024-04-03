@@ -1,0 +1,15 @@
+.w-80 {
+    width: 22rem;
+}
+.ml-64 {
+    margin-left: 22rem;
+}
+.sideBar{
+    background-color: #f6f7f9;
+}
+.leftBtn{
+    background-color: #f0f0f0;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+}

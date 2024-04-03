@@ -1,0 +1,56 @@
+/* Sprintdropdowns.css */
+body{
+    background-color: rgb(232, 233, 234);
+  }
+  
+  .sprint-header {
+    padding: 10px;
+  }
+  
+  .sprint-logo {
+    height: auto;
+  }
+  
+  .dropdown-container {
+      margin: 20px;
+       display: flex;
+       margin-top: 10px;
+       margin-left: 400px;
+       display: flex;
+       flex-direction: column;
+       border: 10px;
+       border-radius: 10px;
+    }
+    
+    .dropdown-label {
+      font-size: 30px;
+      margin-bottom: 5px;
+      
+    }
+    
+    .dropdown-select {
+      padding: 8px;
+      font-size: 14px;
+      width: 500px;
+      border: 10px;
+      border-radius: 10px;
+    }
+    
+    .selected-option {
+      margin-top: 10px;
+      font-style: italic;
+      color: green;
+      font-style: italic;
+      
+    }
+    .submit-button{
+      width: 100px;
+      height: 30px;
+      margin-top: 10px;
+      margin-left: 1100px;
+      background-color: rgb(108, 106, 243);
+      color: rgb(235, 233, 233);
+      border: 10px;
+      border-radius: 5px;
+      
+  }

@@ -1,0 +1,17 @@
+.container{
+    background-color:#f3faf5;
+}
+.vertical-date {
+    width: 2em;
+    writing-mode: vertical-rl;
+    transform: rotateZ(180deg);
+    white-space: nowrap;
+    /* border-right: 1px solid; */
+    text-align: center;
+  }
+  .vertical-date1 {
+    writing-mode: vertical-rl;
+    transform: rotateZ(210deg);
+    white-space: nowrap;
+    /* border-right: 1px solid; */   
+ }

@@ -1,0 +1,118 @@
+.sprint-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    padding: 10px;
+}
+
+
+.table1 {
+    width: auto;
+    border: 20px solid rgb(238, 238, 242);
+    align-items: center;
+    margin-left: 10px;
+}
+
+
+.hours {
+    text-align: center;
+    background-color: rgb(167, 167, 169);
+    color: rgb(19, 21, 23);
+    border-radius: 3px;
+    font-style: italic;
+    height: 20px;
+}
+
+.points {
+    text-align: center;
+    background-color: rgb(246, 249, 247);
+    color: rgb(6, 8, 9);
+    font-style: italic;
+}
+
+.table2 {
+    /* width: 1240px; */
+    border: 5px solid rgb(168, 168, 172);
+    border-radius: 10px;
+    /* margin-left: auto;
+    margin-right: auto; */
+    margin-top: 20px;
+    height: 100px;
+}
+
+.edit-button {
+    width: 100px;
+    height: 30px;
+    background: linear-gradient(to bottom, #22c1c3, #fdbb2d); 
+    color: rgb(250, 248, 248);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    /* margin-left: 1120px; */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
+    transition: all 0.2s; 
+}
+
+.edit-button:active {
+    background: linear-gradient(to bottom, #22c1c3, #fdbb2d);
+    transform: translateY(2px); 
+    box-shadow: none; 
+}
+
+.save-button {
+    width: 100px;
+    height: 30px;
+    background: linear-gradient(to bottom, #3f5efb, #fc466b); 
+    color: rgb(242, 238, 238);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
+    transition: all 0.2s;
+}
+
+.save-button:active {
+    background: linear-gradient(to bottom, #3f5efb, #fc466b); 
+    transform: translateY(2px); 
+    box-shadow: none; 
+}
+
+
+.dropdown-container1 {
+   
+  
+    border: 5px solid #ccc; 
+    box-shadow: 0 4px 8px rgba(226, 44, 44, 0.1); 
+    border-radius: 8px; 
+}
+
+.dropdown-container2 {
+    border: 5px solid #cccccc; 
+    box-shadow: 0 8px 8px rgba(234, 46, 46, 0.1);
+    border-radius: 8px; 
+}
+
+
+.dropdown {
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+.dropdown select {
+    width: 80px;
+    background-color: #ffffff;
+    color: #0d0e0e; 
+    font-size: 15px;
+    border: none;
+}
+
+.dropdown select:focus {
+    outline: none;
+}
+
+.dropdown label {
+    font-weight: bold;
+    margin-right: 10px;
+    
+}
