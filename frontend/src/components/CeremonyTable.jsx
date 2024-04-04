@@ -1,123 +1,237 @@
-import React, { useEffect, useState } from 'react';
-// import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from '@mui/material';
- 
+import React, { useEffect, useState } from "react";
+
+const getInitialDatesWithInitialValues = (start, end) => {
+  const dates = {};
+  let currentDate = new Date(start);
+  const stopDate = new Date(end);
+
+  while (currentDate <= stopDate) {
+    const formattedDate = currentDate.toLocaleDateString("en-US", {
+      month: "2-digit",
+      day: "2-digit",
+      year: "numeric",
+    });
+    dates[formattedDate] = 0;
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dates;
+};
 const CeremonyTable = ({ startDate, endDate, updateTotals, meetings }) => {
-  const [inputValues, setInputValues] = useState({});
-  const [Totaceremonyminute, setTotaceremonyminute] = useState(0);
-  const [totalceremonyhour, setTotalceremonyhour] = useState(0);
-  const [mainCompanyArr, setMainCompanyArr] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedSprint, setSelectedSprint] = useState(null);
- 
+  const [collaborative_time, setCollaboeativeTime] = useState(undefined);
+  const [ceremonyInput, setCeremonyInput] = useState({
+    ["Daily Sync"]: {
+      ...getInitialDatesWithInitialValues(startDate, endDate),
+    },
+    ["Sprint Planning"]: {
+      ...getInitialDatesWithInitialValues(startDate, endDate),
+    },
+    ["Iteration Review"]: {
+      ...getInitialDatesWithInitialValues(startDate, endDate),
+    },
+    ["Cycle Retrospective"]: {
+      ...getInitialDatesWithInitialValues(startDate, endDate),
+    },
+    ["Story Refinement"]: {
+      ...getInitialDatesWithInitialValues(startDate, endDate),
+    },
+  });
   useEffect(() => {
-    const dataFromLocalStorage = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
-    setMainCompanyArr(dataFromLocalStorage);
- 
     // Get the selected project and sprint from local storage
     const savedProjectName = localStorage.getItem("selectedProjectName");
     const savedSprintName = localStorage.getItem("selectedSprintName");
-    const project = dataFromLocalStorage.find(project => project.projectName === savedProjectName);
-    setSelectedProject(project);
- 
-    // Check if project exists and get the selected sprint
-    if (project) {
-      const sprint = project.sprints.find(sprint => sprint.sprintName === savedSprintName);
-      setSelectedSprint(sprint);
- 
-      // Set input values for the selected sprint
-      if (sprint && sprint.inputValues) {
-        setInputValues(sprint.inputValues);
-      } else {
-        setInputValues({});
+    if (savedProjectName && savedSprintName) {
+      setSelectedProject(savedProjectName);
+      setSelectedSprint(savedSprintName);
+    }
+
+    const localCollaborativeTime = localStorage.getItem("collaborative_time");
+    let parsedCollaborativeTime;
+    if (localCollaborativeTime) {
+      parsedCollaborativeTime = JSON.parse(localCollaborativeTime);
+    }
+
+    const initializeCeremonyData = (startDate, endDate) => ({
+      ["Daily Sync"]: {
+        ...getInitialDatesWithInitialValues(startDate, endDate),
+      },
+      ["Sprint Planning"]: {
+        ...getInitialDatesWithInitialValues(startDate, endDate),
+      },
+      ["Iteration Review"]: {
+        ...getInitialDatesWithInitialValues(startDate, endDate),
+      },
+      ["Cycle Retrospective"]: {
+        ...getInitialDatesWithInitialValues(startDate, endDate),
+      },
+      ["Story Refinement"]: {
+        ...getInitialDatesWithInitialValues(startDate, endDate),
+      },
+    });
+
+    const updateLocalStorage = (data) => {
+      localStorage.setItem("collaborative_time", JSON.stringify(data));
+    };
+
+    if (savedProjectName && savedSprintName && startDate && endDate) {
+      let collaborativeData = parsedCollaborativeTime || {};
+
+      if (!collaborativeData[savedProjectName]) {
+        console.log("im if nothing..");
+        collaborativeData[savedProjectName] = {
+          [savedSprintName]: initializeCeremonyData(startDate, endDate),
+        };
+      } else if (!collaborativeData[savedProjectName][savedSprintName]) {
+        console.log("im here if something but no sprint added...");
+        collaborativeData[savedProjectName] = {
+          [savedSprintName]: initializeCeremonyData(startDate, endDate),
+          ...collaborativeData[savedProjectName],
+        };
       }
- 
-      // Retrieve saved values from local storage based on project and sprint
-      const savedValues = JSON.parse(localStorage.getItem(`inputValues_${savedProjectName}_${savedSprintName}`) || '{}');
-      setInputValues(savedValues);
-      const savedTotaceremonyminute = localStorage.getItem(`Totaceremonyminute_${savedProjectName}_${savedSprintName}`);
-      const savedTotalceremonyhour = localStorage.getItem(`totalceremonyhour_${savedProjectName}_${savedSprintName}`);
-     
-      setTotaceremonyminute(savedTotaceremonyminute ? parseInt(savedTotaceremonyminute) : 0);
-      setTotalceremonyhour(savedTotalceremonyhour ? parseInt(savedTotalceremonyhour) : 0);
+
+      setCeremonyInput(collaborativeData[savedProjectName][savedSprintName]);
+      console.log("savedSprintn name", savedSprintName);
+      updateLocalStorage(collaborativeData);
+    } else {
+      console.log("hello in ddd in");
+      setCeremonyInput(
+        parsedCollaborativeTime[savedProjectName][savedSprintName]
+      );
+    }
+
+    if (localCollaborativeTime && localCollaborativeTime !== undefined) {
+      setCollaboeativeTime(JSON.parse(localCollaborativeTime));
     }
   }, [startDate, endDate]);
- 
-  const calculateTotals = () => {
-    // Calculate Totaceremonyminute and totalceremonyhour based on inputValues
-    // You need to implement your own logic here based on your requirements
-    let totalMinute = 0;
-    Object.values(inputValues).forEach(value => {
-      totalMinute += parseInt(value);
-    });
-    setTotaceremonyminute(totalMinute);
- 
-    // You can convert minutes to hours if needed
-    setTotalceremonyhour(totalMinute / 60);
- 
-    // Store the updated Totaceremonyminute and totalceremonyhour in local storage
-    const savedProjectName = selectedProject?.projectName;
-    const savedSprintName = selectedSprint?.sprintName;
-    localStorage.setItem(`Totaceremonyminute_${savedProjectName}_${savedSprintName}`, totalMinute);
-    localStorage.setItem(`totalceremonyhour_${savedProjectName}_${savedSprintName}`, totalMinute / 60);
- 
-    updateTotals({ Totaceremonyminute: totalMinute, totalceremonyhour: totalMinute / 60 });
-  };
- 
+
   useEffect(() => {
-    calculateTotals();
-  }, [inputValues]);
- 
+    const selected_project = localStorage.getItem("selectedProjectName");
+    const selected_sprint = localStorage.getItem("selectedSprintName");
+
+    if (selected_project && selected_sprint && collaborative_time) {
+      const data = collaborative_time?.[selected_project]?.[selected_sprint];
+
+      const sumValues = {};
+      console.log("im your spring data", data);
+      if (data) {
+        for (const key in data) {
+          sumValues[key] = Object.values(data[key]).reduce(
+            (acc, val) => acc + Number(val),
+            0
+          );
+        }
+
+        const totalSum = Object.values(sumValues).reduce(
+          (acc, val) => acc + val,
+          0
+        );
+        console.log("im calculating your total");
+        updateTotals(totalSum);
+      }
+    }
+    console.log("im called");
+  }, [collaborative_time]);
+
   const generateDates = (start, end) => {
     const dates = [];
     let currentDate = new Date(start);
     const stopDate = new Date(end);
- 
+
     while (currentDate <= stopDate) {
-      const formattedDate = currentDate.toLocaleDateString('en-US', {
-        month: '2-digit',
-        day: '2-digit',
-        year: 'numeric',
+      const formattedDate = currentDate.toLocaleDateString("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+        year: "numeric",
       });
       dates.push(formattedDate);
       currentDate.setDate(currentDate.getDate() + 1);
     }
- 
+
     return dates;
   };
- 
+
   const dates = generateDates(startDate, endDate);
- 
+
   const handleInputChange = (event, meetingIndex, dateIndex) => {
     const value = event.target.value;
     const key = `${meetings[meetingIndex].name}-${dates[dateIndex]}`;
- 
-    const updatedValues = { ...inputValues, [key]: value };
-    setInputValues(updatedValues);
- 
+    console.log("meetingIndex:", meetingIndex);
+    console.log("dateIndex:", dateIndex);
+    console.log("Meeting:", meetings[meetingIndex]);
+    console.log("Date:", dates[dateIndex]);
+    setCeremonyInput((prevCeremonyInput) => {
+      // Create a deep copy of the state
+      const updatedCeremonyInput = JSON.parse(
+        JSON.stringify(prevCeremonyInput)
+      );
+
+      // Update the value
+      const meetingName = meetings[meetingIndex].name;
+      const date = dates[dateIndex];
+      if (updatedCeremonyInput[meetingName]) {
+        updatedCeremonyInput[meetingName][date] = value;
+      }
+
+      // Return the updated state
+      return updatedCeremonyInput;
+    });
+    // const stateValue = { ...ceremonyInput };
+    // console.log(stateValue?.[meetings[meetingIndex].name]?.[dates[dateIndex]]);
+    // if (stateValue)
+    //   stateValue[meetings[meetingIndex].name][dates[dateIndex]] = value;
+
+    // setCeremonyInput(stateValue);
     const savedProjectName = localStorage.getItem("selectedProjectName");
     const savedSprintName = localStorage.getItem("selectedSprintName");
-    localStorage.setItem(`inputValues_${savedProjectName}_${savedSprintName}`, JSON.stringify(updatedValues));
-    updateTotals(updatedValues);
+
+    let spreadTime = { ...collaborative_time };
+    if (
+      collaborative_time &&
+      savedProjectName &&
+      savedSprintName &&
+      key &&
+      (value === 0 || value) &&
+      spreadTime[savedProjectName]
+    ) {
+      console.log("project name:", spreadTime[savedProjectName]);
+      console.log("coming name of sprint", savedSprintName);
+      console.log("sprint name", spreadTime[savedProjectName][savedSprintName]);
+      console.log("meeting name:", meetings[meetingIndex].name);
+      console.log("date index", dates[dateIndex]);
+      spreadTime[savedProjectName][savedSprintName][
+        meetings[meetingIndex].name
+      ][dates[dateIndex]] = value;
+
+      setCollaboeativeTime(spreadTime);
+      localStorage.setItem("collaborative_time", JSON.stringify(spreadTime));
+    }
   };
- 
+
   return (
-    <div className='mt-2 overflow-x-scroll  border-2 border-gray-400 rounded' style={{ boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)', borderRadius: '10px' }}>
+    <div
+      className="mt-2 overflow-x-scroll  border-2 border-gray-400 rounded"
+      style={{
+        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+        borderRadius: "10px",
+      }}
+    >
       <table className="border border-collapse-2 border-white rounded-xl bg-gray-100">
-        <thead >
+        <thead>
           <tr>
-            <th className="sticky left-0 z-10 bg-gray-100">
-              Meetings
-            </th>
+            <th className="sticky left-0 z-10 bg-gray-100">Meetings</th>
             {dates.map((date, index) => (
-              <th key={index} className="bg-gray-200 border-2 border-white text-center">
-                <div className="flex items-end py-2 vertical-date">
-                  {date}
-                </div>
+              <th
+                key={index}
+                className="bg-gray-200 border-2 border-white text-center"
+              >
+                <div className="flex items-end py-2 vertical-date">{date}</div>
               </th>
             ))}
           </tr>
         </thead>
- 
+
         <tbody>
           {meetings.map((meeting, meetingIndex) => (
             <tr key={meeting.name}>
@@ -126,21 +240,36 @@ const CeremonyTable = ({ startDate, endDate, updateTotals, meetings }) => {
               </td>
               {dates.map((date, dateIndex) => {
                 const key = `${meeting.name}-${date}`;
-                const value = inputValues[key] || '';
+                // const value = ceremonyInput[meeting.name][date];
+                // collaborative_time
+                //   ? collaborative_time[selectedProject]?.[selectedSprint]?.[
+                //       meetings[meetingIndex]?.name
+                //     ]?.[date]
+                //   : 0;
+
+                // inputValues[key] || "";
+
                 return (
-                  <td key={dateIndex} style={{ textAlign: 'left' }}> {/* Adjust the width as needed */}
+                  <td key={dateIndex} style={{ textAlign: "left" }}>
+                    {" "}
+                    {/* Adjust the width as needed */}
                     <input
                       type="number"
                       size="small"
-                      value={value}
+                      value={
+                        ceremonyInput[meetings[meetingIndex].name][
+                          dates[dateIndex]
+                        ]
+                      }
                       className="py-1.5 border-2 rounded-lg tableCellData font-semibold w-full"
-                      onChange={(event) => handleInputChange(event, meetingIndex, dateIndex)}
-                    // InputProps={{
-                    //     style: { fontSize: '0.8rem', padding: '1px', textAlign: 'left' },
-                    // }}
+                      onChange={(event) =>
+                        handleInputChange(event, meetingIndex, dateIndex)
+                      }
+                      // InputProps={{
+                      //     style: { fontSize: '0.8rem', padding: '1px', textAlign: 'left' },
+                      // }}
                     />
                   </td>
- 
                 );
               })}
             </tr>
@@ -150,5 +279,5 @@ const CeremonyTable = ({ startDate, endDate, updateTotals, meetings }) => {
     </div>
   );
 };
- 
+
 export default CeremonyTable;
