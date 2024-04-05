@@ -13,8 +13,11 @@ function Sprints({ sidebarToggle }) {
 
   useEffect(() => {
     const selectedProjectName = localStorage.getItem("selectedProjectName");
-    const dataFromLocalStorage = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
-    const selectedProject = dataFromLocalStorage.find(project => project.projectName === selectedProjectName);
+    const dataFromLocalStorage =
+      JSON.parse(localStorage.getItem("mainCompanyData")) || [];
+    const selectedProject = dataFromLocalStorage.find(
+      (project) => project.projectName === selectedProjectName
+    );
     setSelectedProject(selectedProject);
   }, []);
 
@@ -24,10 +27,13 @@ function Sprints({ sidebarToggle }) {
 
     const loadedSprintsData = [];
     for (let i = start; i <= end; i++) {
-      const storedSprintData = JSON.parse(localStorage.getItem(`sprintData_Sprint ${i}`));
+      const storedSprintData = JSON.parse(
+        localStorage.getItem(`sprintData_Sprint ${i}`)
+      );
+      console.log(storedSprintData);
       if (storedSprintData) {
-        loadedSprintsData.push(JSON.parse(storedSprintData));
-        console.log(loadedSprintsData, "LOOOOAADDDDD")
+        loadedSprintsData.push(storedSprintData);
+        console.log(loadedSprintsData, "LOOOOAADDDDD");
       } else {
         loadedSprintsData.push({
           id: `Sprint ${i}`,
@@ -45,12 +51,12 @@ function Sprints({ sidebarToggle }) {
       }
     }
     const selectedProjectName = localStorage.getItem("selectedProjectName");
-// To create new Structure
+    // To create new Structure
     setSprintsData(loadedSprintsData);
     setNumSprints(loadedSprintsData.length);
-    const allSprintKpi = JSON.parse(localStorage.getItem('sprintsData'))|| {}
-    allSprintKpi[selectedProjectName]=loadedSprintsData;
-    localStorage.setItem("sprintsData", JSON.stringify(allSprintKpi)) // Set the number of sprints based on the loaded data
+    const allSprintKpi = JSON.parse(localStorage.getItem("sprintsData")) || {};
+    allSprintKpi[selectedProjectName] = loadedSprintsData;
+    localStorage.setItem("sprintsData", JSON.stringify(allSprintKpi)); // Set the number of sprints based on the loaded data
   }, [startSprint, endSprint]);
 
   const handleSave = () => {
@@ -71,7 +77,6 @@ function Sprints({ sidebarToggle }) {
         JSON.stringify(sprintData)
       );
     });
-    
 
     if (startSprint !== endSprint) {
       const selectedSprints = sprintsData.filter((sprintData) => {
@@ -151,7 +156,11 @@ function Sprints({ sidebarToggle }) {
   };
 
   return (
-    <div className={` transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
+    <div
+      className={` transition-all duration-300 ${
+        sidebarToggle ? "ml-0" : "ml-64"
+      }`}
+    >
       <div className="flex justify-center gap-10 mt-6">
         <div className="dropdown-container1">
           <div className="dropdown">
