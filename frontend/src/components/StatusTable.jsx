@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const StatusTable = ({ sr, stat, onStatusChange }) => {
   const [maxHeight, setMaxHeight] = useState(0);
@@ -12,6 +13,20 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
     dependencies_2: "",
   });
   const textAreaRefs = useRef([]);
+  
+  const selectedProjectName = localStorage.getItem('selectedProjectName')
+  const selectedSprintName = localStorage.getItem('selectedSprintName')
+  const {id} = useParams();
+  
+  const allStatus = JSON.parse(localStorage.getItem('status'))
+  // console.log(allStatus[id][sr-1].worked_hrs)
+  const [hrsWorked,setHrsWorked] = useState(allStatus[id][sr-1].total_worked);
+  
+  const selectedProject = localStorage.getItem('selectedProjectName')
+  const selectedSprint = localStorage.getItem('selectedSprintName')
+  const taskId = selectedProject+selectedSprint
+  const storedTasks = JSON.parse(localStorage.getItem(`${taskId}`))
+  const [hrsAllocated,setHrsAllocated] = useState(storedTasks[id]['totHours']);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,10 +59,37 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
     textarea.style.height = "auto"; // Reset height to auto
     textarea.style.height = `${textarea.scrollHeight}px`; // Set height to match content
   };
+
+
+  const data = JSON.parse(localStorage.getItem('mainCompanyData'))
+  let projectNo;
+  for(projectNo in data){
+    if(data[projectNo].projectName === selectedProjectName) break;
+  }
  
+  let sprintNo;
+  for(sprintNo in data[projectNo].sprints){
+    if(data[projectNo].sprints[sprintNo].sprintName === selectedSprintName) break;
+  }
+  const allocations = data[projectNo].sprints[sprintNo].allocations || null
+  const onChangeHandler = (e)=>{
+    stat['resource'] = e.target.value;
+    // console.log(stat)
+    const allStatus = JSON.parse(localStorage.getItem('status'))
+    
+    allStatus[`${id}`][sr-1] = stat;
+    localStorage.setItem('status',JSON.stringify(allStatus))
+  }
+
   return (
     <tr key={stat.id} className="m-2">
-      <td className="border-2 border-gray-400 p-2 text-center   ">{sr}</td>
+      <td className="border-2 border-gray-400 p-2 text-center">{sr}</td>
+      <td className="border-2 border-gray-400 p-2 text-center">
+        <select name="res" id="resource" onChange={onChangeHandler}>
+          <option value={stat['resource']}>{stat['resource']}</option>
+          {allocations.map((item)=><option value={`${item.name}`}>{item.name}</option>)}
+        </select>
+      </td>
       <td className="border-2 border-gray-400 p-2 text-sm">
         <input
           type="date"
@@ -281,13 +323,13 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
         </div>
       </td>
       <td className="border-2 border-gray-400 p-2">
-        <input
+        {/* <input
           type="number"
           value={stat.worked_hrs}
           name="worked_hrs"
           onChange={handleChange}
-        />{" "}
-        hrs
+        />{" "} */}
+        {hrsAllocated} hrs
       </td>
       <td className="border-2 border-gray-400 p-2">
         <input
@@ -299,13 +341,13 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
         hrs
       </td>
       <td className="border-2 border-gray-400 p-2">
-        <input
+        {/* <input
           type="number"
           value={stat.remaining_hrs}
           name="remaining_hrs"
           onChange={handleChange}
-        />{" "}
-        hrs
+        />{" "} */}
+        {hrsWorked-hrsAllocated} hrs
       </td>
     </tr>
   );

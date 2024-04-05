@@ -8,24 +8,35 @@ const SprintCapacity = ({ sidebarToggle }) => {
   const [totalCeremonyHours, setTotalCeremonyHours] = useState(0);
   const [selectedSprint, setSelectedSprint] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [total, setTotal] = useState(0); // Define the state for total
 
   useEffect(() => {
     const mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
     const selectedProjectName = localStorage.getItem("selectedProjectName");
     const selectedSprintName = localStorage.getItem("selectedSprintName");
-
+  
     const project = mainCompanyData.find(project => project.projectName === selectedProjectName);
     const sprint = project?.sprints.find(sprint => sprint.sprintName === selectedSprintName);
-
+  
     setSelectedProject(project);
     setSelectedSprint(sprint);
-
+  
     if (sprint) {
       setStoredAllocationsData(sprint.allocations || []);
       setDateWeekdayPairs(generateDateWeekdayPairs(sprint.startDate, sprint.endDate));
-      setTotalCeremonyHours(sprint.ceremonyHours || 0);
+      // Fetch TotalCeremonyHours from localStorage
+      const ceremonyHours = localStorage.getItem("TotalCeremonyHours");
+      setTotalCeremonyHours(ceremonyHours ? parseFloat(ceremonyHours) : 0);
+  
+      // Calculate the effective total
+      const effectiveTotal = calculateEffectiveTotal();
+      setTotal(effectiveTotal); // Set the state for the effective total
     }
-  }, []);
+    console.log(storedAllocationsData, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa")
+  }, [selectedSprint]);
+  
+  
+  
 
   const generateDateWeekdayPairs = (start, end) => {
     const pairs = [];
@@ -44,58 +55,6 @@ const SprintCapacity = ({ sidebarToggle }) => {
     }
     return pairs;
   };
-
-  // const renderAttendanceOptions = (index, pair) => {
-  //   const attendanceData = JSON.parse(localStorage.getItem("attendanceData")) || [];
-  //   const attendance = attendanceData.find(
-  //     (item) =>
-  //       item.name === storedAllocationsData[index].name &&
-  //       item.date === pair.date
-  //   );
-  
-  //   let cellValue = 8; // Default value is 8 (Present)
-  
-  //   if (attendance) {
-  //     if (attendance.selectedValue === "0") {
-  //       cellValue = 0; // Absent
-  //     } else if (attendance.selectedValue === "4") {
-  //       cellValue = 4; // Half-day
-  //     }
-  //   }
-  
-  //   // Convert pair.date to a Date object
-  //   const currentDate = new Date(pair.date);
-  
-  //   // Check if it's Saturday (6) or Sunday (0)
-  //   if (currentDate.getDay() === 6 || currentDate.getDay() === 0) {
-  //     cellValue = 0; // Set cell value to 0 for Saturdays and Sundays
-  //   }
-  
-  //   const isWeekend = currentDate.getDay() === 6 || currentDate.getDay() === 0;
-  
-  //   const backgroundColor =
-  //     cellValue === 0
-  //       ? isWeekend
-  //         ? "gray" // Gray background color for Saturdays and Sundays
-  //         : "red" // Red background color for absent days
-  //       : cellValue === 4
-  //       ? "blue" // Blue background color for half-day
-  //       : "inherit"; // Default background color
-  
-  //   const textColor =
-  //     cellValue === 0 ? "white" : cellValue === 4 ? "white" : "black";
-  
-  //   return (
-  //     <td
-  //       align="center"
-  //       key={`${index}-${pair.date}`}
-  //       style={{ backgroundColor: backgroundColor, color: textColor }}
-  //       className="px-4 py-1.5 border-2 rounded-lg tableCellData font-semibold"
-  //     >
-  //       {cellValue} 
-  //     </td>
-  //   );
-  // };
 
 
   const renderAttendanceOptions = (index, pair) => {
@@ -141,30 +100,39 @@ const SprintCapacity = ({ sidebarToggle }) => {
     );
   };
 
-  const calculateTotal = (rowIndex) => {
-    let total = 0;
+  const calculateTotal = () => {
+    let grandTotal = 0;
+    for (let i = 0; i < storedAllocationsData.length; i++) {
+      grandTotal += calculateSubTotal(i);
+    }
+    grandTotal -= Number(totalCeremonyHours); // Subtract TotalCeremonyHours from the total
+    return grandTotal;
+  };
+
+  const calculateSubTotal = (rowIndex) => {
+    let subTotal = 0;
     const attendanceData = JSON.parse(localStorage.getItem("attendanceData")) || [];
     const row = storedAllocationsData[rowIndex];
-
+  
     for (const datePair of dateWeekdayPairs) {
       const date = datePair.date;
       const currentDate = new Date(date);
-
+  
       if (currentDate.getDay() === 6 || currentDate.getDay() === 0) {
         const attendance = attendanceData.find(
           (item) => item.name === row?.name && item.date === date
         );
-
+  
         if (attendance && attendance.selectedValue !== "0") {
-          total += parseInt(attendance.selectedValue);
+          subTotal += parseInt(attendance.selectedValue);
         }
       } else {
         const attendance = attendanceData.find(
           (item) => item.name === row?.name && item.date === date
         );
-
-        let cellValue = storedAllocationsData[rowIndex].hrPerDay // Default value is (Present)
-
+  
+        let cellValue = storedAllocationsData[rowIndex].hrPerDay; // Default value is (Present)
+  
         if (attendance) {
           if (attendance.selectedValue === "0") {
             cellValue = 0; // Absent
@@ -172,23 +140,22 @@ const SprintCapacity = ({ sidebarToggle }) => {
             cellValue = 4; // Half-day
           }
         }
-
-        total += cellValue;
+  
+        subTotal += cellValue;
       }
     }
-
-    total -= totalCeremonyHours;
-    return total;
+  
+    return subTotal;
   };
-
+  
   const calculateEffectiveTotal = () => {
     let grandTotal = 0;
     for (let i = 0; i < storedAllocationsData.length; i++) {
       grandTotal += calculateTotal(i);
     }
+    // grandTotal += storedAllocationsData.length * totalCeremonyHours;
     return grandTotal;
   };
-
   const calculateGrandTotal = () => {
     let grandTotal = 0;
     for (let i = 0; i < storedAllocationsData.length; i++) {
@@ -197,7 +164,6 @@ const SprintCapacity = ({ sidebarToggle }) => {
     grandTotal += storedAllocationsData.length * totalCeremonyHours;
     return grandTotal;
   };
-
   return (
     <div className={` ${sidebarToggle ? "ml-0" : "ml-64"} transition-all duration-300`}>
       <div className="mt-16 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg">
