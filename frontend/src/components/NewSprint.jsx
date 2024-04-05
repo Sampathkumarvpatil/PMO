@@ -71,9 +71,13 @@ const NewSprint = ({sidebarToggle}) => {
    
     setSprintCreated(true);
  
-    const data = JSON.parse(localStorage.getItem(`${selectedProject}`)) || {};
-    data[sprintName] = {
-          // id: `Sprint ${i}`,
+    const data = JSON.parse(localStorage.getItem('sprintsData')) || {};
+
+    // Check if the selected project name exists in the data
+    if (data[selectedProjectName]) {
+      // If the selected project name exists, push a new object with sprintName as key
+      data[selectedProjectName].push({
+        [sprintName]: {
           plannedTasks: 0,
           tasksCompleted: 0,
           extraTasksAdded: 0,
@@ -83,10 +87,29 @@ const NewSprint = ({sidebarToggle}) => {
           postSprintDefects: 0,
           descopedTasks: 0,
           totalAvailableWorkHours: 0,
+        }
+      });
+    } else {
+      // If the selected project name doesn't exist, create a new array with the sprintName object
+      data[selectedProjectName] = [{
+        [sprintName]: {
+          plannedTasks: 0,
+          tasksCompleted: 0,
+          extraTasksAdded: 0,
+          plannedWorkHours: 0,
+          workHoursUsed: 0,
+          inSprintDefects: 0,
+          postSprintDefects: 0,
+          descopedTasks: 0,
+          totalAvailableWorkHours: 0,
+        }
+      }];
     }
-    console.log('data',data)
-    console.log("selected proj",selectedProject.projectName)
-    localStorage.setItem(`${selectedProject.projectName}`,JSON.stringify(data))
+
+    console.log('data', data);
+    console.log('selected proj', selectedProjectName);
+    localStorage.setItem('sprintsData', JSON.stringify(data));
+
  
     setTimeout(() => {
       navigate("/");
