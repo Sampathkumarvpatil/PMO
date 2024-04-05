@@ -256,7 +256,7 @@ const Home = ({sidebarToggle}) => {
               </span>
               <span className="block text-gray-500">
                 {isRoomCreator || user.userName === userName
-                  ? `Selected: ${optionsSelected[user.userName] || '-'}`
+                  ? `Selected:${optionsSelected[user.userName] || '-'}`
                   : 'Selected: ***'}
               </span>
             </div>

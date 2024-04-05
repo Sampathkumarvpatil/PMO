@@ -347,7 +347,7 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
           name="remaining_hrs"
           onChange={handleChange}
         />{" "} */}
-        {hrsWorked-hrsAllocated} hrs
+        {hrsAllocated-hrsWorked} hrs
       </td>
     </tr>
   );

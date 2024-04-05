@@ -28,7 +28,7 @@ const Task = ({ item, sr, list, setList,edit}) => {
    
  
     const allStatus = JSON.parse(localStorage.getItem('status'))
- 
+    // console.log('allstats',allStatus[item.id])
     if(allStatus){
     for(let status in allStatus[item.id]){
       const individual_status = allStatus[item.id][status]
@@ -36,20 +36,31 @@ const Task = ({ item, sr, list, setList,edit}) => {
       // const val = parseInt(item[individual_status['resource']])
       if(individual_status['resource'] != '-'){
       item[individual_status['resource']] =parseInt(individual_status['total_worked'])
-     
+        
       const storedTasks = JSON.parse(localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)) || {};
       storedTasks[item.id] = item
       localStorage.setItem(`${selectedProjectName}${selectedSprintName}`,JSON.stringify(storedTasks))
       }
     }
-    console.log(item)
+    
+    
+
+    if(allStatus && allStatus[item.id]) {
+      Object.values(allStatus[item.id]).map((it) => { item['status'] = it['work_completed_2'] });
+      const storedTasks = JSON.parse(localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)) || {};
+      storedTasks[item.id] = item;
+      localStorage.setItem(`${selectedProjectName}${selectedSprintName}`, JSON.stringify(storedTasks));
+    } else {
+      console.log("No status found for item ID:", item.id);
+    }
+    
   }
   }, []);
  
  
  
   useEffect(() => {
-    const filteredKeys = Object.keys(item).filter(key => key !== 'id' && key !== 'title' && key !== 'totHours' && key != 'resource' && key != 'total');
+    const filteredKeys = Object.keys(item).filter(key => key !== 'id' && key !== 'title' && key !== 'totHours' && key != 'resource' && key != 'total' && key != 'status');
     setResources(filteredKeys);
    
     let sumHrs = 0;
@@ -146,7 +157,7 @@ const Task = ({ item, sr, list, setList,edit}) => {
           onClick={()=>statusHandler(item.id)}
          className='bg-gray-600 text-white p-2 text-[10px] rounded-md w-20
          hover:text-gray-600 hover:bg-white border-2 border-gray-600
-         '>Status</button>
+         '>{item['status']}%</button>
       </td>
       {resources.map((resource, index) => (
         <td key={index} className='p-1 border-solid border-2 border-[#aaa] w-[250px]'>

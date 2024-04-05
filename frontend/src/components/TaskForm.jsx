@@ -71,6 +71,7 @@ const TaskForm = ( {sidebarToggle}) => {
     newTask['totHours'] = 0;
     newTask['resource'] = '-'
     newTask['total'] = 0
+    newTask['status']=0
     console.log(newTask)
     const storedTasks = JSON.parse(localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)) || {}; // Retrieve tasks from local storage, use object instead of array
     storedTasks[newTask.id] = newTask; // Set the new task with its id as the key
