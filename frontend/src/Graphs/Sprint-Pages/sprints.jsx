@@ -1,23 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./sprint.css";
-// import logo from './Images/Infogen-labs-logo-.png';
 
-function Sprints({sidebarToggle}) {
+function Sprints({ sidebarToggle }) {
   const navigate = useNavigate();
+  const [selectedProject, setSelectedProject] = useState(null);
   const [startSprint, setStartSprint] = useState("Sprint 1");
-  const [endSprint, setEndSprint] = useState("Sprint 0");
+  const [endSprint, setEndSprint] = useState("Sprint 1");
   const [sprintsData, setSprintsData] = useState([]);
   const [editMode, setEditMode] = useState(false);
+  const [numSprints, setNumSprints] = useState(1); // Initialize with 1 as default
+
+  useEffect(() => {
+    const selectedProjectName = localStorage.getItem("selectedProjectName");
+    const dataFromLocalStorage = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
+    const selectedProject = dataFromLocalStorage.find(project => project.projectName === selectedProjectName);
+    setSelectedProject(selectedProject);
+  }, []);
 
   useEffect(() => {
     const start = parseInt(startSprint.split(" ")[1]);
     const end = parseInt(endSprint.split(" ")[1]);
+
     const loadedSprintsData = [];
     for (let i = start; i <= end; i++) {
-      const storedSprintData = localStorage.getItem(`sprintData_Sprint ${i}`);
+      const storedSprintData = JSON.parse(localStorage.getItem(`sprintData_Sprint ${i}`));
       if (storedSprintData) {
         loadedSprintsData.push(JSON.parse(storedSprintData));
+        console.log(loadedSprintsData, "LOOOOAADDDDD")
       } else {
         loadedSprintsData.push({
           id: `Sprint ${i}`,
@@ -34,8 +44,13 @@ function Sprints({sidebarToggle}) {
         });
       }
     }
-    console.log(loadedSprintsData);
+    const selectedProjectName = localStorage.getItem("selectedProjectName");
+
     setSprintsData(loadedSprintsData);
+    setNumSprints(loadedSprintsData.length);
+    const allSprintKpi = JSON.parse(localStorage.getItem('sprintsData'))|| {}
+    allSprintKpi[selectedProjectName]=loadedSprintsData;
+    localStorage.setItem("sprintsData", JSON.stringify(allSprintKpi)) // Set the number of sprints based on the loaded data
   }, [startSprint, endSprint]);
 
   const handleSave = () => {
@@ -49,12 +64,14 @@ function Sprints({sidebarToggle}) {
       return;
     }
 
+    // localStorage.setItem("AllSprintKpi", loadedSprintsData)
     sprintsData.forEach((sprintData) => {
       localStorage.setItem(
         `sprintData_${sprintData.id}`,
         JSON.stringify(sprintData)
       );
     });
+    
 
     if (startSprint !== endSprint) {
       const selectedSprints = sprintsData.filter((sprintData) => {
@@ -136,7 +153,6 @@ function Sprints({sidebarToggle}) {
   return (
     <div className={` transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
       <div className="flex justify-center gap-10 mt-6">
-        {/* <img src={logo} alt="Logo" className="sprint-logo" /> */}
         <div className="dropdown-container1">
           <div className="dropdown">
             <label htmlFor="start-sprint">Start Sprint:</label>
@@ -145,12 +161,12 @@ function Sprints({sidebarToggle}) {
               value={startSprint}
               onChange={(e) => setStartSprint(e.target.value)}
             >
-              <option>Sprint 0</option>
-              <option>Sprint 1</option>
-              <option>Sprint 2</option>
-              <option>Sprint 3</option>
-              <option>Sprint 4</option>
-              <option>Sprint 5</option>
+              {selectedProject &&
+                selectedProject.sprints.map((sprint) => (
+                  <option key={sprint.sprintName} value={sprint.sprintName}>
+                    {sprint.sprintName}
+                  </option>
+                ))}
             </select>
           </div>
         </div>
@@ -162,12 +178,12 @@ function Sprints({sidebarToggle}) {
               value={endSprint}
               onChange={(e) => setEndSprint(e.target.value)}
             >
-              <option>Sprint 0</option>
-              <option>Sprint 1</option>
-              <option>Sprint 2</option>
-              <option>Sprint 3</option>
-              <option>Sprint 4</option>
-              <option>Sprint 5</option>
+              {selectedProject &&
+                selectedProject.sprints.map((sprint) => (
+                  <option key={sprint.sprintName} value={sprint.sprintName}>
+                    {sprint.sprintName}
+                  </option>
+                ))}
             </select>
           </div>
         </div>
@@ -307,8 +323,6 @@ function Sprints({sidebarToggle}) {
       </div>
       <div className="flex justify-end gap-10 mx-6 mt-6">
         <div>
-          {" "}
-          {/* Updated class name */}
           <button
             className="edit-button"
             onClick={() => setEditMode(!editMode)}
@@ -316,9 +330,7 @@ function Sprints({sidebarToggle}) {
             {editMode ? "Edit" : "Edit"}
           </button>
         </div>
-        <div >
-          {" "}
-          {/* Updated class name */}
+        <div>
           {editMode && (
             <button className="save-button" onClick={handleSave}>
               Submit
@@ -326,7 +338,11 @@ function Sprints({sidebarToggle}) {
           )}
         </div>
       </div>
+      <div className="flex justify-center">
+        <p>Number of sprints: {numSprints}</p>
+      </div>
     </div>
   );
 }
+
 export default Sprints;
