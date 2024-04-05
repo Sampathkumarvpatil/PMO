@@ -45,7 +45,7 @@ function Sprints({ sidebarToggle }) {
       }
     }
     const selectedProjectName = localStorage.getItem("selectedProjectName");
-
+// To create new Structure
     setSprintsData(loadedSprintsData);
     setNumSprints(loadedSprintsData.length);
     const allSprintKpi = JSON.parse(localStorage.getItem('sprintsData'))|| {}
