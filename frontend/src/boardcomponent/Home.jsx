@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 
-const Home = ({sidebarToggle}) => {
+const Home = ({ sidebarToggle }) => {
   const [desc, setDesc] = useState("");
   const [name, setName] = useState("");
   const [numSections, setNumSections] = useState(3);
@@ -10,7 +10,7 @@ const Home = ({sidebarToggle}) => {
   const [showNumSections, setShowNumSections] = useState(false); // State to track visibility of the second dropdown
   const navigate = useNavigate();
   const socket = io("http://localhost:8000");
-
+ 
   const defaultModels = {
     "4Ls Model": [
       "Liked: Things that team members enjoyed.",
@@ -58,20 +58,20 @@ const Home = ({sidebarToggle}) => {
       "Detective Tools: What tools or methods helped us investigate and solve issues?"
     ]
   };
-
-
+ 
+ 
   const handleSubmit = () => {
     const sections = {};
     sectionHeadings.forEach((heading, index) => {
       sections[heading] = [];
     });
-
+ 
     const details = {
       desc: desc,
       sections: sections,
     };
     socket.emit("create", details);
-
+ 
     navigate(`/retrospective/${desc}`, {
       state: {
         desc: desc,
@@ -79,30 +79,30 @@ const Home = ({sidebarToggle}) => {
       },
     });
   };
-
+ 
   const handleChangeSectionHeading = (index, value) => {
     const newHeadings = [...sectionHeadings];
     newHeadings[index] = value;
     setSectionHeadings(newHeadings);
   };
-
+ 
   const handleNumSectionsChange = (value) => {
     setNumSections(value);
     setSectionHeadings(Array(value).fill(""));
   };
-
+ 
   const handleDefaultOption = (model) => {
     if (model === "Custom") {
-      setDesc(""); 
-      setShowNumSections(true); 
+      setDesc("");
+      setShowNumSections(true);
     } else {
-      setDesc(model); 
+      setDesc(model);
       setNumSections(defaultModels[model].length);
       setSectionHeadings(defaultModels[model]);
       setShowNumSections(false);
     }
   };  
-
+ 
   const navigateToRoom = () => {
     navigate(`/retrospective/${name}`, {
       state: {
@@ -111,7 +111,7 @@ const Home = ({sidebarToggle}) => {
       },
     });
   };
-
+ 
   const sectionInputs = [];
   for (let i = 0; i < numSections; i++) {
     sectionInputs.push(
@@ -126,10 +126,20 @@ const Home = ({sidebarToggle}) => {
       </div>
     );
   }
-
+ 
   return (
-    <div className={`hero w-full flex justify-center items-center h-screen bg-gray-100 transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
-      <div className="bg-transparent bg-white relative left-[50%] rounded-lg shadow-2xl border-[4px] border-gray-400 p-10 max-w-md w-full">
+    <div 
+    style={{
+        backgroundImage: 'url("https://conceptboard.com/wp-content/uploads/Header_retro_article_V2-01.png"), linear-gradient(to right, #ffffff, #000000)',
+        backgroundSize: 'cover',
+        position: 'relative',
+        // left: '10%',
+        // width: sidebarToggle ? '60%':'100%' 
+        width:'60%'
+      }}
+       
+    className={`hero w-full flex justify-center items-center h-screen bg-gray-100 transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
+      <div className="bg-transparent bg-white relative left-[65%] rounded-lg shadow-2xl border-[4px] border-gray-400 p-10 max-w-md w-full">
         <div className="mb-6">
           <input
             type="text"
@@ -199,5 +209,5 @@ const Home = ({sidebarToggle}) => {
     </div>
   );
 };
-
+ 
 export default Home;

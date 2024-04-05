@@ -248,7 +248,7 @@ const CeremonyTable = ({ startDate, endDate, updateTotals, meetings }) => {
                 //   : 0;
 
                 // inputValues[key] || "";
-
+                
                 return (
                   <td key={dateIndex} style={{ textAlign: "left" }}>
                     {" "}

@@ -4,12 +4,13 @@ import { useParams } from 'react-router-dom';
 const Resource = ({heading,item,edit}) => {
   const [resource, setResource] = useState('-');
   const [editing, setEditing] = useState(false)
+  const selectedProjectName = localStorage.getItem('selectedProjectName')
+  const selectedSprintName = localStorage.getItem('selectedSprintName')
   
-  
-  const {taskId} = useParams()
+  // const {taskId} = useParams()
   
   useEffect(() => {
-    const storedTasks = JSON.parse(localStorage.getItem(`${taskId}`)) || {};
+    const storedTasks = JSON.parse(localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)) || {};
     setResource(storedTasks[item.id][`${heading}`])
   }, []);
 
@@ -17,7 +18,7 @@ const Resource = ({heading,item,edit}) => {
     setResource(e.target.value)
   }
   return (
-    <div style={{ width: '100px' }} className='flex justify-center'>
+    <div style={{ width: '100px' }} className='flex justify-center mx-auto'>
          {/* R{heading}:   */}
          <br />
           {edit ? 
@@ -27,10 +28,10 @@ const Resource = ({heading,item,edit}) => {
             value={resource}
             onChange={(e)=>{
               const newResource = e.target.value
-              const storedTasks = JSON.parse(localStorage.getItem(`${taskId}`)) || {};
+              const storedTasks = JSON.parse(localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)) || {};
               storedTasks[item.id][`${heading}`]=newResource
               
-              localStorage.setItem(`${taskId}`, JSON.stringify(storedTasks));
+              localStorage.setItem(`${selectedProjectName}${selectedSprintName}`, JSON.stringify(storedTasks));
               setResource(newResource)
             }}
             />
@@ -42,4 +43,4 @@ const Resource = ({heading,item,edit}) => {
   )
 }
 
-export default Resource
+export default Resource;

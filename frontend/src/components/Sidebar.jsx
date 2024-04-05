@@ -73,13 +73,15 @@ const Sidebar = ({sidebarToggle}) => {
             Sprint Status
           </Link>
         </li>
+        
         <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/retrospective" className="px-3">
             <FaChartBar className="inline-block w-6 h-6 mr-2 -mt-2"></FaChartBar>
-            
+           
             Sprint Retrospective
           </Link>
         </li>
+
         <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/KPI's" className="px-3">
             <FaChartBar className="inline-block w-6 h-6 mr-2 -mt-2"></FaChartBar>

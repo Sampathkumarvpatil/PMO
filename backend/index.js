@@ -1,4 +1,3 @@
-// Import statements...
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
@@ -32,6 +31,7 @@ io.on('connection', (socket) => {
       rooms[roomName] = {
         totalHours: 0,
         users: [],
+        optionsSelected: {}, // Object to store options selected by users
       };
     }
 
@@ -117,7 +117,13 @@ io.on('connection', (socket) => {
     }
   });
 
-
+  // Listen for option selected by users
+  socket.on('option_selected', ({ userName, selectedOption, roomName }) => {
+    if (rooms[roomName]) {
+      rooms[roomName].optionsSelected[userName] = selectedOption;
+      io.to(roomName).emit('option_selected', { userName, selectedOption });
+    }
+  });
 });
 
 server.listen(5000, () => {

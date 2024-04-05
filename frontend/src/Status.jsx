@@ -37,7 +37,8 @@ const handleAddStatus = () => {
       work_completed_2: 0,
       worked_hrs: 0,
       total_worked: 0,
-      remaining_hrs: 0
+      remaining_hrs: 0,
+      resource:"-"
     };
   
     // Update the status data in local storage for the current id
@@ -50,7 +51,7 @@ const handleAddStatus = () => {
   
   
    // Function to handle status changes
-const handleStatusChange = (updatedStatus) => {
+  const handleStatusChange = (updatedStatus) => {
     // Update the status list state
     const updatedStatusList = statusList.map(status => {
       if (status.id === updatedStatus.id) {
@@ -71,19 +72,22 @@ const handleStatusChange = (updatedStatus) => {
 
   return (
     <div className={`overflow-x-scroll transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
+      
+      
       <table className='p-2 text-[18px] border-collapse border-2 border-[#aaa] m-2 max-w-screen' >
         
         <thead>
           <tr>
               <td className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>sr no.</td>
+              <td className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Resource</td>
               <td className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Start Date</td>
               <td className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>End Date</td>
               <td className='p-2 border-solid border-2 border-[#aaa] bg-gray-300 '>EPIC /US/Bug Description</td>
               <td  className='p-2 border-solid border-2 border-[#aaa] bg-gray-300 '>Task Description</td>
               <td className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Any Blocks/Dependencies</td>
               <td className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Percentage of work compeleted</td>
-              <td className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>No of Hours worked</td>
-              <td className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Total No of Hours Worked/Task</td>
+              <td className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>No of Hours Allocated</td>
+              <td className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Total hours worked/Task</td>
               <td className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Remaining Hours</td>
           </tr>
       
@@ -96,10 +100,11 @@ const handleStatusChange = (updatedStatus) => {
         </tbody>
       </table>
 
-      <button className='fixed  bg-blue-600 border-2 border-blue-600 text-white text-[14px] rounded-md px-4 py-3 m-2 mt-7 hover:bg-white hover:text-blue-600'
+      <button className='bg-blue-600 border-2 border-blue-600 text-white text-[14px] rounded-md px-4 py-3 m-2 mt-7 hover:bg-white hover:text-blue-600'
         onClick={handleAddStatus}>
         Add Task
       </button>
+      
     </div>
   )
 }

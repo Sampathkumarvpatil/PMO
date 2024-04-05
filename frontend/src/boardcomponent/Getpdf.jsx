@@ -1,14 +1,14 @@
 import React from 'react';
 import { usePDF } from 'react-to-pdf';
 import { useLocation } from 'react-router-dom';
-
-const Getpdf = ({sidebarToggle}) => {
+ 
+const Getpdf = ({ sidebarToggle }) => {
   const data = useLocation().state;
   const { toPDF, targetRef } = usePDF({ filename: 'page.pdf' });
-
+ 
   return (
-    <div>
-      <div className={`flex justify-end m-4 transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
+    <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
+      <div className="flex justify-end m-4">
         <button
           onClick={() => toPDF()}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -45,5 +45,5 @@ const Getpdf = ({sidebarToggle}) => {
     </div>
   );
 };
-
+ 
 export default Getpdf;
