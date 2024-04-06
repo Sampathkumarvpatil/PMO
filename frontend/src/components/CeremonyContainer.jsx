@@ -12,14 +12,41 @@ const CeremonyContainer = ({ startDate, endDate, sprintName, projectName }) => {
   const [totalHours, setTotalHours] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
   const [newMeetingName, setNewMeetingName] = useState("");
-  const [meeting, setMeeting] = useState([
-    { name: "Daily Sync" },
-    { name: "Sprint Planning" },
-    { name: "Iteration Review" },
-    { name: "Cycle Retrospective" },
-    { name: "Story Refinement" },
-    // Add more meetings as needed
-  ]);
+  const [meeting, setMeeting] = useState();
+
+  useEffect(() => {
+    
+    let projectName = localStorage.getItem("selectedProjectName")
+    let sprintName = localStorage.getItem("selectedSprintName")
+    let meetingData = localStorage.getItem("meetings")
+    let data = [
+      { name: "Daily Sync" },
+      { name: "Sprint Planning" },
+      { name: "Iteration Review" },
+      { name: "Cycle Retrospective" },
+      { name: "Story Refinement" },
+      // Add more meetings as needed
+    ]
+    if (meetingData === null) {
+
+      let obj = { [projectName]: { [sprintName]: data } };
+      localStorage.setItem("meetings", JSON.stringify(obj))
+      setMeeting(data)
+    } else if (JSON.parse(meetingData)[projectName] === undefined) {
+      let meetingData = JSON.parse(localStorage.getItem("meetings"))
+      meetingData[projectName] = { [sprintName]: data }
+      localStorage.setItem("meetings", JSON.stringify(meetingData))
+    } else if (JSON.parse(meetingData)[projectName][sprintName] === undefined) {
+      let meetingData = JSON.parse(localStorage.getItem("meetings"))
+      let projectData = meetingData[projectName]
+      projectData[sprintName] = data
+      meetingData[projectName] = projectData
+      localStorage.setItem("meetings", JSON.stringify(meetingData))
+    } else {
+      setMeeting(JSON.parse(localStorage.getItem("meetings"))[projectName][sprintName])
+    }
+  }, [sprintName,projectName])
+
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -31,8 +58,14 @@ const CeremonyContainer = ({ startDate, endDate, sprintName, projectName }) => {
 
   const handleSaveMeeting = () => {
     if (newMeetingName.trim() !== "") {
-      setMeeting([...meeting, { name: newMeetingName }]);
+      let data = [...meeting, { name: newMeetingName }]
+      setMeeting(data);
       setNewMeetingName("");
+      let meetingData = JSON.parse(localStorage.getItem("meetings"))
+      let projectData = meetingData[projectName]
+      projectData[sprintName] = data
+      meetingData[projectName] = projectData
+      localStorage.setItem("meetings", JSON.stringify(meetingData))
     }
     setOpenDialog(false);
   };

@@ -17,10 +17,19 @@ const getInitialDatesWithInitialValues = (start, end) => {
 
   return dates;
 };
+
+
 const CeremonyTable = ({ startDate, endDate, updateTotals, meetings }) => {
+  
+ // setCeremonyInput(stateValue);
+ const savedProjectName = localStorage.getItem("selectedProjectName");
+ const savedSprintName = localStorage.getItem("selectedSprintName");
+
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedSprint, setSelectedSprint] = useState(null);
   const [collaborative_time, setCollaboeativeTime] = useState(undefined);
+  
+ let spreadTime = { ...collaborative_time };
   const [ceremonyInput, setCeremonyInput] = useState({
     ["Daily Sync"]: {
       ...getInitialDatesWithInitialValues(startDate, endDate),
@@ -38,6 +47,32 @@ const CeremonyTable = ({ startDate, endDate, updateTotals, meetings }) => {
       ...getInitialDatesWithInitialValues(startDate, endDate),
     },
   });
+
+
+  if(meetings && meetings.length>5) {
+    for(let i=5;i<meetings.length;i++){
+      let collaborativeTime = JSON.parse(localStorage.getItem("collaborative_time"))
+      const savedProjectName = localStorage.getItem("selectedProjectName");
+      const savedSprintName = localStorage.getItem("selectedSprintName");
+      if(collaborativeTime[savedProjectName][savedSprintName][meetings[i].name] ===undefined){ 
+    
+    ceremonyInput[meetings[i].name] = {...getInitialDatesWithInitialValues(startDate, endDate)}
+    
+
+    let sprint = collaborativeTime[savedProjectName][savedSprintName]
+    sprint[meetings[i].name] = ceremonyInput[meetings[i].name]
+
+    collaborativeTime[savedProjectName][savedSprintName] = sprint
+
+
+    localStorage.setItem("collaborative_time",JSON.stringify(collaborativeTime))
+    
+      }
+      spreadTime = collaborativeTime
+  }
+}
+
+
   useEffect(() => {
     // Get the selected project and sprint from local storage
     const savedProjectName = localStorage.getItem("selectedProjectName");
@@ -52,6 +87,7 @@ const CeremonyTable = ({ startDate, endDate, updateTotals, meetings }) => {
     if (localCollaborativeTime) {
       parsedCollaborativeTime = JSON.parse(localCollaborativeTime);
     }
+   
 
     const initializeCeremonyData = (startDate, endDate) => ({
       ["Daily Sync"]: {
@@ -182,11 +218,7 @@ const CeremonyTable = ({ startDate, endDate, updateTotals, meetings }) => {
     // if (stateValue)
     //   stateValue[meetings[meetingIndex].name][dates[dateIndex]] = value;
 
-    // setCeremonyInput(stateValue);
-    const savedProjectName = localStorage.getItem("selectedProjectName");
-    const savedSprintName = localStorage.getItem("selectedSprintName");
-
-    let spreadTime = { ...collaborative_time };
+   
     if (
       collaborative_time &&
       savedProjectName &&
@@ -233,7 +265,7 @@ const CeremonyTable = ({ startDate, endDate, updateTotals, meetings }) => {
         </thead>
 
         <tbody>
-          {meetings.map((meeting, meetingIndex) => (
+          {meetings && meetings.map((meeting, meetingIndex) => (
             <tr key={meeting.name}>
               <td className="border-2 border-white text-center px-8 sticky left-0 z-10 bg-gray-200 font-bold">
                 {meeting.name}
@@ -248,7 +280,11 @@ const CeremonyTable = ({ startDate, endDate, updateTotals, meetings }) => {
                 //   : 0;
 
                 // inputValues[key] || "";
-                
+
+                let value = ceremonyInput[meetings[meetingIndex].name][
+                  date
+                ]
+
                 return (
                   <td key={dateIndex} style={{ textAlign: "left" }}>
                     {" "}
@@ -256,18 +292,14 @@ const CeremonyTable = ({ startDate, endDate, updateTotals, meetings }) => {
                     <input
                       type="number"
                       size="small"
-                      value={
-                        ceremonyInput[meetings[meetingIndex].name][
-                          dates[dateIndex]
-                        ]
-                      }
+                      value={value}
                       className="py-1.5 border-2 rounded-lg tableCellData font-semibold w-full"
                       onChange={(event) =>
                         handleInputChange(event, meetingIndex, dateIndex)
                       }
-                      // InputProps={{
-                      //     style: { fontSize: '0.8rem', padding: '1px', textAlign: 'left' },
-                      // }}
+                    // InputProps={{
+                    //     style: { fontSize: '0.8rem', padding: '1px', textAlign: 'left' },
+                    // }}
                     />
                   </td>
                 );
