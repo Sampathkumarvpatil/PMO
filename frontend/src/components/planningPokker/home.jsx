@@ -216,14 +216,14 @@ const Home = ({sidebarToggle}) => {
       ) : (
         <>
           <div className="flex flex-col items-center">
-          <div className="w-full bg-gray-100 rounded-lg shadow-lg p-6">
-  <h1 className="text-4xl font-bold text-gray-800 text-center mb-4">
-    Total Hours
-  </h1>
-  <p className="text-6xl font-semibold text-gray-900 text-center">
-    {showTotalHours ? totalHours : "X"}
-  </p>
-</div>
+                  <div className="w-full bg-gray-100 rounded-lg shadow-lg p-6">
+          <h1 className="text-4xl font-bold text-gray-800 text-center mb-4">
+            Total Hours
+          </h1>
+          <p className="text-6xl font-semibold text-gray-900 text-center">
+            {showTotalHours ? totalHours : "X"}
+          </p>
+        </div>
 
             {isRoomCreator && (
               <button
@@ -244,6 +244,25 @@ const Home = ({sidebarToggle}) => {
               <div className='m-10 px-10 w-full border border-gray-400 rounded-lg'>
       <h2 className="text-2xl text-blue-600 mb-4">Users in the Room:</h2>
       <ul className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {users.map((user) => (
+        <li
+          key={user.userId}
+          className="border border-gray-300 rounded-lg p-4 flex flex-col justify-between"
+        >
+          <div className="text-center">
+            <span className="block font-semibold">
+              <FaUser className="inline-block mr-2" />
+              {user.userName}
+            </span>
+            <span className="block text-gray-500">
+              {showTotalHours && (isRoomCreator || user.userName === userName) ? `Selected: ${optionsSelected[user.userName] || '-'}` : 'Selected: ***'}
+            </span>
+          </div>
+          {/* Add any additional information or actions here */}
+        </li>
+      ))} 
+
+      {/* 
         {users.map((user) => (
           <li
             key={user.userId}
@@ -260,9 +279,10 @@ const Home = ({sidebarToggle}) => {
                   : 'Selected: ***'}
               </span>
             </div>
-            {/* Add any additional information or actions here */}
           </li>
         ))}
+       */}
+
       </ul>
     </div>
 
