@@ -2,14 +2,24 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./sprint.css";
 
+const sortSprintData = (data) => {
+  return data.sort((a, b) => {
+    const sprintNameA = Object.keys(a)[0];
+    const sprintNameB = Object.keys(b)[0];
+    return sprintNameA.localeCompare(sprintNameB, undefined, { numeric: true });
+  });
+};
 function Sprints({ sidebarToggle }) {
   const navigate = useNavigate();
   const [selectedProject, setSelectedProject] = useState(null);
-  const [startSprint, setStartSprint] = useState("Sprint 1");
-  const [endSprint, setEndSprint] = useState("Sprint 1");
+  const [startSprint, setStartSprint] = useState();
+  const [endSprint, setEndSprint] = useState();
   const [sprintsData, setSprintsData] = useState([]);
   const [editMode, setEditMode] = useState(false);
-  const [numSprints, setNumSprints] = useState(1); // Initialize with 1 as default
+  const [numSprints, setNumSprints] = useState(1);
+  const [sprintsList, setSprintsList] = useState([]);
+  const [selectedSprintData, setSelectedSprintData] = useState([]);
+  // Initialize with 1 as default
 
   useEffect(() => {
     const selectedProjectName = localStorage.getItem("selectedProjectName");
@@ -22,43 +32,56 @@ function Sprints({ sidebarToggle }) {
   }, []);
 
   useEffect(() => {
-    const start = parseInt(startSprint.split(" ")[1]);
-    const end = parseInt(endSprint.split(" ")[1]);
-
-    const loadedSprintsData = [];
-    for (let i = start; i <= end; i++) {
-      const storedSprintData = JSON.parse(
-        localStorage.getItem(`sprintData_Sprint ${i}`)
-      );
-      console.log(storedSprintData);
-      if (storedSprintData) {
-        loadedSprintsData.push(storedSprintData);
-        console.log(loadedSprintsData, "LOOOOAADDDDD");
-      } else {
-        loadedSprintsData.push({
-          id: `Sprint ${i}`,
-          sprintNO: i,
-          plannedTasks: 0,
-          tasksCompleted: 0,
-          extraTasksAdded: 0,
-          plannedWorkHours: 0,
-          workHoursUsed: 0,
-          inSprintDefects: 0,
-          postSprintDefects: 0,
-          descopedTasks: 0,
-          totalAvailableWorkHours: 0,
-        });
-      }
-    }
     const selectedProjectName = localStorage.getItem("selectedProjectName");
     // To create new Structure
-    setSprintsData(loadedSprintsData);
-    setNumSprints(loadedSprintsData.length);
-    const allSprintKpi = JSON.parse(localStorage.getItem("sprintsData")) || {};
-    allSprintKpi[selectedProjectName] = loadedSprintsData;
-    localStorage.setItem("sprintsData", JSON.stringify(allSprintKpi)); // Set the number of sprints based on the loaded data
-  }, [startSprint, endSprint]);
+    let loadedSprintsData = [];
 
+    const allSprintKpi = JSON.parse(localStorage.getItem("sprintsData")) || {};
+
+    if (selectedProject?.projectName && Object.keys(allSprintKpi)?.length > 0) {
+      loadedSprintsData = allSprintKpi[selectedProject?.projectName];
+
+      const sprints = Object.keys(loadedSprintsData);
+      if (sprints.length > 0) {
+        const sortedSprintData = sortSprintData(loadedSprintsData);
+
+        const sprintKeys = sortedSprintData.map(
+          (sprint) => Object.keys(sprint)[0]
+        );
+        setSprintsData(sortedSprintData);
+        setSprintsList(sprintKeys);
+        setStartSprint(sprintKeys[0]);
+        setEndSprint(sprintKeys[0]);
+      }
+    }
+  }, [selectedProject]);
+
+  useEffect(() => {
+    if (startSprint && endSprint) {
+      const startSprintIndex = sprintsList.findIndex(
+        (item) => item === startSprint
+      );
+      const endSprintIndex = sprintsList.findIndex(
+        (item) => item === endSprint
+      );
+
+      if (
+        startSprintIndex !== -1 &&
+        endSprintIndex !== -1 &&
+        startSprintIndex <= endSprintIndex
+      ) {
+        const activeSprints = [];
+
+        for (let i = startSprintIndex; i <= endSprintIndex; i++) {
+          activeSprints.push(sprintsData[i]);
+        }
+
+        setSelectedSprintData(activeSprints);
+      } else {
+        setSelectedSprintData([]);
+      }
+    }
+  }, [startSprint, endSprint, sprintsList, sprintsData]);
   const handleSave = () => {
     const startNumber = parseInt(startSprint.split(" ")[1]);
     const endNumber = parseInt(endSprint.split(" ")[1]);
@@ -155,6 +178,126 @@ function Sprints({ sidebarToggle }) {
     setSprintsData(updatedSprintsData);
   };
 
+  const renderSprintsData = () => {
+    return selectedSprintData.map((sprint, index) => {
+      const data = Object.values(sprint)[0];
+      const sprintName = Object.keys(sprint)[0];
+
+      return (
+        <tr key={sprintName} className="points">
+          <td>{sprintName}</td>
+          <td
+            contentEditable={editMode}
+            onBlur={(e) =>
+              handleInputChange(
+                index,
+                "plannedTasks",
+                parseInt(e.target.textContent) || 0
+              )
+            }
+          >
+            {data.plannedTasks}
+          </td>
+          <td
+            contentEditable={editMode}
+            onBlur={(e) =>
+              handleInputChange(
+                index,
+                "tasksCompleted",
+                parseInt(e.target.textContent) || 0
+              )
+            }
+          >
+            {data.tasksCompleted}
+          </td>
+          <td
+            contentEditable={editMode}
+            onBlur={(e) =>
+              handleInputChange(
+                index,
+                "extraTasksAdded",
+                parseInt(e.target.textContent) || 0
+              )
+            }
+          >
+            {data.extraTasksAdded}
+          </td>
+          <td
+            contentEditable={editMode}
+            onBlur={(e) =>
+              handleInputChange(
+                index,
+                "descopedTasks",
+                parseInt(e.target.textContent) || 0
+              )
+            }
+          >
+            {data.descopedTasks}
+          </td>
+          <td
+            contentEditable={editMode}
+            onBlur={(e) =>
+              handleInputChange(
+                index,
+                "totalAvailableWorkHours",
+                parseInt(e.target.textContent) || 0
+              )
+            }
+          >
+            {data.totalAvailableWorkHours}
+          </td>
+          <td
+            contentEditable={editMode}
+            onBlur={(e) =>
+              handleInputChange(
+                index,
+                "plannedWorkHours",
+                parseInt(e.target.textContent) || 0
+              )
+            }
+          >
+            {data.plannedWorkHours}
+          </td>
+          <td
+            contentEditable={editMode}
+            onBlur={(e) =>
+              handleInputChange(
+                index,
+                "workHoursUsed",
+                parseInt(e.target.textContent) || 0
+              )
+            }
+          >
+            {data.workHoursUsed}
+          </td>
+          <td
+            contentEditable={editMode}
+            onBlur={(e) =>
+              handleInputChange(
+                index,
+                "inSprintDefects",
+                parseInt(e.target.textContent) || 0
+              )
+            }
+          >
+            {data.inSprintDefects}
+          </td>
+          <td
+            contentEditable={editMode}
+            onBlur={(e) =>
+              handleInputChange(
+                index,
+                "postSprintDefects",
+                parseInt(e.target.textContent) || 0
+              )
+            }
+          >
+            {data.postSprintDefects}
+          </td>
+        </tr>
+      );
+    });
+  };
   return (
     <div
       className={` transition-all duration-300 ${
@@ -188,11 +331,21 @@ function Sprints({ sidebarToggle }) {
               onChange={(e) => setEndSprint(e.target.value)}
             >
               {selectedProject &&
-                selectedProject.sprints.map((sprint) => (
-                  <option key={sprint.sprintName} value={sprint.sprintName}>
-                    {sprint.sprintName}
-                  </option>
-                ))}
+                selectedProject.sprints
+                  .filter(
+                    (sprint) =>
+                      sprintsList.findIndex(
+                        (sprintName) => sprintName === sprint.sprintName
+                      ) >=
+                      sprintsList.findIndex(
+                        (sprintName) => sprintName === startSprint
+                      )
+                  )
+                  .map((sprint) => (
+                    <option key={sprint.sprintName} value={sprint.sprintName}>
+                      {sprint.sprintName}
+                    </option>
+                  ))}
             </select>
           </div>
         </div>
@@ -214,119 +367,8 @@ function Sprints({ sidebarToggle }) {
               <td>In-Sprint Defects Identified</td>
               <td>Post-Sprint Defects Identified</td>
             </tr>
-            {sprintsData.map((sprintData, index) => (
-              <tr key={sprintData.id} className="points">
-                <td>{sprintData.id ? sprintData.id.split(" ")[1] : ""}</td>
-                <td
-                  contentEditable={editMode}
-                  onBlur={(e) =>
-                    handleInputChange(
-                      index,
-                      "plannedTasks",
-                      parseInt(e.target.textContent) || 0
-                    )
-                  }
-                >
-                  {sprintData.plannedTasks}
-                </td>
-                <td
-                  contentEditable={editMode}
-                  onBlur={(e) =>
-                    handleInputChange(
-                      index,
-                      "tasksCompleted",
-                      parseInt(e.target.textContent) || 0
-                    )
-                  }
-                >
-                  {sprintData.tasksCompleted}
-                </td>
-                <td
-                  contentEditable={editMode}
-                  onBlur={(e) =>
-                    handleInputChange(
-                      index,
-                      "extraTasksAdded",
-                      parseInt(e.target.textContent) || 0
-                    )
-                  }
-                >
-                  {sprintData.extraTasksAdded}
-                </td>
-                <td
-                  contentEditable={editMode}
-                  onBlur={(e) =>
-                    handleInputChange(
-                      index,
-                      "descopedTasks",
-                      parseInt(e.target.textContent) || 0
-                    )
-                  }
-                >
-                  {sprintData.descopedTasks}
-                </td>
-                <td
-                  contentEditable={editMode}
-                  onBlur={(e) =>
-                    handleInputChange(
-                      index,
-                      "totalAvailableWorkHours",
-                      parseInt(e.target.textContent) || 0
-                    )
-                  }
-                >
-                  {sprintData.totalAvailableWorkHours}
-                </td>
-                <td
-                  contentEditable={editMode}
-                  onBlur={(e) =>
-                    handleInputChange(
-                      index,
-                      "plannedWorkHours",
-                      parseInt(e.target.textContent) || 0
-                    )
-                  }
-                >
-                  {sprintData.plannedWorkHours}
-                </td>
-                <td
-                  contentEditable={editMode}
-                  onBlur={(e) =>
-                    handleInputChange(
-                      index,
-                      "workHoursUsed",
-                      parseInt(e.target.textContent) || 0
-                    )
-                  }
-                >
-                  {sprintData.workHoursUsed}
-                </td>
-                <td
-                  contentEditable={editMode}
-                  onBlur={(e) =>
-                    handleInputChange(
-                      index,
-                      "inSprintDefects",
-                      parseInt(e.target.textContent) || 0
-                    )
-                  }
-                >
-                  {sprintData.inSprintDefects}
-                </td>
-                <td
-                  contentEditable={editMode}
-                  onBlur={(e) =>
-                    handleInputChange(
-                      index,
-                      "postSprintDefects",
-                      parseInt(e.target.textContent) || 0
-                    )
-                  }
-                >
-                  {sprintData.postSprintDefects}
-                </td>
-              </tr>
-            ))}
+
+            {renderSprintsData()}
           </tbody>
         </table>
       </div>
