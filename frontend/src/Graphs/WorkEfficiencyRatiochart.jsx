@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 
 const WorkEfficiencyRatiochartcomponent = ({sidebarToggle}) => {
     const location = useLocation();
+    console.log('loc',location)
     const { selectedSprints, startSprint, endSprint } = location.state || { selectedSprints: [], startSprint: '', endSprint: '' };
     const chartOptions = {
         chart: {

@@ -292,31 +292,31 @@ const Home = ({sidebarToggle}) => {
               {/* chat */}
               
               <div className="flex-grow flex flex-col items-end p-4 border border-gray-400">
-      <div className="bg-gray-200 p-4 rounded-md max-h-[350px] overflow-y-auto w-[400px] h-[300px]">
-        <h2 className="text-lg font-semibold mb-4">Chat:</h2>
-        {messages.map((msg, index) => (
-          <div key={index} className="mb-2 flex items-center">
-            <FaUser className="text-gray-500 mr-2" />
-            <span className="font-semibold">{msg.userName}:</span> {msg.message}
+          <div className="bg-gray-200 p-4 rounded-md max-h-[350px] overflow-y-auto w-[400px] h-[300px]">
+            <h2 className="text-lg font-semibold mb-4">Chat:</h2>
+            {messages.map((msg, index) => (
+              <div key={index} className="mb-2 flex items-center">
+                <FaUser className="text-gray-500 mr-2" />
+                <span className="font-semibold">{msg.userName}:</span> {msg.message}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="flex items-center mt-4">
-        <textarea
-          rows="3"
-          placeholder="Type your message..."
-          onChange={messageChangeHandler}
-          value={message}
-          className="flex-grow mr-2 px-4 py-2 border border-gray-300 rounded-md resize-none focus:outline-none focus:border-blue-500 overflow-auto"
-        ></textarea>
-        <button
-          onClick={sendMessage}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
-        >
-          <RiSendPlaneFill className="text-xl" />
-        </button>
-      </div>
-    </div>
+          <div className="flex items-center mt-4">
+            <textarea
+              rows="3"
+              placeholder="Type your message..."
+              onChange={messageChangeHandler}
+              value={message}
+              className="flex-grow mr-2 px-4 py-2 border border-gray-300 rounded-md resize-none focus:outline-none focus:border-blue-500 overflow-auto"
+            ></textarea>
+            <button
+              onClick={sendMessage}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+            >
+              <RiSendPlaneFill className="text-xl" />
+            </button>
+          </div>
+        </div>
 
 
               {/* chat end */}
@@ -345,6 +345,7 @@ const Home = ({sidebarToggle}) => {
       className="w-[50%] px-4 py-2 border border-gray-300 rounded-xl mb-4 focus:outline-none focus:border-black"
       name="res" id="resource" onChange={onChangeHandler}
     >
+      <option value="-">-</option>
       {allocations.map((item) => (
         <option key={item.name} value={item.name}>{item.name}</option>
       ))}

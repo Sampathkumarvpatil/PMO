@@ -10,6 +10,7 @@ const sortSprintData = (data) => {
   });
 };
 function Sprints({ sidebarToggle }) {
+  console.log('sbt',sidebarToggle)
   const navigate = useNavigate();
   const [selectedProject, setSelectedProject] = useState(null);
   const [startSprint, setStartSprint] = useState();
@@ -21,6 +22,36 @@ function Sprints({ sidebarToggle }) {
   const [selectedSprintData, setSelectedSprintData] = useState([]);
   // Initialize with 1 as default
 
+  useEffect(()=>{
+    const selectedProjectName = localStorage.getItem("selectedProjectName");
+    const sData = JSON.parse(localStorage.getItem('sprintsData'));
+    console.log(sData)
+    for(let key in Object.keys(sData[selectedProjectName])){
+      // console.log('key',key)
+      let sName = Object.keys(sData[selectedProjectName][key])[0]
+      // console.log('pname',selectedProjectName)
+      // console.log('sname',sName)
+      // console.log(sData[selectedProjectName][key][sName])
+
+      const tasks = JSON.parse(localStorage.getItem(`${selectedProjectName}${sName}`))||{}
+      sData[selectedProjectName][key][sName]['plannedTasks'] = Object.values(tasks).length
+
+      let tasksCompleted = 0;
+      Object.values(tasks).map((it)=>{
+        if(it['status'] == 100){
+          tasksCompleted++;
+        }
+      })
+
+      sData[selectedProjectName][key][sName]['tasksCompleted'] = tasksCompleted
+
+      // console.log('----',sData[selectedProjectName][key][sName])
+      localStorage.setItem('sprintsData',JSON.stringify(sData))
+
+    }
+  },[])
+
+
   useEffect(() => {
     const selectedProjectName = localStorage.getItem("selectedProjectName");
     const dataFromLocalStorage =
@@ -30,6 +61,8 @@ function Sprints({ sidebarToggle }) {
     );
     setSelectedProject(selectedProject);
   }, []);
+
+ 
 
   useEffect(() => {
     const selectedProjectName = localStorage.getItem("selectedProjectName");
@@ -44,10 +77,16 @@ function Sprints({ sidebarToggle }) {
       const sprints = Object.keys(loadedSprintsData);
       if (sprints.length > 0) {
         const sortedSprintData = sortSprintData(loadedSprintsData);
-
         const sprintKeys = sortedSprintData.map(
           (sprint) => Object.keys(sprint)[0]
         );
+
+
+        // console.log('sortedSprintData',sortedSprintData)
+        // sortedSprintData.forEach((it)=>{
+        //   console.log(it)
+        // })
+
         setSprintsData(sortedSprintData);
         setSprintsList(sprintKeys);
         setStartSprint(sprintKeys[0]);
@@ -184,9 +223,10 @@ function Sprints({ sidebarToggle }) {
       const sprintName = Object.keys(sprint)[0];
 
       return (
-        <tr key={sprintName} className="points">
-          <td>{sprintName}</td>
+        <tr key={sprintName} className="points border-b-2 border-gray-400 hover:bg-gray-400">
+          <td className="m-4 ">{sprintName}</td>
           <td
+            className="m-4"
             contentEditable={editMode}
             onBlur={(e) =>
               handleInputChange(
@@ -199,6 +239,7 @@ function Sprints({ sidebarToggle }) {
             {data.plannedTasks}
           </td>
           <td
+            className="m-4 "
             contentEditable={editMode}
             onBlur={(e) =>
               handleInputChange(
@@ -211,6 +252,7 @@ function Sprints({ sidebarToggle }) {
             {data.tasksCompleted}
           </td>
           <td
+            className="m-4 "
             contentEditable={editMode}
             onBlur={(e) =>
               handleInputChange(
@@ -223,6 +265,7 @@ function Sprints({ sidebarToggle }) {
             {data.extraTasksAdded}
           </td>
           <td
+            className="m-4 "
             contentEditable={editMode}
             onBlur={(e) =>
               handleInputChange(
@@ -235,6 +278,7 @@ function Sprints({ sidebarToggle }) {
             {data.descopedTasks}
           </td>
           <td
+            className="m-4 "
             contentEditable={editMode}
             onBlur={(e) =>
               handleInputChange(
@@ -247,6 +291,7 @@ function Sprints({ sidebarToggle }) {
             {data.totalAvailableWorkHours}
           </td>
           <td
+            className="m-4 "
             contentEditable={editMode}
             onBlur={(e) =>
               handleInputChange(
@@ -259,6 +304,7 @@ function Sprints({ sidebarToggle }) {
             {data.plannedWorkHours}
           </td>
           <td
+            className="m-4 "
             contentEditable={editMode}
             onBlur={(e) =>
               handleInputChange(
@@ -271,6 +317,7 @@ function Sprints({ sidebarToggle }) {
             {data.workHoursUsed}
           </td>
           <td
+            className="m-4 "
             contentEditable={editMode}
             onBlur={(e) =>
               handleInputChange(
@@ -283,6 +330,7 @@ function Sprints({ sidebarToggle }) {
             {data.inSprintDefects}
           </td>
           <td
+            className="m-4 p-6"
             contentEditable={editMode}
             onBlur={(e) =>
               handleInputChange(
@@ -300,9 +348,7 @@ function Sprints({ sidebarToggle }) {
   };
   return (
     <div
-      className={` transition-all duration-300 ${
-        sidebarToggle ? "ml-0" : "ml-64"
-      }`}
+      className={` transition-all duration-300 ${sidebarToggle ? 'ml-0' : 'ml-64'}`}
     >
       <div className="flex justify-center gap-10 mt-6">
         <div className="dropdown-container1">
