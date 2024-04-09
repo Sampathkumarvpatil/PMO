@@ -8,7 +8,7 @@
 
 
 .table1 {
-    width: auto;
+    width: auto;    
     border: 20px solid rgb(238, 238, 242);
     align-items: center;
     margin-left: 10px;
@@ -38,7 +38,8 @@
     /* margin-left: auto;
     margin-right: auto; */
     margin-top: 20px;
-    height: 100px;
+    margin: 10px;
+    width: 100%;
 }
 
 .edit-button {

@@ -117,6 +117,7 @@ const SprintCapacity = ({ sidebarToggle }) => {
     let subTotal = 0;
     const attendanceData = JSON.parse(localStorage.getItem("attendanceData")) || [];
     const row = storedAllocationsData[rowIndex];
+    // console.log('storedAllocationsData[rowIndex]',storedAllocationsData[rowIndex].name)
 
     for (const datePair of dateWeekdayPairs) {
       const date = datePair.date;
