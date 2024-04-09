@@ -28,7 +28,6 @@ const CeremonyContainer = ({ startDate, endDate, sprintName, projectName }) => {
       // Add more meetings as needed
     ]
     if (meetingData === null) {
-
       let obj = { [projectName]: { [sprintName]: data } };
       localStorage.setItem("meetings", JSON.stringify(obj))
       setMeeting(data)

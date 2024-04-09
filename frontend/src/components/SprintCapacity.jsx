@@ -3,7 +3,7 @@ import LastButtons from "./LastButtons";
 import "./newInputs.css";
 
 const SprintCapacity = ({ sidebarToggle }) => {
-  const [storedAllocationsData, setStoredAllocationsData] = useState([]);
+  const [storedAllocationsData, setStoredAllocationsData] = useState([]); 
   const [dateWeekdayPairs, setDateWeekdayPairs] = useState([]);
   const [totalCeremonyHours, setTotalCeremonyHours] = useState(0);
   const [selectedSprint, setSelectedSprint] = useState(null);
@@ -60,8 +60,8 @@ const SprintCapacity = ({ sidebarToggle }) => {
     const selectedValue = selectedSprint?.selectedValues?.find(value => value.name === storedAllocationsData[index].name && value.date === pair.date);
     let allocationPercentage = storedAllocationsData[index].hrPerDay
     let cellValue = selectedValue ? selectedValue.selectedValue : storedAllocationsData[index].hrPerDay
-    if(allocationPercentage === 4 && selectedValue?.selectedValue) {
-      cellValue = cellValue/2
+    if (allocationPercentage === 4 && selectedValue?.selectedValue) {
+      cellValue = cellValue / 2
     }
     // Default value is 8 (Present)
 
@@ -92,7 +92,7 @@ const SprintCapacity = ({ sidebarToggle }) => {
     const textColor =
       isWeekend ? (cellValue === "8" ? "black" : "white") : cellValue === "0" ? "white" : cellValue === "4" ? "white" : cellValue === 4 ? "white" : "black";
 
-      
+
 
     return (
       <td
@@ -117,11 +117,12 @@ const SprintCapacity = ({ sidebarToggle }) => {
     let subTotal = 0;
     const attendanceData = JSON.parse(localStorage.getItem("attendanceData")) || [];
     const row = storedAllocationsData[rowIndex];
+    // console.log('storedAllocationsData[rowIndex]',storedAllocationsData[rowIndex].name)
 
     for (const datePair of dateWeekdayPairs) {
       const date = datePair.date;
       const currentDate = new Date(date);
-
+      const mainCompanyData=JSON.parse(localStorage.getItem('mainCompanyData'));
       if (currentDate.getDay() === 6 || currentDate.getDay() === 0) {
         const attendance = attendanceData.find(
           (item) => item.name === row?.name && item.date === date
@@ -136,8 +137,8 @@ const SprintCapacity = ({ sidebarToggle }) => {
         );
 
         let cellValue = storedAllocationsData[rowIndex].hrPerDay; // Default value is (Present)
-        let allocationPercentage  = storedAllocationsData[rowIndex].hrPerDay
-        
+        let allocationPercentage = storedAllocationsData[rowIndex].hrPerDay
+
 
         if (attendance) {
           if (attendance.selectedValue === "0") {
@@ -147,15 +148,41 @@ const SprintCapacity = ({ sidebarToggle }) => {
           }
         }
 
-        if(allocationPercentage === 4 && attendance?.selectedValue) {
-          cellValue = cellValue/2
+        if (allocationPercentage === 4 && attendance?.selectedValue == "4") {
+          cellValue = cellValue / 2
         }
 
         subTotal += cellValue;
       }
     }
+    
+    let mainCompanyData = JSON.parse(localStorage.getItem('mainCompanyData')) || [];
+    storedAllocationsData[rowIndex]['sumTotalWorkingHours']=subTotal;
+    // Update the specific storedAllocationsData object within mainCompanyData
+    mainCompanyData = mainCompanyData.map(project => {
+      if (project.projectName === selectedProject.projectName) {
+        return {
+          ...project,
+          sprints: project.sprints.map(sprint => {
+            if (sprint.sprintName === selectedSprint.sprintName) {
+              return {
+                ...sprint,
+                allocations: storedAllocationsData
+              };
+            }
+            return sprint;
+          })
+        };
+      }
+      return project;
+    });
 
+    
+    console.log(storedAllocationsData[rowIndex]);
+    localStorage.setItem('mainCompanyData', JSON.stringify(mainCompanyData));
+    // localStorage.setItem()
     return subTotal;
+    
   };
 
   const calculateEffectiveTotal = () => {
@@ -163,8 +190,8 @@ const SprintCapacity = ({ sidebarToggle }) => {
     for (let i = 0; i < storedAllocationsData.length; i++) {
       grandTotal += calculateTotal(i);
     }
-    // grandTotal += storedAllocationsData.length * totalCeremonyHours;
-    localStorage.setItem("effectiveHours",grandTotal)
+
+    localStorage.setItem("effectiveHours", grandTotal)
     return grandTotal;
   };
   const calculateGrandTotal = () => {
@@ -173,7 +200,7 @@ const SprintCapacity = ({ sidebarToggle }) => {
       grandTotal += calculateTotal(i);
     }
     grandTotal += storedAllocationsData.length * totalCeremonyHours;
-    localStorage.setItem("finalHours",grandTotal)
+    localStorage.setItem("finalHours", grandTotal)
 
     return grandTotal;
   };

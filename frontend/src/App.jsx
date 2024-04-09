@@ -68,9 +68,9 @@ function App() {
         <Route path="/retrospective/:id" element={<Room sidebarToggle = {sidebarToggle}/>}></Route>
         <Route path="/retrospective/:id/download" element={<Getpdf sidebarToggle = {sidebarToggle}/>}></Route>
 
-        <Route path="/KPI's" element={<Sprints />} />
-          <Route path="/sprints" element={<Sprints />} />
-          <Route path="/sprints/:sprintId" element={<Sprints />} />
+        <Route path="/KPI's" element={<Sprints sidebarToggle = {sidebarToggle}/>} />
+          <Route path="/sprints" element={<Sprints sidebarToggle = {sidebarToggle}/>} />
+          <Route path="/sprints/:sprintId" element={<Sprints sidebarToggle = {sidebarToggle}/>} />
           <Route path="/chart" element={
             <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"} flex flex-wrap`}>
               <ChartComponent sidebarToggle = {sidebarToggle}/>

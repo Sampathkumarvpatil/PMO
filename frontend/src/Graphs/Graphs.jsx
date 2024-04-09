@@ -14,6 +14,7 @@ const ChartComponent = () => {
 
     const location = useLocation();
     const plannedTasks = location.state?.plannedTasks || 0;
+    console.log('pt',plannedTasks)
     const highestValue = Math.max(plannedTasks);
     //const selectedSprint = location.state?.selectedSprint || 'Sprint'; 
 
