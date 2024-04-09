@@ -18,6 +18,7 @@ const AllocationInput = ({sidebarToggle}) => {
   const [allocations, setAllocations] = useState([]);
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
+  const [sumTotalWorkingHours,setSumTotalWorkingHours]=useState(0);
   const [allocationPercentage, setAllocationPercentage] = useState('');
   const [optionsVisible, setOptionsVisible] = useState(null);
   const [optionsPosition, setOptionsPosition] = useState({ top: 0, left: 0 }); // State to manage position of options box
@@ -117,6 +118,7 @@ const AllocationInput = ({sidebarToggle}) => {
         role: role,
         allocationPercentage: parseInt(allocationPercentage),
         hrPerDay: hrPerDay,
+        sumTotalWorkingHours:sumTotalWorkingHours
       };
       const updatedAllocations = [...allocations, newRow];
       setAllocations(updatedAllocations);
