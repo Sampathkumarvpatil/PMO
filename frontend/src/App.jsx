@@ -33,6 +33,7 @@ import BoardHome from "../src/boardcomponent/Home";
 import Room from "../src/boardcomponent/Room";
 // import Test from "../components/Test";
 import Getpdf from "../src/boardcomponent/Getpdf";
+import SprintVizualization from "./components/SprintVizualization";
 
 
 
@@ -55,6 +56,8 @@ function App() {
         <Route path="/AllocationAndHoliday" element={<AllocationInput sidebarToggle = {sidebarToggle}/>} />
         <Route path="/AttendanceTable" element={<AttendanceTable sidebarToggle = {sidebarToggle}/>} />
         <Route path="/Capacity" element={<SprintCapacity sidebarToggle = {sidebarToggle}/>} />
+        <Route path="/Vizualization" element={<SprintVizualization sidebarToggle = {sidebarToggle}/>} />
+
         {/* <Route path="/:id/Kpi" element={<KpiRoute sidebarToggle = {sidebarToggle}/>} /> */}
         {/* <Route path='/list' element={<ProjectList sidebarToggle = {sidebarToggle}/>}/> */}
         <Route path='/list' element={<TaskForm sidebarToggle = {sidebarToggle}/>} />
