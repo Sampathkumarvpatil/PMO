@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
 
+import "./vizualization.css"
 const SprintVizualization = ({ sidebarToggle }) => {
   useEffect(() => {
     generateGraph();
@@ -10,6 +10,7 @@ const SprintVizualization = ({ sidebarToggle }) => {
   const generateGraph = () => {
     const mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
     let devNames = [];
+    let totalHoursPerDevData = []
     let overallTotalHour = 0;
   
     const selectedProjectName = localStorage.getItem("selectedProjectName");
@@ -22,13 +23,15 @@ const SprintVizualization = ({ sidebarToggle }) => {
       if (selectedSprint) {
         selectedSprint.allocations.forEach(allocation => {
           devNames.push(allocation.name);
+          totalHoursPerDevData.push(allocation.sumTotalWorkingHours);
         });
         overallTotalHour = parseInt(localStorage.getItem("finalHours")) || 0;
       }
     }
   
-    devNames = [...new Set(devNames)];
+    // devNames = [...new Set(devNames)];
     console.log(devNames);
+    console.log(totalHoursPerDevData)
   
     const totalHoursPerDev = JSON.parse(localStorage.getItem("TotalHoursPerDev")) || [];
   
@@ -54,10 +57,19 @@ const SprintVizualization = ({ sidebarToggle }) => {
           valueSuffix: " hours",
         },
         plotOptions: {
+            series: {
+                borderRadius: "30%",
+              },
           column: {
             dataLabels: {
               enabled: true,
               format: "{point.y} hours",
+            },
+          },
+          line: {
+            dataLabels: {
+              enabled: true,
+              format: "{point.y} hours", // Display total hours on each line point
             },
           },
         },
@@ -65,7 +77,19 @@ const SprintVizualization = ({ sidebarToggle }) => {
           {
             type: "column",
             name: "Hours",
-            data: totalHoursPerDev.map(dev => dev.totalHours),
+            data: totalHoursPerDevData,
+          },
+          {
+            type: "line",
+            step: "center",
+            name: "Average",
+            data: totalHoursPerDevData,
+            color: Highcharts.getOptions().colors[7],
+            marker: {
+              lineWidth: 2,
+              lineColor: Highcharts.getOptions().colors[2],
+              fillColor: "white",
+            },
           },
           {
             type: "pie",
@@ -80,12 +104,12 @@ const SprintVizualization = ({ sidebarToggle }) => {
                   distance: -50,
                   format: "{point.y} hr",
                   style: {
-                    fontSize: "10px",
+                  fontSize: "10px",
                   },
                 },
               },
             ],
-            center: [650, 15],
+            center: [50, 15],
             size: 100,
             innerSize: "70%",
             showInLegend: false,
@@ -100,7 +124,13 @@ const SprintVizualization = ({ sidebarToggle }) => {
       Highcharts.chart("container", options);
     };
   
-    return <div id="container" className={` ${sidebarToggle ? "ml-0" : "ml-64"} transition-all duration-300 `}></div>;
+    return(
+        <figure class="highcharts-figure">
+            <div id="container" className={` ${sidebarToggle ? "ml-0" : "ml-64"} transition-all duration-300 `}></div>
+            
+        </figure>
+
+    )
   };
 
 export default SprintVizualization;

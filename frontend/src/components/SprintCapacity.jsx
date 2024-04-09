@@ -178,7 +178,7 @@ const SprintCapacity = ({ sidebarToggle }) => {
     });
 
     
-    console.log(storedAllocationsData[rowIndex]);
+    // console.log(storedAllocationsData[rowIndex]);
     localStorage.setItem('mainCompanyData', JSON.stringify(mainCompanyData));
     // localStorage.setItem()
     return subTotal;
@@ -231,8 +231,8 @@ const SprintCapacity = ({ sidebarToggle }) => {
                   <div className="flex items-center py-2 vertical-date">{pair.date}</div>
                 </th>
               ))}
-              <th className="border-2 border-white px-2">Total Hours</th>
-              <th className="border-2 border-white px-2">Net Available <br /> Time <br /> post meeting</th>
+              <th className="border-2 border-white px-2 sticky top-0 bg-gray-100 z-20">Total Hours</th>
+              <th className="border-2 border-white px-2 sticky top-0 bg-gray-100 z-20">Net Available <br /> Time <br /> post meeting</th>
             </tr>
           </thead>
           <tbody>
