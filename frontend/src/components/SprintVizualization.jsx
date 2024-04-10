@@ -126,7 +126,7 @@ const SprintVizualization = ({ sidebarToggle }) => {
   
     return(
         <figure class="highcharts-figure">
-            <div id="container" className={` ${sidebarToggle ? "ml-0" : "ml-64"} transition-all duration-300 `}></div>
+            <div id="container"></div>
             
         </figure>
 

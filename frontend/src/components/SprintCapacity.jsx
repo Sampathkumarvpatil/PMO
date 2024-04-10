@@ -252,7 +252,7 @@ const SprintCapacity = ({ sidebarToggle }) => {
     return grandTotal;
   };
   return (
-    <div className={` ${sidebarToggle ? "ml-0" : "ml-64"} transition-all duration-300`}>
+    <div className={``}>
       <div className="mt-16 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg">
         <table className="min-w-max border border-collapse-2 border-white rounded-xl bg-gray-100">
           <thead>
@@ -322,7 +322,7 @@ const SprintCapacity = ({ sidebarToggle }) => {
         </div>
       </div>
 
-      <LastButtons current={'SprintCapacity'} />
+      {/* <LastButtons current={'SprintCapacity'} /> */}
     </div>
   );
 };

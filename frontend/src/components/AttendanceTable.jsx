@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import LastButtons from "./LastButtons";
 import "./newInputs.css";
+import SprintCapacity from "./SprintCapacity";
+import SprintVizualization from "./SprintVizualization";
 
 const AttendanceTable = ({ sidebarToggle }) => {
   const [selectedValues, setSelectedValues] = useState([]);
@@ -212,6 +214,15 @@ const AttendanceTable = ({ sidebarToggle }) => {
         </table>
 
       </div>
+
+      <div className="my-20 border-t-2 border-gray-300">
+        <SprintCapacity />
+      </div>
+      
+      <div className="my-20 border-t-2 border-gray-300">
+        <SprintVizualization />
+      </div>
+
       <LastButtons current={'AttendanceTable'}/>
     </div>
 

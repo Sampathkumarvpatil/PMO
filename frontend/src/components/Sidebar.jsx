@@ -1,6 +1,7 @@
 import React from "react";
 import "../Sidebar.css";
 import { Link } from "react-router-dom";
+
  
 import {
   FaRegFileArchive,
@@ -27,15 +28,15 @@ const Sidebar = ({sidebarToggle}) => {
         <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/NewProject" className="px-3">
             <FaFolderOpen className="inline-block w-6 h-6 mr-2 -mt-2"></FaFolderOpen>
-            Add New Project
+            Add New Project/Sprint
           </Link>
         </li>
-        <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
+        {/* <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/NewSprint" className="px-3">
             <FaRegFileArchive className="inline-block w-6 h-6 mr-2 -mt-2"></FaRegFileArchive>
             Add New Sprint
           </Link>
-        </li>
+        </li> */}
         <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/" className="px-3">
             <FaTable className="inline-block w-6 h-6 mr-2 -mt-2"></FaTable>
@@ -48,13 +49,13 @@ const Sidebar = ({sidebarToggle}) => {
             Hours & Holidays
           </Link>
         </li>
-        <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
+        <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-4 leftBtn">
           <Link to="/AttendanceTable" className="px-3">
             <FaCheckSquare className="inline-block w-6 h-6 mr-2 -mt-2"></FaCheckSquare>
-            Sprint Attendence Record
+            Sprint Attendence/Capacity
           </Link>
         </li>
-        <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
+        {/* <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/Capacity" className="px-3">
             <FaList className="inline-block w-6 h-6 mr-2 -mt-2"></FaList>
             Team Capacity Overview
@@ -65,7 +66,7 @@ const Sidebar = ({sidebarToggle}) => {
             <FaChartPie className="inline-block w-6 h-6 mr-2 -mt-2"></FaChartPie>
             Sprint Capacity Visualization
           </Link>
-        </li>
+        </li> */}
         <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/list" className="px-3">
             <FaProjectDiagram className="inline-block w-6 h-6 mr-2 -mt-2"></FaProjectDiagram>

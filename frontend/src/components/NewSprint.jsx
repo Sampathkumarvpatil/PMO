@@ -124,7 +124,7 @@ const NewSprint = ({sidebarToggle}) => {
   };
  
   return (
-    <div className={`flex justify-center items-center h-screen bg-gray-100 transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
+    <div className={`flex justify-center items-center h-screen`}>
       <div className="w-96 p-6 shadow-lg rounded-md container">
         <h2 className="text-2xl block text-center font-bold mb-14 text-purple-500">
           New Sprint
@@ -198,12 +198,26 @@ const NewSprint = ({sidebarToggle}) => {
           />
         </div>
         <div className="mt-5 text-center">
-          <button onClick={handleCreateSprint} className="border-none font-semibold text-white rounded-lg bg-indigo-500 px-4 py-2" style={{
+        <button
+            onClick={handleCreateSprint}
+            className="border-none font-semibold text-white rounded-lg px-4 py-2"
+            style={{
               background:
                 "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
-            }}>
+              transition: "background-color 0.3s ease-in-out",
+            }}
+            onMouseEnter={(e) =>
+              (e.target.style.background =
+                "linear-gradient(0deg, rgba(253,187,45,1) 0%, rgba(34,193,195,1) 100%)")
+            }
+            onMouseLeave={(e) =>
+              (e.target.style.background =
+                "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)")
+            }
+          >
             Create Sprint
           </button>
+
           <div>
             {SprintCreated && (
               <div className="text-green-500 font-bold mt-4 text-center">

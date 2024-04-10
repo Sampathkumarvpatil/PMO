@@ -52,7 +52,7 @@ function App() {
         {/* <Route path="/" element={<Main />} /> */}
         <Route path="/" element={<Dashboard sidebarToggle = {sidebarToggle}/>}/>
         <Route path="/NewProject" element={<NewProject sidebarToggle = {sidebarToggle}/>} />
-        <Route path="/NewSprint" element={<NewSprint sidebarToggle = {sidebarToggle}/>} />
+        {/* <Route path="/NewSprint" element={<NewSprint sidebarToggle = {sidebarToggle}/>} /> */}
         <Route path="/AllocationAndHoliday" element={<AllocationInput sidebarToggle = {sidebarToggle}/>} />
         <Route path="/AttendanceTable" element={<AttendanceTable sidebarToggle = {sidebarToggle}/>} />
         <Route path="/Capacity" element={<SprintCapacity sidebarToggle = {sidebarToggle}/>} />
