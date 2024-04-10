@@ -10,9 +10,13 @@ const NewProject = ({sidebarToggle}) => {
   const [buName, setBuName] = useState("");
   const [resourcesTotalNumber, setResourcesTotalNumber] = useState("");
   const [projectCreated, setProjectCreated] = useState(false);
+  const [refreshSprint, setRefreshSprint] = useState(true)
 
-  const navigate = useNavigate();
 
+  // const navigate = useNavigate();
+useEffect(()=>{
+
+},[setRefreshSprint])
   useEffect(() => {
     const dataFromLocalStorage = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
     setMainCompanyArr(dataFromLocalStorage);
@@ -49,6 +53,7 @@ const NewProject = ({sidebarToggle}) => {
     setProjectCreated(true);
 
 localStorage.setItem("selectedProjectName", projectName);
+setRefreshSprint(!refreshSprint)
     // setTimeout(() => {
     //   navigate("/NewSprint");
     // }, 2000);
@@ -140,7 +145,7 @@ localStorage.setItem("selectedProjectName", projectName);
           )}
         </div>
       </div>
-      <NewSprint />
+      <NewSprint refreshSprint = {refreshSprint}/>
     </div>
   );
 };

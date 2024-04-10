@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 import Main from './components/Main';
 import NewProject from "./components/NewProject";
-import NewSprint from "./components/NewSprint";
+// import NewSprint from "./components/NewSprint";
 import AllocationInput from "./components/AllocationInput";
 import AttendanceTable from "./components/AttendanceTable";
 import Dashboard from "./components/Dashboard";
@@ -55,8 +55,6 @@ function App() {
         {/* <Route path="/NewSprint" element={<NewSprint sidebarToggle = {sidebarToggle}/>} /> */}
         <Route path="/AllocationAndHoliday" element={<AllocationInput sidebarToggle = {sidebarToggle}/>} />
         <Route path="/AttendanceTable" element={<AttendanceTable sidebarToggle = {sidebarToggle}/>} />
-        <Route path="/Capacity" element={<SprintCapacity sidebarToggle = {sidebarToggle}/>} />
-        <Route path="/Vizualization" element={<SprintVizualization sidebarToggle = {sidebarToggle}/>} />
 
         {/* <Route path="/:id/Kpi" element={<KpiRoute sidebarToggle = {sidebarToggle}/>} /> */}
         {/* <Route path='/list' element={<ProjectList sidebarToggle = {sidebarToggle}/>}/> */}

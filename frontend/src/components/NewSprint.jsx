@@ -3,7 +3,7 @@ import "./newInputs.css";
 import {useNavigate} from "react-router-dom"
  
  
-const NewSprint = ({sidebarToggle}) => {
+const NewSprint = ({refreshSprint}) => {
   const [mainCompanyArr, setMainCompanyArr] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [sprintName, setSprintName] = useState("");
@@ -21,7 +21,7 @@ const NewSprint = ({sidebarToggle}) => {
       setSelectedProject(dataFromLocalStorage[0]);
       setNumOfResources(dataFromLocalStorage[0].resources);
     }
-  }, []);
+  }, [refreshSprint]);
  
   const handleProjectChange = (e) => {
     const projectName = e.target.value;

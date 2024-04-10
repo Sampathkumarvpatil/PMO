@@ -11,6 +11,8 @@ const AttendanceTable = ({ sidebarToggle }) => {
   const [mainCompanyData, setMainCompanyData] = useState([]);
   const [selectedSprint, setSelectedSprint] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [showGraph,setShowGraph]= useState(true)
+
 
   useEffect(() => {
     // Retrieve stored attendance data and allocations data
@@ -216,11 +218,11 @@ const AttendanceTable = ({ sidebarToggle }) => {
       </div>
 
       <div className="my-20 border-t-2 border-gray-300">
-        <SprintCapacity />
+        <SprintCapacity showGraph={showGraph} setShowGraph = {setShowGraph}/>
       </div>
       
       <div className="my-20 border-t-2 border-gray-300">
-        <SprintVizualization />
+        <SprintVizualization showGraph={showGraph} setShowGraph = {setShowGraph}/>
       </div>
 
       <LastButtons current={'AttendanceTable'}/>

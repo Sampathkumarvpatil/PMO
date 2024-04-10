@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import LastButtons from "./LastButtons";
 import "./newInputs.css";
 
-const SprintCapacity = ({ sidebarToggle }) => {
+const SprintCapacity = ({ showGraph , setShowGraph}) => {
   const [storedAllocationsData, setStoredAllocationsData] = useState([]); 
   const [dateWeekdayPairs, setDateWeekdayPairs] = useState([]);
   const [totalCeremonyHours, setTotalCeremonyHours] = useState(0);
@@ -10,8 +10,10 @@ const SprintCapacity = ({ sidebarToggle }) => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [total, setTotal] = useState(0); // Define the state for total
 
+
   const selectedProjectName = localStorage.getItem("selectedProjectName");
   const selectedSprintName = localStorage.getItem("selectedSprintName");
+
   useEffect(() => {
     const mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
     const selectedProjectName = localStorage.getItem("selectedProjectName");
@@ -34,6 +36,8 @@ const SprintCapacity = ({ sidebarToggle }) => {
       const effectiveTotal = calculateEffectiveTotal();
       setTotal(effectiveTotal); // Set the state for the effective total
     }
+    console.log("Consoled the use Effect");
+    setShowGraph(!showGraph)
   }, [selectedSprint]);
 
 

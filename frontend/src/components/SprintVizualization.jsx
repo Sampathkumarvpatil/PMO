@@ -2,10 +2,11 @@ import React, { useEffect } from "react";
 import Highcharts from "highcharts";
 
 import "./vizualization.css"
-const SprintVizualization = ({ sidebarToggle }) => {
+const SprintVizualization = ({showGraph, setShowGraph}) => {
   useEffect(() => {
     generateGraph();
-  }, []);
+
+  }, [showGraph]);
 
   const generateGraph = () => {
     const mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
@@ -33,7 +34,7 @@ const SprintVizualization = ({ sidebarToggle }) => {
     console.log(devNames);
     console.log(totalHoursPerDevData)
   
-    const totalHoursPerDev = JSON.parse(localStorage.getItem("TotalHoursPerDev")) || [];
+    // const totalHoursPerDev = JSON.parse(localStorage.getItem("TotalHoursPerDev")) || [];
   
   
     const options = {
