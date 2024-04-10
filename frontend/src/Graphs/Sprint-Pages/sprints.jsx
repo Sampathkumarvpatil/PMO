@@ -435,9 +435,7 @@ function Sprints({ sidebarToggle }) {
           )}
         </div>
       </div>
-      <div className="flex justify-center">
-        <p>Number of sprints: {numSprints}</p>
-      </div>
+      
     </div>
   );
 }
