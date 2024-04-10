@@ -4,6 +4,7 @@ import Task from './Task';
 import { usePDF } from 'react-to-pdf';
 import { useParams } from 'react-router-dom';
 import ProjOptions from './ProjOptions';
+import LastButtons from './LastButtons';
  
 const TaskForm = ( {sidebarToggle}) => {
   const selectedProjectName = localStorage.getItem('selectedProjectName')
@@ -202,8 +203,9 @@ const TaskForm = ( {sidebarToggle}) => {
       </button>
       </div>
      
-     
+      <LastButtons current={"TaskForm"}/>
     </div>
+    
   );
 };
  

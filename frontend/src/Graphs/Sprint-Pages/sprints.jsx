@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./sprint.css";
 import ProjOptions from "../../components/ProjOptions";
 
+import LastButtons from "../../components/LastButtons";
 
 const sortSprintData = (data) => {
   return data.sort((a, b) => {
@@ -500,7 +501,7 @@ function Sprints({ sidebarToggle }) {
             </button>
         </div>
       </div>
-      
+      <LastButtons current={"Sprints"}/>
     </div>
   );
 }

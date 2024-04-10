@@ -61,7 +61,7 @@ setRefreshSprint(!refreshSprint)
 
   return (
     <div className={`flex justify-around transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
-        <div className={`flex justify-center items-center h-screen `}>
+        <div className={`flex justify-center items-center`}>
         <div className="w-96 p-6 shadow-lg rounded-md container">
           <h2 className="text-2xl block text-center font-bold mb-14 text-purple-500">New Project</h2>
           <div className="mt-5">

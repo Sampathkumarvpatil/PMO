@@ -150,8 +150,8 @@ const AttendanceTable = ({ sidebarToggle }) => {
     }
 
     return (
-      <td key={`${index}-${pair.date}`} style={{ width: "2%", padding: "0px" }}
-        className=" border-2 tableCellData"
+      <td key={`${index}-${pair.date}`} style={{ width: "0%", padding: "0px" }}
+        className=" border-2 tableCellData w-[0%]" 
       >
         <select
           value={selectedValue || defaultValue} // Set default value based on the day of the week
@@ -164,9 +164,9 @@ const AttendanceTable = ({ sidebarToggle }) => {
           }}
           className="rounded font-semibold py-1.5"
         >
-          <option value="0">A (Absent)</option>
-          <option value="8">P (Present)</option>
-          <option value="4">H (Half-Day)</option>
+          <option value="0">A </option>
+          <option value="8">P </option>
+          <option value="4">H </option>
         </select>
       </td>
     );
@@ -174,16 +174,16 @@ const AttendanceTable = ({ sidebarToggle }) => {
 
   return (
     <div className={`transition-all duration-300   ${sidebarToggle ? "ml-2" : "ml-64"}`}>
-      <div className="py-1 mt-16 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg ">
+      <div className="py-1 mt-16 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg flex justify-center">
 
         <table className="border border-collapse-2 border-white rounded-xl bg-gray-100">
           <thead>
             <tr>
               <th className="sticky left-0 z-10 bg-gray-200">Days</th>
-              <th className="sticky left-28 z-10 bg-gray-200"></th>
+              <th className="sticky left-28 z-10 bg-gray-200 w-[0%]"></th>
 
               {dateWeekdayPairs.map((pair, index) => (
-                <th key={index} className="bg-gray-100 border-2 border-white text-center">
+                <th key={index} className="bg-gray-100 border-2 border-white text-center w-[0%]">
                   <div className="flex items-end py-1 vertical-date1">
                     {pair.weekday}
                   </div>
@@ -191,10 +191,10 @@ const AttendanceTable = ({ sidebarToggle }) => {
               ))}
             </tr>
             <tr>
-              <th className="border-2 border-white sticky left-0 z-10 bg-gray-100 font-mono ">Team <br />Members</th>
-              <th className="border-2 border-white sticky left-28 z-10 bg-gray-100 font-mono">Roles</th>
+              <th className="border-2 border-white sticky left-0 z-10 bg-gray-100 font-mono w-[0%] px-8">Team <br />Members</th>
+              <th className="border-2 border-white sticky left-28 z-10 bg-gray-100 font-mono w-[0%]">Roles</th>
               {dateWeekdayPairs.map((pair, index) => (
-                <th key={index} className="bg-gray-300 border-2 border-white whitespace-nowrap text-center">
+                <th key={index} className="bg-gray-300 border-2 border-white whitespace-nowrap text-center w-[0%]">
                   <div className="flex items-center py-2 vertical-date">
                     {pair.date}
                   </div>
@@ -205,7 +205,7 @@ const AttendanceTable = ({ sidebarToggle }) => {
           <tbody>
             {storedAllocationsData.map((row, rowIndex) => (
               <tr key={row.name} className={`${rowIndex % 2 === 0 ? 'bg-green-50' : 'bg-gray-200'}`}>
-                <td className="border-2 border-white text-center px-8 sticky left-0 z-10 bg-gray-100 font-bold">{row.name}</td>
+                <td className="border-2 border-white text-center sticky left-0 z-10 bg-gray-100 font-bold">{row.name}</td>
                 <td className="border-2 border-white px-6 text-center sticky left-28 z-10 bg-gray-100 font-semibold">{row.role}</td>
                 {dateWeekdayPairs.map((pair, pairIndex) => (
                   <React.Fragment key={pairIndex}>
