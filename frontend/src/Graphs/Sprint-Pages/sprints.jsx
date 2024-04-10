@@ -10,7 +10,7 @@ const sortSprintData = (data) => {
   });
 };
 function Sprints({ sidebarToggle }) {
-  console.log('sbt',sidebarToggle)
+  console.log("sbt", sidebarToggle);
   const navigate = useNavigate();
   const [selectedProject, setSelectedProject] = useState(null);
   const [startSprint, setStartSprint] = useState();
@@ -22,29 +22,33 @@ function Sprints({ sidebarToggle }) {
   const [selectedSprintData, setSelectedSprintData] = useState([]);
   // Initialize with 1 as default
 
-  useEffect(()=>{
+  useEffect(() => {
     const selectedProjectName = localStorage.getItem("selectedProjectName");
-    const sData = JSON.parse(localStorage.getItem('sprintsData'));
-    console.log(sData)
-    for(let key in Object.keys(sData[selectedProjectName])){
+    const sData = JSON.parse(localStorage.getItem("sprintsData"));
+    console.log(sData);
+    for (let key in Object.keys(sData[selectedProjectName])) {
       // console.log('key',key)
-      let sName = Object.keys(sData[selectedProjectName][key])[0]
+      let sName = Object.keys(sData[selectedProjectName][key])[0];
       // console.log('pname',selectedProjectName)
       // console.log('sname',sName)
       // console.log(sData[selectedProjectName][key][sName])
 
-      const tasks = JSON.parse(localStorage.getItem(`${selectedProjectName}${sName}`))||{}
-      sData[selectedProjectName][key][sName]['plannedTasks'] = Object.values(tasks).length
+      const tasks =
+        JSON.parse(localStorage.getItem(`${selectedProjectName}${sName}`)) ||
+        {};
+      sData[selectedProjectName][key][sName]["plannedTasks"] =
+        Object.values(tasks).length;
 
       let tasksCompleted = 0;
-      Object.values(tasks).map((it)=>{
-        if(it['status'] == 100){
+      Object.values(tasks).map((it) => {
+        if (it["status"] == 100) {
           tasksCompleted++;
         }
-      })
+      });
 
-      sData[selectedProjectName][key][sName]['tasksCompleted'] = tasksCompleted
+      sData[selectedProjectName][key][sName]["tasksCompleted"] = tasksCompleted;
 
+<<<<<<< Updated upstream
       const mainCompanyData = JSON.parse(localStorage.getItem('mainCompanyData'))
       mainCompanyData.map((item)=>{
         item.sprints.map((it)=>{
@@ -57,9 +61,12 @@ function Sprints({ sidebarToggle }) {
       console.log('----',sData[selectedProjectName][key][sName])
       localStorage.setItem('sprintsData',JSON.stringify(sData))
 
+=======
+      // console.log('----',sData[selectedProjectName][key][sName])
+      localStorage.setItem("sprintsData", JSON.stringify(sData));
+>>>>>>> Stashed changes
     }
-  },[])
-
+  }, []);
 
   useEffect(() => {
     const selectedProjectName = localStorage.getItem("selectedProjectName");
@@ -70,8 +77,6 @@ function Sprints({ sidebarToggle }) {
     );
     setSelectedProject(selectedProject);
   }, []);
-
- 
 
   useEffect(() => {
     const selectedProjectName = localStorage.getItem("selectedProjectName");
@@ -89,7 +94,6 @@ function Sprints({ sidebarToggle }) {
         const sprintKeys = sortedSprintData.map(
           (sprint) => Object.keys(sprint)[0]
         );
-
 
         // console.log('sortedSprintData',sortedSprintData)
         // sortedSprintData.forEach((it)=>{
@@ -123,13 +127,14 @@ function Sprints({ sidebarToggle }) {
         for (let i = startSprintIndex; i <= endSprintIndex; i++) {
           activeSprints.push(sprintsData[i]);
         }
-
+        console.log("Im called and pushed..", activeSprints);
         setSelectedSprintData(activeSprints);
+        console.log(selectedSprintData);
       } else {
         setSelectedSprintData([]);
       }
     }
-  }, [startSprint, endSprint, sprintsList, sprintsData]);
+  }, [startSprint, endSprint]);
   const handleSave = () => {
     const startNumber = parseInt(startSprint.split(" ")[1]);
     const endNumber = parseInt(endSprint.split(" ")[1]);
@@ -150,58 +155,86 @@ function Sprints({ sidebarToggle }) {
     });
 
     if (startSprint !== endSprint) {
-      const selectedSprints = sprintsData.filter((sprintData) => {
-        const sprintNumber = sprintData.id
-          ? parseInt(sprintData.id.split(" ")[1])
-          : 0;
-        return sprintNumber >= startNumber && sprintNumber <= endNumber;
-      });
-
+      // const selectedSprints = sprintsData.filter((sprintData) => {
+      //   const sprintNumber = sprintData.id
+      //     ? parseInt(sprintData.id.split(" ")[1])
+      //     : 0;
+      //   return sprintNumber >= startNumber && sprintNumber <= endNumber;
+      // });
+      console.log(selectedSprintData);
       navigate("/multipleSprintsChart", {
         state: {
-          selectedSprints,
-          startSprint: startSprint,
-          endSprint: endSprint,
+          selectedSprints: selectedSprintData,
+          startSprint,
+          endSprint,
         },
       });
     } else {
-      const singleSprintData = sprintsData[0];
+      const singleSprintData = Object.values(selectedSprintData[0])[0];
+      console.log(singleSprintData);
       const completionRate =
-        Math.floor(
-          (Number(singleSprintData.tasksCompleted) /
-            Number(singleSprintData.plannedTasks)) *
-            100 *
-            1000
-        ) / 1000;
+        singleSprintData.plannedTasks === 0 ||
+        singleSprintData.tasksCompleted === 0
+          ? 0 // or 100, depending on what you want the completion rate to be when there are no planned tasks
+          : Math.floor(
+              (Number(singleSprintData.tasksCompleted) /
+                Number(singleSprintData.plannedTasks)) *
+                100 *
+                1000
+            ) / 1000;
       const workEfficiencyRatio =
-        Math.floor(
-          (Number(singleSprintData.workHoursUsed) /
-            Number(singleSprintData.plannedWorkHours)) *
-            100 *
-            1000
-        ) / 1000;
+        singleSprintData.plannedWorkHours === 0 ||
+        singleSprintData.workHoursUsed === 0
+          ? 0
+          : Math.floor(
+              (Number(singleSprintData.workHoursUsed) /
+                Number(singleSprintData.plannedWorkHours)) *
+                100 *
+                1000
+            ) / 1000;
       const inSprintDefectsRatio =
-        Math.floor(
-          (Number(singleSprintData.inSprintDefects) /
-            Number(singleSprintData.tasksCompleted)) *
-            100 *
-            1000
-        ) / 1000;
+        singleSprintData.tasksCompleted === 0 ||
+        singleSprintData.inSprintDefects === 0
+          ? 0
+          : Math.floor(
+              (Number(singleSprintData.inSprintDefects) /
+                Number(singleSprintData.tasksCompleted)) *
+                100 *
+                1000
+            ) / 1000;
       const postSprintDefectsRatio =
-        Math.floor(
-          (Number(singleSprintData.postSprintDefects) /
-            Number(singleSprintData.tasksCompleted)) *
-            100 *
-            1000
-        ) / 1000;
+        singleSprintData.tasksCompleted === 0 ||
+        singleSprintData.postSprintDefects === 0
+          ? 0
+          : Math.floor(
+              (Number(singleSprintData.postSprintDefects) /
+                Number(singleSprintData.tasksCompleted)) *
+                100 *
+                1000
+            ) / 1000;
       const extraTasksRate =
-        Math.floor(
-          (Number(singleSprintData.extraTasksAdded) /
-            Number(singleSprintData.plannedTasks)) *
-            100 *
-            1000
-        ) / 1000;
-
+        singleSprintData.plannedTasks === 0 ||
+        singleSprintData.extraTasksAdded === 0
+          ? 0
+          : Math.floor(
+              (Number(singleSprintData.extraTasksAdded) /
+                Number(singleSprintData.plannedTasks)) *
+                100 *
+                1000
+            ) / 1000;
+      console.log({
+        completionRate,
+        plannedTasks: singleSprintData.plannedTasks,
+        tasksCompleted: singleSprintData.tasksCompleted,
+        workEfficiencyRatio,
+        plannedWorkHours: singleSprintData.plannedWorkHours,
+        workHoursUsed: singleSprintData.workHoursUsed,
+        inSprintDefectsRatio,
+        postSprintDefectsRatio,
+        extraTasksRate,
+        extraTasksAdded: singleSprintData.extraTasksAdded,
+        selectedSprint: startSprint,
+      });
       navigate("/chart", {
         state: {
           completionRate,
@@ -221,9 +254,19 @@ function Sprints({ sidebarToggle }) {
   };
 
   const handleInputChange = (sprintIndex, field, value) => {
-    const updatedSprintsData = [...sprintsData];
-    updatedSprintsData[sprintIndex][field] = value;
-    setSprintsData(updatedSprintsData);
+    const updatedSprintsData = [...selectedSprintData];
+
+    updatedSprintsData[sprintIndex][
+      Object.keys(selectedSprintData[sprintIndex])[0]
+    ][field] = value;
+    setSelectedSprintData(updatedSprintsData);
+    const stateSprintData = [...sprintsData];
+    stateSprintData[sprintIndex][
+      Object.keys(selectedSprintData[sprintIndex])[0]
+    ][field] = value;
+    setSprintsData(stateSprintData);
+    console.log(sprintsData);
+    console.log(selectedSprintData);
   };
 
   const renderSprintsData = () => {
@@ -232,7 +275,10 @@ function Sprints({ sidebarToggle }) {
       const sprintName = Object.keys(sprint)[0];
 
       return (
-        <tr key={sprintName} className="points border-b-2 border-gray-400 hover:bg-gray-400">
+        <tr
+          key={sprintName}
+          className="points border-b-2 border-gray-400 hover:bg-gray-400"
+        >
           <td className="m-4 ">{sprintName}</td>
           <td
             className="m-4"
@@ -357,7 +403,9 @@ function Sprints({ sidebarToggle }) {
   };
   return (
     <div
-      className={` transition-all duration-300 ${sidebarToggle ? 'ml-0' : 'ml-64'}`}
+      className={` transition-all duration-300 ${
+        sidebarToggle ? "ml-0" : "ml-64"
+      }`}
     >
       <div className="flex justify-center gap-10 mt-6">
         <div className="dropdown-container1">
