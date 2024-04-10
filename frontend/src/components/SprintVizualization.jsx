@@ -1,12 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 
 import "./vizualization.css"
 const SprintVizualization = ({showGraph, setShowGraph}) => {
-  useEffect(() => {
-    generateGraph();
 
-  }, [showGraph]);
+  const [graphGenerated, setGraphGenerated] = useState(false);
+  useEffect(() => {
+    if (!graphGenerated) {
+      generateGraph();
+      setGraphGenerated(true);
+    }
+  }, [graphGenerated]);
 
   const generateGraph = () => {
     const mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
@@ -28,6 +32,7 @@ const SprintVizualization = ({showGraph, setShowGraph}) => {
 
         });
         overallTotalHour = parseInt(selectedSprint.final_hrs) || 0;
+        console.log(overallTotalHour)
       }
     }
   
