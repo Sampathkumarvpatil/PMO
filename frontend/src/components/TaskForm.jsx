@@ -23,18 +23,26 @@ const TaskForm = ( {sidebarToggle}) => {
   const allocations = data[projectNo].sprints[sprintNo].allocations || null
  
   const res = allocations?.map((item)=>item.name) || [];
- 
- 
+  
   const [list, setList] = useState([]);
+  const thrs = {};
   let totHours = 0;
+
+  allocations?.map((item)=>{
+    thrs[item['name']] = item['sumTotalWorkingHours']
+    totHours += item['sumTotalWorkingHours']
+  })
+ 
+  
+  
   const { toPDF, targetRef } = usePDF({filename: 'page.pdf'});
   // const thrs = {1: 230, 2: 230, 3: 230, 4: 230, 5: 230, 6: 230, 7: 230, 8: 230};
-  const thrs = {};
+  
  
-  res.map((item)=>{
-    thrs[item]= 230
-    totHours += thrs[item]
-  })
+  // res.map((item)=>{
+  //   thrs[item]= 230
+  //   totHours += thrs[item]
+  // })
   thrs['total'] = totHours
   // console.log('thrs',thrs,totHours)
   const [tremaining, setTremaining] = useState({...thrs});
@@ -58,6 +66,29 @@ const TaskForm = ( {sidebarToggle}) => {
     setTremaining(updatedTremaining);
  
   }, []);
+
+  let mainCompanyData = JSON.parse(localStorage.getItem('mainCompanyData'))
+
+  mainCompanyData = mainCompanyData.map(project => {
+    if (project.projectName === selectedProjectName) {
+      return {
+        ...project,
+        sprints: project.sprints.map(sprint => {
+          if (sprint.sprintName === selectedSprintName) {
+            return {
+              ...sprint,
+              remaining_hrs: thrs['total'] - tremaining['total']
+            };
+          }
+          return sprint;
+        })
+      };
+    }
+    return project;
+  });
+
+  localStorage.setItem('mainCompanyData',JSON.stringify(mainCompanyData))
+  console.log('rem',tremaining)
  
   const numberOfResources = res.length;
  
@@ -71,7 +102,7 @@ const TaskForm = ( {sidebarToggle}) => {
     newTask['totHours'] = 0;
     newTask['resource'] = '-'
     newTask['total'] = 0
-    newTask['status']=0
+    newTask['status'] = 0
     console.log(newTask)
     const storedTasks = JSON.parse(localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)) || {}; // Retrieve tasks from local storage, use object instead of array
     storedTasks[newTask.id] = newTask; // Set the new task with its id as the key

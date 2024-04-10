@@ -40,6 +40,9 @@ const NewSprint = ({sidebarToggle}) => {
         startDate,
         endDate,
         numOfResources,
+        remaining_hrs: 0,
+        final_hrs:0,
+        effective_hrs:0,
       };
  
       const updatedProject = {

@@ -45,7 +45,16 @@ function Sprints({ sidebarToggle }) {
 
       sData[selectedProjectName][key][sName]['tasksCompleted'] = tasksCompleted
 
-      // console.log('----',sData[selectedProjectName][key][sName])
+      const mainCompanyData = JSON.parse(localStorage.getItem('mainCompanyData'))
+      mainCompanyData.map((item)=>{
+        item.sprints.map((it)=>{
+          if(it['sprintName'] == sName){
+            sData[selectedProjectName][key][sName]['workHoursUsed'] = it['remaining_hrs']
+            sData[selectedProjectName][key][sName]['totalAvailableWorkHours'] = it['final_hrs']
+            sData[selectedProjectName][key][sName]['plannedWorkHours'] = it['effective_hrs']
+          }
+        })})
+      console.log('----',sData[selectedProjectName][key][sName])
       localStorage.setItem('sprintsData',JSON.stringify(sData))
 
     }

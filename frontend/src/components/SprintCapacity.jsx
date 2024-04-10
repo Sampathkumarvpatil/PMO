@@ -10,6 +10,8 @@ const SprintCapacity = ({ sidebarToggle }) => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [total, setTotal] = useState(0); // Define the state for total
 
+  const selectedProjectName = localStorage.getItem("selectedProjectName");
+  const selectedSprintName = localStorage.getItem("selectedSprintName");
   useEffect(() => {
     const mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
     const selectedProjectName = localStorage.getItem("selectedProjectName");
@@ -192,6 +194,29 @@ const SprintCapacity = ({ sidebarToggle }) => {
     }
 
     localStorage.setItem("effectiveHours", grandTotal)
+
+    let mainCompanyData = JSON.parse(localStorage.getItem('mainCompanyData'))
+
+    mainCompanyData = mainCompanyData.map(project => {
+      if (project.projectName === selectedProjectName) {
+        return {
+          ...project,
+          sprints: project.sprints.map(sprint => {
+            if (sprint.sprintName === selectedSprintName) {
+              return {
+                ...sprint,
+                effective_hrs: grandTotal
+              };
+            }
+            return sprint;
+          })
+        };
+      }
+    return project;
+  });
+
+  localStorage.setItem('mainCompanyData',JSON.stringify(mainCompanyData))
+
     return grandTotal;
   };
   const calculateGrandTotal = () => {
@@ -201,6 +226,28 @@ const SprintCapacity = ({ sidebarToggle }) => {
     }
     grandTotal += storedAllocationsData.length * totalCeremonyHours;
     localStorage.setItem("finalHours", grandTotal)
+
+    let mainCompanyData = JSON.parse(localStorage.getItem('mainCompanyData'))
+
+    mainCompanyData = mainCompanyData.map(project => {
+      if (project.projectName === selectedProjectName) {
+        return {
+          ...project,
+          sprints: project.sprints.map(sprint => {
+            if (sprint.sprintName === selectedSprintName) {
+              return {
+                ...sprint,
+                final_hrs: grandTotal
+              };
+            }
+            return sprint;
+          })
+        };
+      }
+    return project;
+  });
+
+  localStorage.setItem('mainCompanyData',JSON.stringify(mainCompanyData))
 
     return grandTotal;
   };
