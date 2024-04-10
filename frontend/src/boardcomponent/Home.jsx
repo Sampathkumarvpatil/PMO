@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
+import ProjOptions from "../components/ProjOptions";
 
 const Home = ({ sidebarToggle }) => {
   const [desc, setDesc] = useState("");
@@ -128,7 +129,9 @@ const Home = ({ sidebarToggle }) => {
   }
  
   return (
-    <div 
+    <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
+      <ProjOptions />
+      <div 
     style={{
         backgroundImage: 'url("https://conceptboard.com/wp-content/uploads/Header_retro_article_V2-01.png"), linear-gradient(to right, #ffffff, #000000)',
         backgroundSize: 'cover',
@@ -138,8 +141,10 @@ const Home = ({ sidebarToggle }) => {
         width:'60%'
       }}
        
-    className={`hero w-full flex justify-center items-center h-screen bg-gray-100 transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
+    className={`hero w-full flex justify-center items-center h-screen bg-gray-100 `}>
+      
       <div className="bg-transparent bg-white relative left-[65%] rounded-lg shadow-2xl border-[4px] border-gray-400 p-10 max-w-md w-full">
+        
         <div className="mb-6">
           <input
             type="text"
@@ -206,6 +211,7 @@ const Home = ({ sidebarToggle }) => {
           Join Room
         </button>
       </div>
+    </div>
     </div>
   );
 };

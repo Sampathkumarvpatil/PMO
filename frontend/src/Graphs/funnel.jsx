@@ -45,7 +45,7 @@ const FunnelChartComponent = () => {
         viewDistance: 25,
       },
       width: 410,
-      height: 280,
+      height: 340,
       backgroundColor: "rgb(254, 251, 254)",
       borderColor: "black", // Add this line
       borderWidth: 5, // Add this line
@@ -156,7 +156,7 @@ const FunnelChartComponent = () => {
           WebkitTextFillColor: "transparent",
         }}
       >
-        KPI's of: {selectedSprint}
+        {/* KPI's of: {selectedSprint} */}
       </h3>
     </div>
   );

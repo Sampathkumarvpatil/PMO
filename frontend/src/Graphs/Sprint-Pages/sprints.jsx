@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./sprint.css";
+import ProjOptions from "../../components/ProjOptions";
+
 
 const sortSprintData = (data) => {
   return data.sort((a, b) => {
@@ -16,7 +18,7 @@ function Sprints({ sidebarToggle }) {
   const [startSprint, setStartSprint] = useState();
   const [endSprint, setEndSprint] = useState();
   const [sprintsData, setSprintsData] = useState([]);
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(true);
   const [numSprints, setNumSprints] = useState(1);
   const [sprintsList, setSprintsList] = useState([]);
   const [selectedSprintData, setSelectedSprintData] = useState([]);
@@ -409,9 +411,10 @@ function Sprints({ sidebarToggle }) {
         sidebarToggle ? "ml-0" : "ml-64"
       }`}
     >
+      <ProjOptions />
       <div className="flex justify-center gap-10 mt-6">
         <div className="dropdown-container1">
-          <div className="dropdown">
+          <div className="dropdown text-xl p-2">
             <label htmlFor="start-sprint">Start Sprint:</label>
             <select
               id="start-sprint"
@@ -420,7 +423,7 @@ function Sprints({ sidebarToggle }) {
             >
               {selectedProject &&
                 selectedProject.sprints.map((sprint) => (
-                  <option key={sprint.sprintName} value={sprint.sprintName}>
+                  <option key={sprint.sprintName} value={sprint.sprintName} className="text-xl text-center">
                     {sprint.sprintName}
                   </option>
                 ))}
@@ -428,7 +431,7 @@ function Sprints({ sidebarToggle }) {
           </div>
         </div>
         <div className="dropdown-container2">
-          <div className="dropdown">
+          <div className="dropdown text-xl p-2">
             <label htmlFor="end-sprint">End Sprint:</label>
             <select
               id="end-sprint"
@@ -447,7 +450,7 @@ function Sprints({ sidebarToggle }) {
                       )
                   )
                   .map((sprint) => (
-                    <option key={sprint.sprintName} value={sprint.sprintName}>
+                    <option key={sprint.sprintName} value={sprint.sprintName} className="text-xl text-center">
                       {sprint.sprintName}
                     </option>
                   ))}
@@ -487,11 +490,14 @@ function Sprints({ sidebarToggle }) {
           </button>
         </div>
         <div>
-          {editMode && (
+          {/* {editMode && (
             <button className="save-button" onClick={handleSave}>
               Submit
             </button>
-          )}
+          )} */}
+          <button className="save-button" onClick={handleSave}>
+              Submit
+            </button>
         </div>
       </div>
       

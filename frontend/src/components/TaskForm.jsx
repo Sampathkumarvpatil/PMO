@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Task from './Task';
 import { usePDF } from 'react-to-pdf';
 import { useParams } from 'react-router-dom';
+import ProjOptions from './ProjOptions';
  
 const TaskForm = ( {sidebarToggle}) => {
   const selectedProjectName = localStorage.getItem('selectedProjectName')
@@ -123,6 +124,7 @@ const TaskForm = ( {sidebarToggle}) => {
  
   return (
     <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
+      <ProjOptions />
       <div className='flex justify-end'>
      
       </div>

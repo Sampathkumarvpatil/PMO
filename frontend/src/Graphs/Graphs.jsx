@@ -27,7 +27,7 @@ const ChartComponent = () => {
         viewDistance: 25,
       },
       width: 410,
-      height: 280,
+      height: 340,
       backgroundColor: "rgb(254, 251, 254)",
       borderColor: "black", // Add this line
       borderWidth: 5, // Add this line
@@ -105,8 +105,8 @@ const ChartComponent = () => {
   };
 
   return (
-    <div>
-      <div>
+    <div >
+      <div className="h-[100%]">
         <HighchartsReact highcharts={Highcharts} options={chartOptions} />
       </div>
       {/* <h1 style={{marginRight:'400px',marginBottom:'10px'}}>KPI's of:{selectedSprint}</h1> */}
