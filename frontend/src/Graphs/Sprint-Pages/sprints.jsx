@@ -24,18 +24,30 @@ function Sprints({ sidebarToggle }) {
 
   useEffect(() => {
     const selectedProjectName = localStorage.getItem("selectedProjectName");
+    const dataFromLocalStorage =
+      JSON.parse(localStorage.getItem("mainCompanyData")) || [];
+    const selectedProject = dataFromLocalStorage.find(
+      (project) => project.projectName === selectedProjectName
+    );
+    setSelectedProject(selectedProject);
+  }, []);
+
+  console.log(selectedProject,'sele')
+  useEffect(() => {
+    const selectedProjectName =localStorage.getItem("selectedProjectName");
+
+    console.log(selectedProjectName,selectedProject,'-----')
     const sData = JSON.parse(localStorage.getItem("sprintsData"));
-    console.log(sData);
+    // console.log(sData);
     for (let key in Object.keys(sData[selectedProjectName])) {
       // console.log('key',key)
       let sName = Object.keys(sData[selectedProjectName][key])[0];
+      // console.log('first',sData[selectedProjectName][key])
       // console.log('pname',selectedProjectName)
       // console.log('sname',sName)
       // console.log(sData[selectedProjectName][key][sName])
 
-      const tasks =
-        JSON.parse(localStorage.getItem(`${selectedProjectName}${sName}`)) ||
-        {};
+      const tasks =JSON.parse(localStorage.getItem(`${selectedProjectName}${sName}`)) || {}
       sData[selectedProjectName][key][sName]["plannedTasks"] =
         Object.values(tasks).length;
 
@@ -48,35 +60,25 @@ function Sprints({ sidebarToggle }) {
 
       sData[selectedProjectName][key][sName]["tasksCompleted"] = tasksCompleted;
 
-<<<<<<< Updated upstream
       const mainCompanyData = JSON.parse(localStorage.getItem('mainCompanyData'))
       mainCompanyData.map((item)=>{
-        item.sprints.map((it)=>{
-          if(it['sprintName'] == sName){
-            sData[selectedProjectName][key][sName]['workHoursUsed'] = it['remaining_hrs']
-            sData[selectedProjectName][key][sName]['totalAvailableWorkHours'] = it['final_hrs']
-            sData[selectedProjectName][key][sName]['plannedWorkHours'] = it['effective_hrs']
-          }
-        })})
-      console.log('----',sData[selectedProjectName][key][sName])
+        if(item.projectName == selectedProjectName){
+          item.sprints.map((it)=>{
+            if(it['sprintName'] == sName){
+              sData[selectedProjectName][key][sName]['workHoursUsed'] = it['remaining_hrs']
+              sData[selectedProjectName][key][sName]['totalAvailableWorkHours'] = it['final_hrs']
+              sData[selectedProjectName][key][sName]['plannedWorkHours'] = it['effective_hrs']
+            }
+          })
+        }  
+      })
+      // console.log('----',sData[selectedProjectName][key][sName])
       localStorage.setItem('sprintsData',JSON.stringify(sData))
 
-=======
-      // console.log('----',sData[selectedProjectName][key][sName])
-      localStorage.setItem("sprintsData", JSON.stringify(sData));
->>>>>>> Stashed changes
     }
   }, []);
 
-  useEffect(() => {
-    const selectedProjectName = localStorage.getItem("selectedProjectName");
-    const dataFromLocalStorage =
-      JSON.parse(localStorage.getItem("mainCompanyData")) || [];
-    const selectedProject = dataFromLocalStorage.find(
-      (project) => project.projectName === selectedProjectName
-    );
-    setSelectedProject(selectedProject);
-  }, []);
+  
 
   useEffect(() => {
     const selectedProjectName = localStorage.getItem("selectedProjectName");
@@ -127,7 +129,7 @@ function Sprints({ sidebarToggle }) {
         for (let i = startSprintIndex; i <= endSprintIndex; i++) {
           activeSprints.push(sprintsData[i]);
         }
-        console.log("Im called and pushed..", activeSprints);
+        // console.log("Im called and pushed..", activeSprints);
         setSelectedSprintData(activeSprints);
         console.log(selectedSprintData);
       } else {

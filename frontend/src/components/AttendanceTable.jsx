@@ -116,6 +116,8 @@ const AttendanceTable = ({ sidebarToggle }) => {
       });
       setMainCompanyData(updatedMainCompanyData);
       localStorage.setItem("mainCompanyData", JSON.stringify(updatedMainCompanyData));
+
+      setShowGraph(!showGraph)
     }
   };
   // Render attendance selection options for each date

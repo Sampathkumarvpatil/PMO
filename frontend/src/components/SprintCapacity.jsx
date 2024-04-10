@@ -14,6 +14,7 @@ const SprintCapacity = ({ showGraph , setShowGraph}) => {
   const selectedProjectName = localStorage.getItem("selectedProjectName");
   const selectedSprintName = localStorage.getItem("selectedSprintName");
 
+
   useEffect(() => {
     const mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
     const selectedProjectName = localStorage.getItem("selectedProjectName");
@@ -258,7 +259,7 @@ const SprintCapacity = ({ showGraph , setShowGraph}) => {
   return (
     <div className={``}>
       <div className="mt-16 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg">
-        <table className="min-w-max border border-collapse-2 border-white rounded-xl bg-gray-100">
+        <table className="min-w-max border border-collapse-2 border-white rounded-xl bg-gray-100 w-full">
           <thead>
             <tr>
               <th className="sticky left-0 z-10 bg-gray-200">Days</th>
