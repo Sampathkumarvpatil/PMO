@@ -38,7 +38,7 @@ const SprintCapacity = ({ showGraph , setShowGraph}) => {
     }
     console.log("Consoled the use Effect");
     setShowGraph(!showGraph)
-  }, [selectedSprint]);
+  }, []);
 
 
 

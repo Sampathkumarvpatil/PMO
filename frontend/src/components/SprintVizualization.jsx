@@ -4,13 +4,10 @@ import Highcharts from "highcharts";
 import "./vizualization.css"
 const SprintVizualization = ({showGraph, setShowGraph}) => {
 
-  const [graphGenerated, setGraphGenerated] = useState(false);
+  // const [graphGenerated, setGraphGenerated] = useState(false);
   useEffect(() => {
-    if (!graphGenerated) {
-      generateGraph();
-      setGraphGenerated(true);
-    }
-  }, [graphGenerated]);
+      generateGraph();  
+  }, [showGraph]);
 
   const generateGraph = () => {
     const mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
@@ -31,8 +28,10 @@ const SprintVizualization = ({showGraph, setShowGraph}) => {
           totalHoursPerDevData.push(allocation.sumTotalWorkingHours);
 
         });
+        console.log(selectedSprint, "Trying to debug the sprint");
+
         overallTotalHour = parseInt(selectedSprint.final_hrs) || 0;
-        console.log(overallTotalHour)
+        console.log(parseInt(selectedSprint.final_hrs))
       }
     }
   
