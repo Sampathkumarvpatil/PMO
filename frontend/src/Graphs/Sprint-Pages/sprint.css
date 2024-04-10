@@ -120,11 +120,17 @@
 
 
 
-.table2 th,
+
 .table2 td {
   border: 1px solid #dddddd;
   text-align: center;
   padding: 8px;
+}
+.table2 th{
+    border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+  font-family: system-ui;
 }
 
 .table2 tr:hover {

@@ -25,8 +25,9 @@ const SprintVizualization = ({showGraph, setShowGraph}) => {
         selectedSprint.allocations.forEach(allocation => {
           devNames.push(allocation.name);
           totalHoursPerDevData.push(allocation.sumTotalWorkingHours);
+
         });
-        overallTotalHour = parseInt(localStorage.getItem("finalHours")) || 0;
+        overallTotalHour = parseInt(selectedSprint.final_hrs) || 0;
       }
     }
   

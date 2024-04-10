@@ -411,16 +411,16 @@ function Sprints({ sidebarToggle }) {
         <table className={`table2 ${editMode ? "editable" : ""}`}>
           <tbody className="table2">
             <tr className="hours">
-              <td>Sprint No.</td>
-              <td>Planned Tasks</td>
-              <td>Tasks Completed</td>
-              <td>Extra tasks added</td>
-              <td>Descoped Tasks</td>
-              <td>Total available work hours</td>
-              <td>Planned work hours</td>
-              <td>Work hours used</td>
-              <td>In-Sprint Defects Identified</td>
-              <td>Post-Sprint Defects Identified</td>
+              <th>Sprint No.</th>
+              <th>Planned Tasks</th>
+              <th>Tasks Completed</th>
+              <th>Extra tasks added</th>
+              <th>Descoped Tasks</th>
+              <th>Total available work hours</th>
+              <th>Planned work hours</th>
+              <th>Work hours used</th>
+              <th>In-Sprint Defects Identified</th>
+              <th>Post-Sprint Defects Identified</th>
             </tr>
 
             {renderSprintsData()}
