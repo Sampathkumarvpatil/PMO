@@ -238,30 +238,30 @@ const Home = ({sidebarToggle}) => {
 
           <div className='h-[80vh] max-h-[80vh]'>
               <div className='flex justify-between gap-40 m-20'>
+    
+    
               {/* users in room */}
-              
-              
-              <div className='m-10 px-10 w-full border border-gray-400 rounded-lg'>
-      <h2 className="text-2xl text-blue-600 mb-4">Users in the Room:</h2>
-      <ul className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      {users.map((user) => (
-        <li
-          key={user.userId}
-          className="border border-gray-300 rounded-lg p-4 flex flex-col justify-between"
-        >
-          <div className="text-center">
-            <span className="block font-semibold">
-              <FaUser className="inline-block mr-2" />
-              {user.userName}
-            </span>
-            <span className="block text-gray-500">
-              {showTotalHours && (isRoomCreator || user.userName === userName) ? `Selected: ${optionsSelected[user.userName] || '-'}` : 'Selected: ***'}
-            </span>
-          </div>
-          {/* Add any additional information or actions here */}
-        </li>
-      ))} 
-
+                      
+  <div className='m-10 px-10 w-full border border-gray-400 text-center '>
+  <h2 className="text-2xl text-blue-600 mb-4">Users in the Room:</h2>
+  <ul className="flex flex-wrap justify-center">
+    {users.map((user) => (
+      <li
+        key={user.userId}
+        className="border border-gray-300 rounded-lg p-4 flex flex-col justify-between m-2"
+      >
+        <div className="text-center">
+          <span className="block font-semibold">
+            <FaUser className="inline-block mr-2" />
+            {user.userName}
+          </span>
+          <span className="block text-gray-500">
+            {showTotalHours && (isRoomCreator || user.userName === userName) ? `Selected: ${optionsSelected[user.userName] || '-'}` : 'Selected: ***'}
+          </span>
+        </div>
+        {/* Add any additional information or actions here */}
+      </li>
+    ))}
       {/* 
         {users.map((user) => (
           <li
@@ -318,11 +318,10 @@ const Home = ({sidebarToggle}) => {
           </div>
         </div>
 
-
+        </div>
               {/* chat end */}
             </div>
 
-          </div>
           
 
           <div className="flex justify-center p-4">
@@ -339,7 +338,7 @@ const Home = ({sidebarToggle}) => {
 
 
           {isRoomCreator ? (
-  <div className="flex flex-col items-center">
+  <div className="flex flex-col items-center justify-center">
     Allocate to Resource: 
     <select 
       className="w-[50%] px-4 py-2 border border-gray-300 rounded-xl mb-4 focus:outline-none focus:border-black"

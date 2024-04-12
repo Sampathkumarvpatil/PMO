@@ -243,7 +243,7 @@ const CeremonyTable = ({ startDate, endDate, updateTotals, meetings }) => {
 
   return (
     <div
-      className="mt-2 overflow-x-scroll  border-2 border-gray-400 rounded"
+      className="mt-2 overflow-x-scroll border-2 border-gray-400 rounded flex justify-center"
       style={{
         boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
         borderRadius: "10px",

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Section from "./Section";
 import { socket } from "../utils/socket";
+import ProjOptions from "../components/ProjOptions";
  
 const Room = ({ sidebarToggle }) => {
   const location = useLocation();
@@ -51,6 +52,10 @@ const Room = ({ sidebarToggle }) => {
  
   return (
     <div className={`text-center p-4 shadow-2xl m-10 transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
+      <div className="mb-10">
+      <ProjOptions />
+      </div>
+      <div>
       <button
         onClick={showRoomDetails}
         className="my-2 absolute top-9 right-10 bg-blue-500 border-[2px]
@@ -58,6 +63,7 @@ const Room = ({ sidebarToggle }) => {
       >
         Download Retrospective
       </button>
+
  
       <div>
         <span className="text-4xl font-bold underline">{desc}</span>
@@ -73,6 +79,7 @@ const Room = ({ sidebarToggle }) => {
             />
           ))}
         </div>
+      </div>
       </div>
     </div>
   );

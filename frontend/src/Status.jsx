@@ -100,10 +100,17 @@ const handleAddStatus = () => {
         </tbody>
       </table>
 
-      <button className='bg-blue-600 border-2 border-blue-600 text-white text-[14px] rounded-md px-4 py-3 m-2 mt-7 hover:bg-white hover:text-blue-600'
-        onClick={handleAddStatus}>
-        Add Task
-      </button>
+      <div className='flex justify-center'>
+        <button className='bg-blue-600 border-2 border-blue-600 text-white text-[14px] rounded-md px-4 py-3 m-2 mt-7 hover:bg-white hover:text-blue-600'
+          onClick={handleAddStatus}>
+          Add Task
+        </button>
+
+        <button className='bg-blue-600 border-2 border-blue-600 text-white text-[14px] rounded-md px-4 py-3 m-2 mt-7 hover:bg-white hover:text-blue-600'
+        >
+          Submit
+        </button>
+      </div>
       
     </div>
   )

@@ -61,7 +61,7 @@ setRefreshSprint(!refreshSprint)
 
   return (
     <div className={`flex justify-around transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
-        <div className={`flex justify-center items-center h-screen `}>
+        <div className={`flex justify-center items-center`}>
         <div className="w-96 p-6 shadow-lg rounded-md container">
           <h2 className="text-2xl block text-center font-bold mb-14 text-purple-500">New Project</h2>
           <div className="mt-5">
@@ -120,6 +120,18 @@ setRefreshSprint(!refreshSprint)
               required
             />
           </div>
+          <div className="mt-5">
+            <label htmlFor="resourcesTotalNumber" className="block text-base font-bold mb-2">
+              Validation Code: 
+            </label>
+            <input
+              type="text"
+              className="border w-full text-base px-2 py-2 focus:outline-none focus:ring-1 gray-600 rounded-lg"
+              placeholder="Enter Validation Code for Project"
+              required
+            />
+          </div>
+
           <div className="mt-5 text-center">
             <button onClick={handleCreateProject} className="text-white font-bold py-2 px-4 w-40 rounded-xl border-2 border-gray-300 shadow-xl" 
             style={{

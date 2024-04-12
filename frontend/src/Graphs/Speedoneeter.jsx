@@ -16,7 +16,7 @@ const SpeedometerChartComponent = () => {
       }
     
     return (
-        <div style={{ width: '400px', height: '280px',backgroundColor:'#FFFAFC',borderColor: 'black',borderWidth: 5,borderStyle: 'solid' }}>
+        <div style={{ width: '400px', height: '340px',backgroundColor:'#FFFAFC',borderColor: 'black',borderWidth: 5,borderStyle: 'solid' }}>
             <h1 style={{ fontSize:'23px', marginLeft:'100px',marginTop:'-5px'}}>Planned Work Hours</h1>
             <GaugeChart id="gauge-chart" style={chartStyle}
                 nrOfLevels={30} 

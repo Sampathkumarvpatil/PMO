@@ -258,8 +258,8 @@ const SprintCapacity = ({ showGraph , setShowGraph}) => {
   };
   return (
     <div className={``}>
-      <div className="mt-16 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg">
-        <table className="min-w-max border border-collapse-2 border-white rounded-xl bg-gray-100 w-full">
+      <div className="mt-16 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg flex justify-center">
+        <table className="min-w-max border border-collapse-2 border-white rounded-xl bg-gray-100">
           <thead>
             <tr>
               <th className="sticky left-0 z-10 bg-gray-200">Days</th>

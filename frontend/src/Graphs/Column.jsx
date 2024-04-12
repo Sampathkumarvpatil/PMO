@@ -29,7 +29,7 @@ const ColumnChartComponent = () => {
         viewDistance: 25,
       },
       width: 410,
-      height: 280,
+      height: 340,
       backgroundColor: "rgb(254, 251, 254)",
       borderColor: "black", // Add this line
       borderWidth: 5, // Add this line
