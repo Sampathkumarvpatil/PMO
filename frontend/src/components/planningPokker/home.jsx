@@ -242,7 +242,7 @@ const Home = ({sidebarToggle}) => {
     
               {/* users in room */}
                       
-  <div className='m-10 px-10 w-full border border-gray-400 text-center '>
+  <div className='m-8 px-10 w-full border border-gray-400 text-center'>
   <h2 className="text-2xl text-blue-600 mb-4">Users in the Room:</h2>
   <ul className="flex flex-wrap justify-center">
     {users.map((user) => (
@@ -261,7 +261,10 @@ const Home = ({sidebarToggle}) => {
         </div>
         {/* Add any additional information or actions here */}
       </li>
+      
     ))}
+    </ul>
+    </div>
       {/* 
         {users.map((user) => (
           <li
@@ -283,15 +286,14 @@ const Home = ({sidebarToggle}) => {
         ))}
        */}
 
-      </ul>
-    </div>
+      
 
 
               {/* users in room end */}
 
               {/* chat */}
               
-              <div className="flex-grow flex flex-col items-end p-4 border border-gray-400">
+              <div className="m-8 flex-grow flex flex-col items-end p-4 border border-gray-400">
           <div className="bg-gray-200 p-4 rounded-md max-h-[350px] overflow-y-auto w-[400px] h-[300px]">
             <h2 className="text-lg font-semibold mb-4">Chat:</h2>
             {messages.map((msg, index) => (
