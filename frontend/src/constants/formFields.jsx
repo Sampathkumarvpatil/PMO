@@ -33,6 +33,16 @@ const signupFields=[
         placeholder:"Username"   
     },
     {
+        labelText:"Role",
+        labelFor:"role",
+        id:"role",
+        name:"role",
+        type:"text",
+        autoComplete:"role",
+        isRequired:true,
+        placeholder:"Your Role"   
+    },
+    {
         labelText:"Email address",
         labelFor:"email-address",
         id:"email-address",

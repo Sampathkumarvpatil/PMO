@@ -24,7 +24,7 @@ export default function Signup() {
   const createAccount = () => {};
 
   return (
-    <div className="w-100 flex justify-center">
+    <div className="w-full">
       <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
         <div className="">
           {fields.map((field) => (

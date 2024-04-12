@@ -53,8 +53,8 @@ function App() {
       <Routes>
         {/* <Route path="/" element={<Main />} /> */}
         <Route path="/" element={<Dashboard sidebarToggle = {sidebarToggle}/>}/>
-        <Route path="/LoginOrSignup" element={<LoginPage/>} />
-            <Route path="/signup" element={<SignupPage/>} />
+        <Route path="/LoginOrSignup" element={<LoginPage sidebarToggle = {sidebarToggle}/>} />
+            <Route path="/signup" element={<SignupPage sidebarToggle = {sidebarToggle}/>} />
         <Route path="/NewProject" element={<NewProject sidebarToggle = {sidebarToggle}/>} />
         {/* <Route path="/NewSprint" element={<NewSprint sidebarToggle = {sidebarToggle}/>} /> */}
         <Route path="/AllocationAndHoliday" element={<AllocationInput sidebarToggle = {sidebarToggle}/>} />

@@ -22,18 +22,17 @@ const SprintVizualization = ({showGraph, setShowGraph}) => {
   
     if (selectedProject) {
       const selectedSprint = selectedProject.sprints.find(sprint => sprint.sprintName === selectedSprintName);
-      if (selectedSprint) {
+      if (selectedSprint && selectedSprint.allocations) { // Check if allocations is defined
         selectedSprint.allocations.forEach(allocation => {
           devNames.push(allocation.name);
           totalHoursPerDevData.push(allocation.sumTotalWorkingHours);
-
         });
         console.log(selectedSprint, "Trying to debug the sprint");
-
         overallTotalHour = parseInt(selectedSprint.final_hrs) || 0;
-        console.log(parseInt(selectedSprint.final_hrs))
+        console.log(parseInt(selectedSprint.final_hrs));
       }
     }
+    
   
     // devNames = [...new Set(devNames)];
     console.log(devNames);

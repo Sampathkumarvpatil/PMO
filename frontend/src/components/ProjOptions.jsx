@@ -73,8 +73,8 @@ const ProjOptions = () => {
           ))}
         </select>
       </div>
-      <div className="absolute top-24 right-4">
-        <label className="font-bold text-black mr-2">Select Sprint:</label>
+      <div className="absolute top-24 right-4 bg-blue-600 text-white rounded-xl p-1.5 pl-4 pr-4 flex items-center">
+        <label className="font-bold text-black mr-2 text-white">Select Sprint:</label>
         <select
           className="text-black rounded-lg p-2 bg-white border shadow-xl"
           onChange={handleSprintChange}
