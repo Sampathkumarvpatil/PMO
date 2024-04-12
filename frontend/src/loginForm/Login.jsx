@@ -21,11 +21,20 @@ export default function Login() {
   };
 
   //Handle Login API Integration here
-  const authenticateUser = () => {};
+  const authenticateUser = () => { };
 
   return (
-    <div className="w-100 flex justify-center">
+    <div className="w-100">
       <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <div className="flex justify-end">
+          <select className="px-3 py-2 rounded-md w-full">
+          <option className="px-4 py-2">Select Role</option>
+            <option className="px-4 py-2">Manager</option>
+            <option className="px-4 py-2">Developer</option>
+            <option className="px-4 py-2">Senior-Lead</option>
+            <option className="px-4 py-2">Tester</option>
+          </select>
+        </div>
         <div className="-space-y-px">
           {fields.map((field) => (
             <Input

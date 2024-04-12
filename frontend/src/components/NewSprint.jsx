@@ -33,7 +33,6 @@ const NewSprint = ({refreshSprint}) => {
  
   const handleCreateSprint = () => {
    
- 
     if (selectedProject) {
       const newSprint = {
         sprintName,
