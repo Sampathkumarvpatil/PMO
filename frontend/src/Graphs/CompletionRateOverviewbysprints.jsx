@@ -38,6 +38,7 @@ const CompletionRateOverviewbysprintsComponent = ({ sidebarToggle }) => {
         ).toFixed(2)
       : 0,
   }));
+  console.log(processedSprints);
 
   const chartOptions = {
     chart: {
@@ -48,7 +49,7 @@ const CompletionRateOverviewbysprintsComponent = ({ sidebarToggle }) => {
       text: "Completion Rate Overview by Sprints",
     },
     xAxis: {
-      categories: processedSprints.map((sprint) => Object.keys(sprint)[0]),
+      categories: selectedSprints.map((sprint) => Object.keys(sprint)[0]),
     },
     yAxis: {
       min: 0,
@@ -71,8 +72,8 @@ const CompletionRateOverviewbysprintsComponent = ({ sidebarToggle }) => {
       {
         name: "Completion Rate",
         data: processedSprints.map((sprint, index) => ({
-          name: Object.keys(sprint)[0],
-          y: parseFloat(Object.values(sprint)[0].completionRate),
+          name: index + 1,
+          y: parseFloat(sprint.completionRate),
           color: colors[index % colors.length], // Assign a color from the array
         })),
         type: "column",
@@ -80,7 +81,7 @@ const CompletionRateOverviewbysprintsComponent = ({ sidebarToggle }) => {
       {
         name: "Trend",
         data: processedSprints.map((sprint) =>
-          parseFloat(Object.values(sprint)[0].completionRate)
+          parseFloat(sprint.completionRate)
         ),
         type: "spline",
         marker: {

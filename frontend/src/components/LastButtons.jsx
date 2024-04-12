@@ -40,11 +40,12 @@ const LastButtons = ({ current }) => {
       <div className="flex justify-center items-center mt-8 gap-9">
         <div>
           <button
-            className="hoverss text-white font-bold py-2 px-4 w-40 rounded-xl border-2 border-gray-300 shadow-xl"
-            style={{
-              background:
-                "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
-            }}
+          style={{
+            background:
+              "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
+          }}
+            className="text-white font-bold py-2 px-4 w-40 rounded-xl border-2 border-gray-300 shadow-xl hover:bg-white hover:text-black hover:border-2 hover:border-black"
+            
             onClick={() => back()}
           >
             Back
@@ -52,7 +53,7 @@ const LastButtons = ({ current }) => {
         </div>
         <div>
           <button
-            className="hoverss text-white font-bold py-2 px-4 w-40 rounded-xl border-2 border-gray-300 shadow-xl"
+            className="text-white font-bold py-2 px-4 w-40 rounded-xl border-2 border-gray-300 shadow-xl "
             style={{
               background:
                 "radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%)",
@@ -64,7 +65,7 @@ const LastButtons = ({ current }) => {
 
         <div>
           <button
-            className="hoverss text-white font-bold py-2 px-4 w-40 rounded-xl border-2 border-gray-300 shadow-xl"
+            className="text-white font-bold py-2 px-4 w-40 rounded-xl border-2 border-gray-300 shadow-xl hover:bg-white hover:text-black hover:border-2 hover:border-black"
             style={{
               background:
                 "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",

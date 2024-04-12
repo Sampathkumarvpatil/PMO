@@ -118,7 +118,7 @@ const CeremonyContainer = ({ startDate, endDate, sprintName, projectName }) => {
 
       <div className="text-center">
         <button
-          className="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg border-2 border-blue-600 shadow-xl"
+          className="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg border-2 border-blue-600 shadow-xl hover:bg-white hover:text-blue-600 hover:border-2 hover:border-blue-600"
           onClick={handleOpenDialog}
         >
           Add Meeting
