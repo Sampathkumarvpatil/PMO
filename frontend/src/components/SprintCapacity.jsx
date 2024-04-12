@@ -216,6 +216,8 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
     let grandTotal = 0;
     for (let i = 0; i < storedAllocationsData.length; i++) {
       grandTotal += calculateTotal(i);
+      grandTotal = Number(grandTotal.toFixed(2));
+      console.log(grandTotal)
     }
 
     localStorage.setItem("effectiveHours", grandTotal);
@@ -283,7 +285,7 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
   };
   return (
     <div className={``}>
-      <div className="mt-16 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg flex justify-center">
+      <div className="mt-8 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg flex justify-center">
         <table className="min-w-max border border-collapse-2 border-white rounded-xl bg-gray-100">
           <thead>
             <tr>
