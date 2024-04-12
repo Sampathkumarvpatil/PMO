@@ -74,14 +74,13 @@ function App() {
           <Route path="/sprints" element={<Sprints sidebarToggle = {sidebarToggle}/>} />
           <Route path="/sprints/:sprintId" element={<Sprints sidebarToggle = {sidebarToggle}/>} />
           <Route path="/chart" element={
-          <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}  grid grid-cols-3  overflow-hidden h-full`}>
+          <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"} flex flex-wrap grid grid-cols-3 overflow-hidden`}>
             <ChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" />
             <GaugeChartComponent className="col-span-3 md:col-span-1" />
             <FunnelChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" />
             <SpeedometerChartComponent className="col-span-3 md:col-span-1" /> 
             <CylinderChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" />
-            <ColumnChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" />
-            
+            <ColumnChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" /> 
           </div>
           
           } />

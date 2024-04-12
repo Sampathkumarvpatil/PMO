@@ -54,7 +54,7 @@ const Section = ({ roomName, section, divs, colorind }) => {
  
   return (
     <div className={`w-1/3 text-center my-10 `}>
-      <span className="underline text-2xl font-semibold">{section}</span>
+      <span className=" text-2xl font-semibold">{section}</span>
       <br />
       <button
         className={`mx-4 bg-gray-400 m-2 px-2 rounded-md text-white bg-white text-black `}

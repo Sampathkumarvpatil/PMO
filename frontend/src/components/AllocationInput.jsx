@@ -150,12 +150,14 @@ const AllocationInput = ({sidebarToggle}) => {
 
   const selectedSprintAllocations = selectedSprint ? selectedSprint.allocations || [] : [];
 
+  const selectedSprintName = localStorage.getItem('selectedSprintName')
+  const selectedProjectName = localStorage.getItem('selectedProjectName')
   return (
     <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
       <div className="flex justify-between">
         <div className="bg-blue-600 text-white rounded-xl p-1.5 pl-4 pr-4 flex items-center w-[19%] mt-8 ml-4">
           <label className="font-bold mr-2">Selected Project:</label>
-          <h2 className="text-black rounded-lg pl-3 py-1 bg-white border shadow-xl w-[48%]">hello</h2>
+          <h2 className="text-black rounded-lg pl-3 py-1 bg-white border shadow-xl w-[48%]">{selectedProjectName}</h2>
 
           {/* // onChange={handleProjectChange}
               // value={selectedProject?.projectName || ""} */}
@@ -170,7 +172,7 @@ const AllocationInput = ({sidebarToggle}) => {
         <h1 className="mt-12">Allocate work hours efficiently and track upcoming holidays to ensure seamless project continuity.</h1>
         <div className="bg-blue-600 text-white rounded-xl p-1.5 pl-4 pr-4 flex items-center w-[19%] mt-8 mr-4">
           <label className="font-bold mr-2">Selected Sprint:</label>
-          <h2 className="text-black rounded-lg pl-3 py-1 bg-white border shadow-xl w-[48%]">hello1</h2>
+          <h2 className="text-black rounded-lg pl-3 py-1 bg-white border shadow-xl w-[48%]">{selectedSprintName}</h2>
 
           {/* // onChange={handleProjectChange}
               // value={selectedProject?.projectName || ""} */}

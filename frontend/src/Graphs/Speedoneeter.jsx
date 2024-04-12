@@ -12,7 +12,6 @@ const SpeedometerChartComponent = () => {
     };
     const chartStyle = {
         height: 10,
-
       }
     
     return (
@@ -23,7 +22,7 @@ const SpeedometerChartComponent = () => {
             {/* style={{ fontSize:'23px', marginLeft:'100px',marginTop:'-5px'}} */}
             <h1 className='text-[23px] text-center mb-10'>Planned Work Hours</h1>
             <GaugeChart id="gauge-chart" style={chartStyle}
-                className=' w-[400px] mx-auto mr-[95px]'
+                className=' w-[450px] mr-[95px]'
                 nrOfLevels={30} 
                 percent={gaugeValue} 
                 textColor="#000000"

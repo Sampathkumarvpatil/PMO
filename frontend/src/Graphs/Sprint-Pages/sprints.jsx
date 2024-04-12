@@ -483,12 +483,12 @@ function Sprints({ sidebarToggle }) {
       </div>
       <div className="flex justify-end gap-10 mx-6 mt-6">
         <div>
-          <button
+          {/* <button
             className="edit-button"
             onClick={() => setEditMode(!editMode)}
           >
             {editMode ? "Edit" : "Edit"}
-          </button>
+          </button> */}
         </div>
         <div>
           {/* {editMode && (

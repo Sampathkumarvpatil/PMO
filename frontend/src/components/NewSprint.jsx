@@ -133,12 +133,14 @@ const NewSprint = ({refreshSprint}) => {
             Project Name
           </label>
           <select
-            className="w-full p-3 text-base focus:outline-none focus:ring-1 gray-600 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 font-mono"
+            className="w-full p-3 focus:outline-none focus:ring-1  
+            transition duration-75 rounded-lg group hover:bg-gray-100 
+            hover:text-white hover:bg-gray-700 font-mono"
             onChange={handleProjectChange}
             value={selectedProject?.projectName || ""}
           >
             {mainCompanyArr.map((project) => (
-              <option key={project.projectName} value={project.projectName}>
+              <option key={project.projectName} value={project.projectName} >
                 {project.projectName}
               </option>
             ))}
