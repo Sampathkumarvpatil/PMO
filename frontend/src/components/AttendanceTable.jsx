@@ -11,7 +11,7 @@ const AttendanceTable = ({ sidebarToggle }) => {
   const [mainCompanyData, setMainCompanyData] = useState([]);
   const [selectedSprint, setSelectedSprint] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [showGraph,setShowGraph]= useState(true)
+  const [showGraph, setShowGraph] = useState(true)
 
 
   useEffect(() => {
@@ -70,7 +70,7 @@ const AttendanceTable = ({ sidebarToggle }) => {
     const existingIndex = updatedValues.findIndex(
       (item) => item.name === storedAllocationsData[index].name && item.date === date
     );
-  
+
     if (existingIndex !== -1) {
       updatedValues[existingIndex].selectedValue = value;
     } else {
@@ -80,10 +80,10 @@ const AttendanceTable = ({ sidebarToggle }) => {
         selectedValue: value,
       });
     }
-  
+
     setSelectedValues(updatedValues);
     localStorage.setItem("attendanceData", JSON.stringify(updatedValues));
-  
+
     // Update main company data with selected values for the current sprint
     if (selectedProject && selectedSprint) {
       const updatedMainCompanyData = mainCompanyData.map((project) => {
@@ -151,7 +151,7 @@ const AttendanceTable = ({ sidebarToggle }) => {
 
     return (
       <td key={`${index}-${pair.date}`} style={{ width: "0%", padding: "0px" }}
-        className=" border-2 tableCellData w-[0%]" 
+        className=" border-2 tableCellData w-[0%]"
       >
         <select
           value={selectedValue || defaultValue} // Set default value based on the day of the week
@@ -174,7 +174,38 @@ const AttendanceTable = ({ sidebarToggle }) => {
 
   return (
     <div className={`transition-all duration-300   ${sidebarToggle ? "ml-2" : "ml-64"}`}>
-      <div className="py-1 mt-16 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg flex justify-center">
+      <div className="flex justify-between">
+        <div className="bg-blue-600 text-white rounded-xl p-1.5 pl-4 pr-4 flex items-center w-[19%] mt-8 ml-4">
+          <label className="font-bold mr-2">Selected Project:</label>
+          <h2 className="text-black rounded-lg pl-3 py-1 bg-white border shadow-xl w-[48%]">hello</h2>
+
+          {/* // onChange={handleProjectChange}
+              // value={selectedProject?.projectName || ""} */}
+          {/* {mainCompanyArr.map((project) => ( */}
+          {/* <option key={project.projectName} value={project.projectName}>
+                  {project.projectName}
+                </option> */}
+          {/* )) */}
+          {/* } */}
+          {/* </select> */}
+        </div>
+        <h1 className="mt-12">A clear, day-by-day attendance log to support effective sprint management and coordination.</h1>
+        <div className="bg-blue-600 text-white rounded-xl p-1.5 pl-4 pr-4 flex items-center w-[19%] mt-8 mr-4">
+          <label className="font-bold mr-2">Selected Sprint:</label>
+          <h2 className="text-black rounded-lg pl-3 py-1 bg-white border shadow-xl w-[48%]">hello1</h2>
+
+          {/* // onChange={handleProjectChange}
+              // value={selectedProject?.projectName || ""} */}
+          {/* {mainCompanyArr.map((project) => ( */}
+          {/* <option key={project.projectName} value={project.projectName}>
+                  {project.projectName}
+                </option> */}
+          {/* )) */}
+          {/* } */}
+          {/* </select> */}
+        </div>
+      </div>
+      <div className="py-1 mt-8 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg flex justify-center">
 
         <table className="border border-collapse-2 border-white rounded-xl bg-gray-100">
           <thead>
@@ -219,15 +250,17 @@ const AttendanceTable = ({ sidebarToggle }) => {
 
       </div>
 
-      <div className="my-20 border-t-2 border-gray-300">
-        <SprintCapacity showGraph={showGraph} setShowGraph = {setShowGraph}/>
-      </div>
       
-      <div className="my-20 border-t-2 border-gray-300">
-        <SprintVizualization showGraph={showGraph} setShowGraph = {setShowGraph}/>
+      <div className="my-20 border-t-2 border-gray-300 text-center ">
+      <h1 className="mt-16 font-mono px-24" style={{fontSize:'20px'}}>Review the complete availability and contribution hours of each team member for the entire sprint cycle, ensuring resource allocation aligns with project needs.</h1>
+        <SprintCapacity showGraph={showGraph} setShowGraph={setShowGraph} />
       </div>
 
-      <LastButtons current={'AttendanceTable'}/>
+      <div className="my-20 border-t-2 border-gray-300">
+        <SprintVizualization showGraph={showGraph} setShowGraph={setShowGraph} />
+      </div>
+
+      <LastButtons current={'AttendanceTable'} />
     </div>
 
   );

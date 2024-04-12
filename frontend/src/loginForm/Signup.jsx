@@ -27,6 +27,13 @@ export default function Signup() {
     <div className="w-full ">
       
       <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <div className="flex justify-end">
+        <select className="px-3 py-2 rounded-md w-full">
+        <option className="px-4 py-2">Select Role</option>
+          <option className="px-4 py-2">Account Manager/Project Manager</option>
+          <option className="px-4 py-2">Developers/Testers</option>
+        </select>
+      </div>
         <div className="">
           {fields.map((field) => (
             <Input
