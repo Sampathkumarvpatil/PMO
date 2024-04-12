@@ -13,6 +13,7 @@ import {
   FaChartPie,
   FaProjectDiagram,
   FaChartBar,
+  FaUser,
 } from "react-icons/fa";
 const Sidebar = ({sidebarToggle}) => {
   return (
@@ -25,6 +26,12 @@ const Sidebar = ({sidebarToggle}) => {
         />
       </div>
       <ul className="mt-3 ml-3 font-bold">
+      <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
+          <Link to="/LoginOrSignup" className="px-3">
+            <FaUser className="inline-block w-6 h-6 mr-2 -mt-2"></FaUser>
+            Login/SignUp
+          </Link>
+        </li>
         <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/NewProject" className="px-3">
             <FaFolderOpen className="inline-block w-6 h-6 mr-2 -mt-2"></FaFolderOpen>

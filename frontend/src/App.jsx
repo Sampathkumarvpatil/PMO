@@ -34,6 +34,8 @@ import Room from "../src/boardcomponent/Room";
 // import Test from "../components/Test";
 import Getpdf from "../src/boardcomponent/Getpdf";
 import SprintVizualization from "./components/SprintVizualization";
+import SignupPage from './pages/Signup';
+import LoginPage from './pages/Login';
 
 
 
@@ -51,6 +53,8 @@ function App() {
       <Routes>
         {/* <Route path="/" element={<Main />} /> */}
         <Route path="/" element={<Dashboard sidebarToggle = {sidebarToggle}/>}/>
+        <Route path="/LoginOrSignup" element={<LoginPage/>} />
+            <Route path="/signup" element={<SignupPage/>} />
         <Route path="/NewProject" element={<NewProject sidebarToggle = {sidebarToggle}/>} />
         {/* <Route path="/NewSprint" element={<NewSprint sidebarToggle = {sidebarToggle}/>} /> */}
         <Route path="/AllocationAndHoliday" element={<AllocationInput sidebarToggle = {sidebarToggle}/>} />
