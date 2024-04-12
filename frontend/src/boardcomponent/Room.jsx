@@ -3,8 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Section from "./Section";
 import { socket } from "../utils/socket";
 import ProjOptions from "../components/ProjOptions";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import { toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
  
 
 const Room = ({ sidebarToggle }) => {

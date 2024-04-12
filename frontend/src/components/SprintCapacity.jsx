@@ -2,39 +2,43 @@ import React, { useState, useEffect } from "react";
 import LastButtons from "./LastButtons";
 import "./newInputs.css";
 
-const SprintCapacity = ({ showGraph , setShowGraph}) => {
-  const [storedAllocationsData, setStoredAllocationsData] = useState([]); 
+const SprintCapacity = ({ showGraph, setShowGraph }) => {
+  const [storedAllocationsData, setStoredAllocationsData] = useState([]);
   const [dateWeekdayPairs, setDateWeekdayPairs] = useState([]);
   const [totalCeremonyHours, setTotalCeremonyHours] = useState(0);
   const [selectedSprint, setSelectedSprint] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
   const [total, setTotal] = useState(0); // Define the state for total
 
-
   const selectedProjectName = localStorage.getItem("selectedProjectName");
   const selectedSprintName = localStorage.getItem("selectedSprintName");
 
-
   useEffect(() => {
-    const mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
+    const mainCompanyData =
+      JSON.parse(localStorage.getItem("mainCompanyData")) || [];
     const selectedProjectName = localStorage.getItem("selectedProjectName");
     const selectedSprintName = localStorage.getItem("selectedSprintName");
 
-    const project = mainCompanyData.find(project => project.projectName === selectedProjectName);
-    const sprint = project?.sprints.find(sprint => sprint.sprintName === selectedSprintName);
+    const project = mainCompanyData.find(
+      (project) => project.projectName === selectedProjectName
+    );
+    const sprint = project?.sprints.find(
+      (sprint) => sprint.sprintName === selectedSprintName
+    );
 
     setSelectedProject(project);
     setSelectedSprint(sprint);
 
     if (sprint) {
-
       if (!sprint.allocations) {
         alert("Allocations data is not available. Please check your data.");
         return;
       }
 
       setStoredAllocationsData(sprint.allocations || []);
-      setDateWeekdayPairs(generateDateWeekdayPairs(sprint.startDate, sprint.endDate));
+      setDateWeekdayPairs(
+        generateDateWeekdayPairs(sprint.startDate, sprint.endDate)
+      );
       // Fetch TotalCeremonyHours from localStorage
       const ceremonyHours = localStorage.getItem("TotalCeremonyHours");
       setTotalCeremonyHours(ceremonyHours ? parseFloat(ceremonyHours) : 0);
@@ -44,11 +48,8 @@ const SprintCapacity = ({ showGraph , setShowGraph}) => {
       setTotal(effectiveTotal); // Set the state for the effective total
     }
     console.log("Consoled the use Effect");
-    setShowGraph(!showGraph)
+    setShowGraph(!showGraph);
   }, []);
-
-
-
 
   const generateDateWeekdayPairs = (start, end) => {
     const pairs = [];
@@ -68,13 +69,18 @@ const SprintCapacity = ({ showGraph , setShowGraph}) => {
     return pairs;
   };
 
-
   const renderAttendanceOptions = (index, pair) => {
-    const selectedValue = selectedSprint?.selectedValues?.find(value => value.name === storedAllocationsData[index].name && value.date === pair.date);
-    let allocationPercentage = storedAllocationsData[index].hrPerDay
-    let cellValue = selectedValue ? selectedValue.selectedValue : storedAllocationsData[index].hrPerDay
+    const selectedValue = selectedSprint?.selectedValues?.find(
+      (value) =>
+        value.name === storedAllocationsData[index].name &&
+        value.date === pair.date
+    );
+    let allocationPercentage = storedAllocationsData[index].hrPerDay;
+    let cellValue = selectedValue
+      ? selectedValue.selectedValue
+      : storedAllocationsData[index].hrPerDay;
     if (allocationPercentage === 4 && selectedValue?.selectedValue) {
-      cellValue = cellValue / 2
+      cellValue = cellValue / 2;
     }
     // Default value is 8 (Present)
 
@@ -93,19 +99,26 @@ const SprintCapacity = ({ showGraph , setShowGraph}) => {
       cellValue === "0"
         ? "red" // Red background color for absent days
         : cellValue === "4"
-          ? "blue"
-          : cellValue === 4
-            ? "blue" // Blue background color for half-day
-            : cellValue === "8"
-              ? "inherit"
-              : isWeekend
-                ? "gray" // Gray background color for Saturdays and Sundays
-                : "inherit"; // Default background color
+        ? "blue"
+        : cellValue === 4
+        ? "blue" // Blue background color for half-day
+        : cellValue === "8"
+        ? "inherit"
+        : isWeekend
+        ? "gray" // Gray background color for Saturdays and Sundays
+        : "inherit"; // Default background color
 
-    const textColor =
-      isWeekend ? (cellValue === "8" ? "black" : "white") : cellValue === "0" ? "white" : cellValue === "4" ? "white" : cellValue === 4 ? "white" : "black";
-
-
+    const textColor = isWeekend
+      ? cellValue === "8"
+        ? "black"
+        : "white"
+      : cellValue === "0"
+      ? "white"
+      : cellValue === "4"
+      ? "white"
+      : cellValue === 4
+      ? "white"
+      : "black";
 
     return (
       <td
@@ -128,14 +141,17 @@ const SprintCapacity = ({ showGraph , setShowGraph}) => {
 
   const calculateSubTotal = (rowIndex) => {
     let subTotal = 0;
-    const attendanceData = JSON.parse(localStorage.getItem("attendanceData")) || [];
+    const attendanceData =
+      JSON.parse(localStorage.getItem("attendanceData")) || [];
     const row = storedAllocationsData[rowIndex];
     // console.log('storedAllocationsData[rowIndex]',storedAllocationsData[rowIndex].name)
 
     for (const datePair of dateWeekdayPairs) {
       const date = datePair.date;
       const currentDate = new Date(date);
-      const mainCompanyData=JSON.parse(localStorage.getItem('mainCompanyData'));
+      const mainCompanyData = JSON.parse(
+        localStorage.getItem("mainCompanyData")
+      );
       if (currentDate.getDay() === 6 || currentDate.getDay() === 0) {
         const attendance = attendanceData.find(
           (item) => item.name === row?.name && item.date === date
@@ -150,8 +166,7 @@ const SprintCapacity = ({ showGraph , setShowGraph}) => {
         );
 
         let cellValue = storedAllocationsData[rowIndex].hrPerDay; // Default value is (Present)
-        let allocationPercentage = storedAllocationsData[rowIndex].hrPerDay
-
+        let allocationPercentage = storedAllocationsData[rowIndex].hrPerDay;
 
         if (attendance) {
           if (attendance.selectedValue === "0") {
@@ -162,40 +177,39 @@ const SprintCapacity = ({ showGraph , setShowGraph}) => {
         }
 
         if (allocationPercentage === 4 && attendance?.selectedValue == "4") {
-          cellValue = cellValue / 2
+          cellValue = cellValue / 2;
         }
 
         subTotal += cellValue;
       }
     }
-    
-    let mainCompanyData = JSON.parse(localStorage.getItem('mainCompanyData')) || [];
-    storedAllocationsData[rowIndex]['sumTotalWorkingHours']=subTotal;
+
+    let mainCompanyData =
+      JSON.parse(localStorage.getItem("mainCompanyData")) || [];
+    storedAllocationsData[rowIndex]["sumTotalWorkingHours"] = subTotal;
     // Update the specific storedAllocationsData object within mainCompanyData
-    mainCompanyData = mainCompanyData.map(project => {
+    mainCompanyData = mainCompanyData.map((project) => {
       if (project.projectName === selectedProject.projectName) {
         return {
           ...project,
-          sprints: project.sprints.map(sprint => {
+          sprints: project.sprints.map((sprint) => {
             if (sprint.sprintName === selectedSprint.sprintName) {
               return {
                 ...sprint,
-                allocations: storedAllocationsData
+                allocations: storedAllocationsData,
               };
             }
             return sprint;
-          })
+          }),
         };
       }
       return project;
     });
 
-    
     // console.log(storedAllocationsData[rowIndex]);
-    localStorage.setItem('mainCompanyData', JSON.stringify(mainCompanyData));
+    localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyData));
     // localStorage.setItem()
     return subTotal;
-    
   };
 
   const calculateEffectiveTotal = () => {
@@ -204,30 +218,31 @@ const SprintCapacity = ({ showGraph , setShowGraph}) => {
       grandTotal += calculateTotal(i);
     }
 
-    localStorage.setItem("effectiveHours", grandTotal)
+    localStorage.setItem("effectiveHours", grandTotal);
 
-    let mainCompanyData = JSON.parse(localStorage.getItem('mainCompanyData'))
+    let mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData"));
 
-    mainCompanyData = mainCompanyData.map(project => {
-      if (project.projectName === selectedProjectName) {
-        return {
-          ...project,
-          sprints: project.sprints.map(sprint => {
-            if (sprint.sprintName === selectedSprintName) {
-              return {
-                ...sprint,
-                effective_hrs: grandTotal
-              };
-            }
-            return sprint;
-          })
-        };
-      }
-    return project;
-  });
+    if (mainCompanyData && Array.isArray(mainCompanyData)) {
+      mainCompanyData = mainCompanyData.map((project) => {
+        if (project.projectName === selectedProjectName) {
+          return {
+            ...project,
+            sprints: project.sprints.map((sprint) => {
+              if (sprint.sprintName === selectedSprintName) {
+                return {
+                  ...sprint,
+                  effective_hrs: grandTotal,
+                };
+              }
+              return sprint;
+            }),
+          };
+        }
+        return project;
+      });
 
-  localStorage.setItem('mainCompanyData',JSON.stringify(mainCompanyData))
-
+      localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyData));
+    }
     return grandTotal;
   };
   const calculateGrandTotal = () => {
@@ -236,29 +251,33 @@ const SprintCapacity = ({ showGraph , setShowGraph}) => {
       grandTotal += calculateTotal(i);
     }
     grandTotal += storedAllocationsData.length * totalCeremonyHours;
-    localStorage.setItem("finalHours", grandTotal)
+    localStorage.setItem("finalHours", grandTotal);
 
-    let mainCompanyData = JSON.parse(localStorage.getItem('mainCompanyData'))
+    let mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData"));
 
-    mainCompanyData = mainCompanyData.map(project => {
-      if (project.projectName === selectedProjectName) {
-        return {
-          ...project,
-          sprints: project.sprints.map(sprint => {
-            if (sprint.sprintName === selectedSprintName) {
-              return {
-                ...sprint,
-                final_hrs: grandTotal
-              };
-            }
-            return sprint;
-          })
-        };
-      }
-    return project;
-  });
-
-  localStorage.setItem('mainCompanyData',JSON.stringify(mainCompanyData))
+    if (mainCompanyData && Array.isArray(mainCompanyData)) {
+      mainCompanyData = mainCompanyData.map((project) => {
+        if (project.projectName === selectedProjectName) {
+          return {
+            ...project,
+            sprints: project.sprints.map((sprint) => {
+              if (sprint.sprintName === selectedSprintName) {
+                return {
+                  ...sprint,
+                  final_hrs: grandTotal,
+                };
+              }
+              return sprint;
+            }),
+          };
+        }
+        return project;
+      });
+      // Update localStorage with the modified mainCompanyData
+      localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyData));
+    } else {
+      console.error("mainCompanyData is null or not an array");
+    }
 
     return grandTotal;
   };
@@ -271,8 +290,13 @@ const SprintCapacity = ({ showGraph , setShowGraph}) => {
               <th className="sticky left-0 z-10 bg-gray-200">Days</th>
               <th className="sticky left-28 z-10 bg-gray-200"></th>
               {dateWeekdayPairs.map((pair, index) => (
-                <th key={index} className="bg-gray-100 border-2 border-white text-center">
-                  <div className="flex items-end py-1 vertical-date1">{pair.weekday}</div>
+                <th
+                  key={index}
+                  className="bg-gray-100 border-2 border-white text-center"
+                >
+                  <div className="flex items-end py-1 vertical-date1">
+                    {pair.weekday}
+                  </div>
                 </th>
               ))}
             </tr>
@@ -285,17 +309,31 @@ const SprintCapacity = ({ showGraph , setShowGraph}) => {
                 Roles
               </th>
               {dateWeekdayPairs.map((pair, index) => (
-                <th key={index} className="bg-gray-300 border-2 border-white whitespace-nowrap text-center">
-                  <div className="flex items-center py-2 vertical-date">{pair.date}</div>
+                <th
+                  key={index}
+                  className="bg-gray-300 border-2 border-white whitespace-nowrap text-center"
+                >
+                  <div className="flex items-center py-2 vertical-date">
+                    {pair.date}
+                  </div>
                 </th>
               ))}
-              <th className="border-2 border-white px-2 sticky top-0 bg-gray-100 z-20">Total Hours</th>
-              <th className="border-2 border-white px-2 sticky top-0 bg-gray-100 z-20">Net Available <br /> Time <br /> post meeting</th>
+              <th className="border-2 border-white px-2 sticky top-0 bg-gray-100 z-20">
+                Total Hours
+              </th>
+              <th className="border-2 border-white px-2 sticky top-0 bg-gray-100 z-20">
+                Net Available <br /> Time <br /> post meeting
+              </th>
             </tr>
           </thead>
           <tbody>
             {storedAllocationsData.map((row, rowIndex) => (
-              <tr key={rowIndex} className={`${rowIndex % 2 === 0 ? "bg-green-50" : "bg-gray-200"}`}>
+              <tr
+                key={rowIndex}
+                className={`${
+                  rowIndex % 2 === 0 ? "bg-green-50" : "bg-gray-200"
+                }`}
+              >
                 <td className="border-2 border-white text-center px-8 sticky left-0 z-10 bg-gray-100 font-bold">
                   {row.name}
                 </td>
