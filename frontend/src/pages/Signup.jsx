@@ -16,7 +16,7 @@ export default function SignupPage({ sidebarToggle }) {
         </div>
         <div className="bg-gray-200 py-8 px-4 my-8 rounded-lg shadow-2xl">
           <Header
-            heading="Signup to create an account"
+            heading="Sign-Up your account"
             paragraph="Already have an account? "
             linkName="Login"
             linkUrl="/LoginOrSignup"
