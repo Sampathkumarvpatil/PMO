@@ -7,7 +7,7 @@ export default function Header({
     linkUrl="#"
 }){
     return(
-        <div className="mb-10 ">
+        <div className="mb-10">
             <div className="flex justify-center">
                 <img 
                     alt=""
@@ -19,7 +19,7 @@ export default function Header({
             </h2>
             <p className=" text-center text-sm text-gray-600 mt-5">
             {paragraph} {' '}
-            <Link to={linkUrl} className="font-medium text-purple-600 hover:text-purple-500">
+            <Link to={linkUrl} className="font-medium text-blue-600 hover:text-black">
                 {linkName}
             </Link>
             </p>

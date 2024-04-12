@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import StatusTable from './components/StatusTable';
 
@@ -68,6 +68,10 @@ const handleAddStatus = () => {
     const updatedStatusData = { ...storedStatus, [id]: updatedStatusList };
     localStorage.setItem('status', JSON.stringify(updatedStatusData));
   };
+  const navigate = useNavigate()
+  const onSubmitHandler = () =>{
+    navigate("/list")
+  }
   
 
   return (
@@ -107,6 +111,7 @@ const handleAddStatus = () => {
         </button>
 
         <button className='bg-blue-600 border-2 border-blue-600 text-white text-[14px] rounded-md px-4 py-3 m-2 mt-7 hover:bg-white hover:text-blue-600'
+        onClick={onSubmitHandler}
         >
           Submit
         </button>

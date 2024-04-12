@@ -24,7 +24,8 @@ export default function Signup() {
   const createAccount = () => {};
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
+      
       <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
         <div className="">
           {fields.map((field) => (
@@ -41,7 +42,7 @@ export default function Signup() {
               placeholder={field.placeholder}
             />
           ))}
-          <FormAction handleSubmit={handleSubmit} text="Signup" />
+          <FormAction handleSubmit={handleSubmit} text="Signup"/>
         </div>
       </form>
     </div>
