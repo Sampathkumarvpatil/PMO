@@ -48,7 +48,7 @@ const FunnelChartComponent = () => {
       height: 340,
       backgroundColor: "rgb(254, 251, 254)",
       borderColor: "black", // Add this line
-      borderWidth: 5, // Add this line
+      borderWidth: 0, // Add this line
     },
     title: {
       text: "Completion Rate Overview  ",
@@ -136,7 +136,7 @@ const FunnelChartComponent = () => {
   };
 
   return (
-    <div>
+    <div className="border-2 border-black">
       {/* <header className="sprint-header">
                 <img src={logo} alt="Logo" className="sprint-logo" />
             </header> */}

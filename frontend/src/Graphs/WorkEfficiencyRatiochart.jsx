@@ -94,7 +94,7 @@ const WorkEfficiencyRatiochartcomponent = ({ sidebarToggle }) => {
   };
 
   return (
-    <div>
+    <div className="border-2 border-black">
       {/* <header className="sprint-header">
            
                 <h1 style={{
@@ -109,6 +109,7 @@ const WorkEfficiencyRatiochartcomponent = ({ sidebarToggle }) => {
                 >
                     KPI's of {startSprint} : {endSprint}</h1>
             </header> */}
+
       <div>
         <HighchartsReact highcharts={Highcharts} options={chartOptions} />
       </div>

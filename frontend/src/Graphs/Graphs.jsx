@@ -30,7 +30,7 @@ const ChartComponent = () => {
       height: 340,
       backgroundColor: "rgb(254, 251, 254)",
       borderColor: "black", // Add this line
-      borderWidth: 5, // Add this line
+      borderWidth: 0, // Add this line
     },
     title: {
       text: "Planned Tasks",
@@ -105,7 +105,7 @@ const ChartComponent = () => {
   };
 
   return (
-    <div >
+    <div className="border-2 border-black">
       <div className="h-[100%]">
         <HighchartsReact highcharts={Highcharts} options={chartOptions} />
       </div>

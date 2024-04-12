@@ -32,7 +32,7 @@ const ColumnChartComponent = () => {
       height: 340,
       backgroundColor: "rgb(254, 251, 254)",
       borderColor: "black", // Add this line
-      borderWidth: 5, // Add this line
+      borderWidth: 0, // Add this line
     },
     title: {
       text: "Problem Detection Rates",
@@ -127,7 +127,7 @@ const ColumnChartComponent = () => {
   };
 
   return (
-    <div>
+    <div className="border-2 border-black flex justify-center">
       <HighchartsReact highcharts={Highcharts} options={chartOptions} />
     </div>
   );

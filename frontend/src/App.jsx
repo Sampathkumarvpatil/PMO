@@ -74,24 +74,24 @@ function App() {
           <Route path="/sprints" element={<Sprints sidebarToggle = {sidebarToggle}/>} />
           <Route path="/sprints/:sprintId" element={<Sprints sidebarToggle = {sidebarToggle}/>} />
           <Route path="/chart" element={
-            <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"} p-8  grid grid-cols-3 gap-4 h-screen overflow-hidden`}>
+          <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}  grid grid-cols-3  overflow-hidden h-full`}>
             <ChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" />
+            <GaugeChartComponent className="col-span-3 md:col-span-1" />
             <FunnelChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" />
+            <SpeedometerChartComponent className="col-span-3 md:col-span-1" /> 
             <CylinderChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" />
             <ColumnChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" />
-            <GaugeChartComponent className="col-span-3 md:col-span-1" />
-            <SpeedometerChartComponent className="col-span-3 md:col-span-1" />
+            
           </div>
           
           } />
           <Route path="/multipleSprintsChart" element={
-            <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"} flex flex-wrap grid grid-cols-3 gap-4 h-screen overflow-hidden`}>
-             <WorkEfficiencyRatiochart/>
-              <Problemdetcationratesprintchart/>
-              <ExtraTaskbysprintsChartComponent/>
-              <CompletionRateOverviewbysprintsComponent/>
+            <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"} flex flex-wrap grid grid-cols-3 h-screen overflow-hidden`}>
               <SprientsColumnChartComponent/>
-              
+              <ExtraTaskbysprintsChartComponent/>
+              <WorkEfficiencyRatiochart/>
+              <CompletionRateOverviewbysprintsComponent/>
+              <Problemdetcationratesprintchart/>
             </div>
           } />
       </Routes>

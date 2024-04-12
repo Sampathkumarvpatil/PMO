@@ -27,11 +27,11 @@ const GaugeChartComponent = () => {
                 depth: 250,
                 viewDistance: 25
             },
-            width: 383,
+            width: 410,
             height: 340,
             backgroundColor: 'rgb(254, 251, 254)',
             borderColor: 'black', // Add this line
-            borderWidth: 5, // Add this line
+            borderWidth: 0, // Add this line
         },
         title: {
             text: 'Task Completed',
@@ -115,7 +115,7 @@ const GaugeChartComponent = () => {
 
 
     return (
-        <div>
+        <div className='border-black border-2 flex justify-center'>
             <HighchartsReact
                 highcharts={Highcharts}
                 options={chartOptions}

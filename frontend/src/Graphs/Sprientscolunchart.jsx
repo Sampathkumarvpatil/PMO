@@ -77,7 +77,7 @@ const SprintsColumnChartComponent = ({ sidebarToggle }) => {
   };
 
   return (
-    <div>
+    <div className="border-2 border-black">
       <HighchartsReact highcharts={Highcharts} options={chartOptions} />
     </div>
   );
