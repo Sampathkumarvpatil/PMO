@@ -7,7 +7,7 @@ export default function SignupPage({ sidebarToggle }) {
   return (
     <>
       <div
-        className={`flex justify-center transition-all duration-300 ${
+        className={`flex justify-center transition-all duration-300 my-auto ${
           sidebarToggle ? "ml-0" : "ml-64"
         }`}
       >

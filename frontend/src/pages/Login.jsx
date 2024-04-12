@@ -4,7 +4,7 @@ import loginGif from "../assets/header-login.webp"
 export default function LoginPage({ sidebarToggle }){
     return(
         <>
-              <div className={`flex justify-center transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"
+              <div className={`flex justify-center transition-all duration-300 my-auto ${sidebarToggle ? "ml-0" : "ml-64"
                     }`}>
              <div className="bg-gray-200 p-8 my-8 rounded-lg shadow-2xl">
              <Header

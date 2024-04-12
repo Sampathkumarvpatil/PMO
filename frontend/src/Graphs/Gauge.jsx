@@ -11,11 +11,11 @@ pyramid3d(Highcharts);
 
 const GaugeChartComponent = () => {
     const location = useLocation();
-    const { extraTasksAdded = 0, plannedTasks, extraTasksRate } = location.state || {};
-    const formattedPlannedTasks = Number(plannedTasks.toFixed(3));
+    const { extraTasksAdded = 0, plannedTasks, extraTasksRate,tasksCompleted } = location.state || {};
+    const formattedPlannedTasks = Number(tasksCompleted.toFixed(3));
     const formattedExtraTasksAdded = Number(extraTasksAdded.toFixed(3));
     const formattedExtraTasksRate = Number(extraTasksRate.toFixed(3));
-
+    console.log(plannedTasks)
 
 
     const chartOptions = {
@@ -34,7 +34,7 @@ const GaugeChartComponent = () => {
             borderWidth: 5, // Add this line
         },
         title: {
-            text: 'Task Completion',
+            text: 'Task Completed',
             style: {
                 fontSize: '24px'
             }

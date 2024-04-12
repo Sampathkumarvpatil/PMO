@@ -33,7 +33,7 @@ const ChartComponent = () => {
       borderWidth: 5, // Add this line
     },
     title: {
-      text: "Planned Tasks Completion",
+      text: "Planned Tasks",
     },
     plotOptions: {
       series: {
