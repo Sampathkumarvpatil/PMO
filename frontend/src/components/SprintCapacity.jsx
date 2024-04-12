@@ -27,6 +27,12 @@ const SprintCapacity = ({ showGraph , setShowGraph}) => {
     setSelectedSprint(sprint);
 
     if (sprint) {
+
+      if (!sprint.allocations) {
+        alert("Allocations data is not available. Please check your data.");
+        return;
+      }
+
       setStoredAllocationsData(sprint.allocations || []);
       setDateWeekdayPairs(generateDateWeekdayPairs(sprint.startDate, sprint.endDate));
       // Fetch TotalCeremonyHours from localStorage

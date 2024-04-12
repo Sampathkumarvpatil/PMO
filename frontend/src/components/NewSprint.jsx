@@ -124,7 +124,7 @@ const NewSprint = ({refreshSprint}) => {
   };
  
   return (
-    <div className={`flex justify-center items-center mt-16`}>
+    <div className={`flex justify-center items-center`}>
       <div className="w-96 p-6 shadow-lg rounded-md container">
         <h2 className="text-2xl block text-center font-bold mb-14 text-purple-500">
           New Sprint
