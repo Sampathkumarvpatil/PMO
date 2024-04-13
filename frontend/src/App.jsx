@@ -36,6 +36,7 @@ import Getpdf from "../src/boardcomponent/Getpdf";
 import SprintVizualization from "./components/SprintVizualization";
 import SignupPage from './pages/Signup';
 import LoginPage from './pages/Login';
+import FileUpload from "./components/FileUpload";
 
 
 
@@ -93,6 +94,8 @@ function App() {
               <Problemdetcationratesprintchart/>
             </div>
           } />
+
+          <Route path="/uploadFile" element={<FileUpload sidebarToggle={sidebarToggle}/>} />
       </Routes>
     </BrowserRouter>
   );

@@ -109,7 +109,8 @@ const Home = ({sidebarToggle}) => {
       socket.emit('leave_room'); // Emit leave_room event for creator
       
       const storedTasks = JSON.parse(localStorage.getItem(`${taskId}`))
-      storedTasks[id]['totHours']=totalHours/users.length
+      storedTasks[id]['totHours'] = (totalHours / users.length).toFixed(2);
+
       
       localStorage.setItem(`${taskId}`, JSON.stringify(storedTasks));
     } else {
