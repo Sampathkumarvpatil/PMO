@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import LastButtons from './LastButtons';
 
 const FileUpload = ({sidebarToggle}) => {
   const [file, setFile] = useState(null);
@@ -44,7 +45,7 @@ const FileUpload = ({sidebarToggle}) => {
 
   return (
     <div className={`flex flex-col justify-center transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"} ${sidebarToggle ? "w-[100%]" : "w-[75%]"}`}>
-      <h2 className="text-2xl font-semibold text-center my-4 text-[30px] font-bold">Upload Files</h2>
+      <h2 className="text-2xl text-center my-4 text-[30px] font-bold">Upload Files</h2>
       <div className="flex justify-center items-center my-4">
         <input type="file" onChange={handleFileChange} className="bg-gray-200 p-2 rounded-md mr-2" />
         <button onClick={handleUpload} className="bg-blue-500 text-white px-4 py-2 rounded-md">Upload</button>
@@ -59,6 +60,7 @@ const FileUpload = ({sidebarToggle}) => {
           </div>
         ))}
       </div>
+      <LastButtons current={'FileUpload'} />
     </div>
   );
 };

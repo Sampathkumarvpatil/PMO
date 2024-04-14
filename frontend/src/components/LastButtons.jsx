@@ -1,13 +1,14 @@
-import React from 'react'
-import './newInputs.css'
-import { useNavigate } from 'react-router-dom'
+import React from "react";
+import "./newInputs.css";
+import { useNavigate } from "react-router-dom";
+import "./lastButtons.css";
 
 const LastButtons = ({ current }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const back = () => {
     if (current === "Dashboard") {
-      return;
+      navigate("/NewProject");
     } else if (current === "AllocationInput") {
       navigate("/");
     } else if (current === "AttendanceTable") {
@@ -16,8 +17,10 @@ const LastButtons = ({ current }) => {
       navigate("/AttendanceTable");
     } else if (current === "Sprints") {
       navigate("/list");
+    }else if (current === "FileUpload") {
+      navigate("/KPI's");
     }
-  }
+  };
   const next = () => {
     if (current === "Dashboard") {
       navigate("/AllocationAndHoliday");
@@ -28,27 +31,32 @@ const LastButtons = ({ current }) => {
     } else if (current === "TaskForm") {
       navigate("/KPI's");
     } else if (current === "Sprints") {
-      // navigate("/retrospective");
-      return
-      // } else if (current === "Home") {
-      //   return
+      navigate("/uploadFile");
+    } else if (current === "FileUpload") {
+      navigate("/");
     }
-  }
+  };
   return (
     <>
-
       <div className="flex justify-center items-center mt-8 gap-9">
         <div>
-          <button
-          style={{
-            background:
-              "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
-          }}
-            className="text-white font-bold py-2 px-4 w-40 rounded-xl border-2 border-gray-300 shadow-xl hover:bg-white hover:text-black hover:border-2 hover:border-black"
-            
-            onClick={() => back()}
-          >
-            Back
+          <button className="animated-button2" onClick={() => back()}>
+            <svg
+              viewBox="0 0 24 24"
+              class="arr-2"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M8.8284 10.9999L14.1924 5.63589L12.7782 4.22168L5 11.9999L12.7782 19.778L14.1924 18.3638L8.8284 12.9999H21V10.9999H8.8284Z"></path>
+            </svg>
+            <span class="text">Back</span>
+            <span class="circle"></span>
+            <svg
+              viewBox="0 0 24 24"
+              class="arr-1"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M8.8284 10.9999L14.1924 5.63589L12.7782 4.22168L5 11.9999L12.7782 19.778L14.1924 18.3638L8.8284 12.9999H21V10.9999H8.8284Z"></path>
+            </svg>
           </button>
         </div>
         <div>
@@ -64,20 +72,28 @@ const LastButtons = ({ current }) => {
         </div>
 
         <div>
-          <button
-            className="text-white font-bold py-2 px-4 w-40 rounded-xl border-2 border-gray-300 shadow-xl hover:bg-white hover:text-black hover:border-2 hover:border-black"
-            style={{
-              background:
-                "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
-            }}
-            onClick={() => next()}
-          >
-            Next
+          <button className="animated-button" onClick={() => next()}>
+            <svg
+              viewBox="0 0 24 24"
+              class="arr-2"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+            </svg>
+            <span class="text">Next</span>
+            <span class="circle"></span>
+            <svg
+              viewBox="0 0 24 24"
+              class="arr-1"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+            </svg>
           </button>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default LastButtons
+export default LastButtons;
