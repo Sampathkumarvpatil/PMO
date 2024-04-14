@@ -12,14 +12,14 @@ export default function Header({
                 <img 
                     alt=""
                     className="h-14 w-40"
-                    src="https://emp.infogen-labs.com/img/logo.png"/>
+                    src="https://corp.infogen-labs.com/images/logo_infogen_gray.png"/>
             </div>
-            <h2 className="mt-6 text-center text-3xl font-light text-gray-900">
+            <h2 className="mt-6 text-center text-3xl font-light text-white">
                 {heading}
             </h2>
-            <p className=" text-center text-sm text-gray-600 mt-5">
+            <p className=" text-center text-sm text-gray-100 mt-5">
             {paragraph} {' '}
-            <Link to={linkUrl} className="font-medium text-blue-600 hover:text-black">
+            <Link to={linkUrl} className="font-medium text-red-600 hover:text-black">
                 {linkName}
             </Link>
             </p>
