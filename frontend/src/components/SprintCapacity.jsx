@@ -99,26 +99,26 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
       cellValue === "0"
         ? "red" // Red background color for absent days
         : cellValue === "4"
-        ? "blue"
-        : cellValue === 4
-        ? "blue" // Blue background color for half-day
-        : cellValue === "8"
-        ? "inherit"
-        : isWeekend
-        ? "gray" // Gray background color for Saturdays and Sundays
-        : "inherit"; // Default background color
+          ? "blue"
+          : cellValue === 4
+            ? "blue" // Blue background color for half-day
+            : cellValue === "8"
+              ? "inherit"
+              : isWeekend
+                ? "gray" // Gray background color for Saturdays and Sundays
+                : "inherit"; // Default background color
 
     const textColor = isWeekend
       ? cellValue === "8"
         ? "black"
         : "white"
       : cellValue === "0"
-      ? "white"
-      : cellValue === "4"
-      ? "white"
-      : cellValue === 4
-      ? "white"
-      : "black";
+        ? "white"
+        : cellValue === "4"
+          ? "white"
+          : cellValue === 4
+            ? "white"
+            : "black";
 
     return (
       <td
@@ -285,95 +285,93 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
   };
   return (
     <div className={``}>
-      <div className="mt-8 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg flex justify-center">
-        <table className="min-w-max border border-collapse-2 border-white rounded-xl bg-gray-100">
-          <thead>
-            <tr>
-              <th className="sticky left-0 z-10 bg-gray-200">Days</th>
-              <th className="sticky left-28 z-10 bg-gray-200"></th>
-              {dateWeekdayPairs.map((pair, index) => (
-                <th
-                  key={index}
-                  className="bg-gray-100 border-2 border-white text-center"
-                >
-                  <div className="flex items-end py-1 vertical-date1">
-                    {pair.weekday}
-                  </div>
-                </th>
-              ))}
-            </tr>
-            <tr>
-              <th className="border-2 border-white sticky left-0 z-10 bg-gray-100 font-mono">
-                Team <br />
-                Members
-              </th>
-              <th className="border-2 border-white sticky left-28 z-10 bg-gray-100 font-mono">
-                Roles
-              </th>
-              {dateWeekdayPairs.map((pair, index) => (
-                <th
-                  key={index}
-                  className="bg-gray-300 border-2 border-white whitespace-nowrap text-center"
-                >
-                  <div className="flex items-center py-2 vertical-date">
-                    {pair.date}
-                  </div>
-                </th>
-              ))}
-              <th className="border-2 border-white px-2 sticky top-0 bg-gray-100 z-20">
-                Total Hours
-              </th>
-              <th className="border-2 border-white px-2 sticky top-0 bg-gray-100 z-20">
-                Net Available <br /> Time <br /> post meeting
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {storedAllocationsData.map((row, rowIndex) => (
-              <tr
-                key={rowIndex}
-                className={`${
-                  rowIndex % 2 === 0 ? "bg-green-50" : "bg-gray-200"
-                }`}
-              >
-                <td className="border-2 border-white text-center px-8 sticky left-0 z-10 bg-gray-100 font-bold">
-                  {row.name}
-                </td>
-                <td className="border-2 border-white px-6 text-center sticky left-28 z-10 bg-gray-100 font-semibold">
-                  {row.role}
-                </td>
-                {dateWeekdayPairs.map((pair, pairIndex) => (
-                  <React.Fragment key={pairIndex}>
-                    {renderAttendanceOptions(rowIndex, pair)}
-                  </React.Fragment>
+      <div className="mt-8 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg">
+        <div style={{ width: 'fit-content' }}>
+          <table className="min-w-max border border-collapse-2 border-white rounded-xl bg-gray-100">
+            <thead>
+              <tr>
+                <th className="sticky left-0 z-10 bg-gray-200">Days</th>
+                <th className="sticky left-28 z-10 bg-gray-200"></th>
+                {dateWeekdayPairs.map((pair, index) => (
+                  <th
+                    key={index}
+                    className="bg-gray-100 border-2 border-white text-center"
+                  >
+                    <div className="flex items-end py-1 vertical-date1">
+                      {pair.weekday}
+                    </div>
+                  </th>
                 ))}
-                <td className="border-2 border-white text-center font-mono">
-                  {calculateTotal(rowIndex) + totalCeremonyHours}
-                </td>
-                <td className="border-2 border-white text-center font-mono">
-                  {calculateTotal(rowIndex)}
-                </td>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="flex justify-between mt-2 mx-2 bg-gray-200 py-3 rounded-lg">
-        <div className="bg-green-600 text-white rounded-lg py-2 px-5 ml-2 font-mono text-lg w-60 text-center">
-          <h4>Grand Total</h4>
-        </div>
-        <div className="flex justify-center items-center gap-3 mr-4">
-          <div className="bg-green-600 px-5 py-2 rounded-lg text-white font-mono w-24 text-center">
-            <h4>{calculateGrandTotal()}</h4>
+              <tr>
+                <th className="border-2 border-white sticky left-0 z-10 bg-gray-100 font-mono">
+                  Team <br />
+                  Members
+                </th>
+                <th className="border-2 border-white sticky left-28 z-10 bg-gray-100 font-mono">
+                  Roles
+                </th>
+                {dateWeekdayPairs.map((pair, index) => (
+                  <th
+                    key={index}
+                    className="bg-gray-300 border-2 border-white whitespace-nowrap text-center"
+                  >
+                    <div className="flex items-center py-2 vertical-date">
+                      {pair.date}
+                    </div>
+                  </th>
+                ))}
+                <th className="border-2 border-white px-2 sticky top-0 bg-gray-100 z-20">
+                  Total Hours
+                </th>
+                <th className="border-2 border-white px-2 sticky top-0 bg-gray-100 z-20">
+                  Net Available <br /> Time <br /> post meeting
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {storedAllocationsData.map((row, rowIndex) => (
+                <tr
+                  key={rowIndex}
+                  className={`${rowIndex % 2 === 0 ? "bg-green-50" : "bg-gray-200"
+                    }`}
+                >
+                  <td className="border-2 border-white text-center px-8 sticky left-0 z-10 bg-gray-100 font-bold">
+                    {row.name}
+                  </td>
+                  <td className="border-2 border-white px-6 text-center sticky left-28 z-10 bg-gray-100 font-semibold">
+                    {row.role}
+                  </td>
+                  {dateWeekdayPairs.map((pair, pairIndex) => (
+                    <React.Fragment key={pairIndex}>
+                      {renderAttendanceOptions(rowIndex, pair)}
+                    </React.Fragment>
+                  ))}
+                  <td className="border-2 border-white text-center font-mono">
+                    {calculateTotal(rowIndex) + totalCeremonyHours}
+                  </td>
+                  <td className="border-2 border-white text-center font-mono">
+                    {calculateTotal(rowIndex)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="min-w-max flex justify-between mt-2 ml-2 bg-gray-200 py-3 rounded-lg">
+            <div className="bg-green-600 text-white rounded-lg py-2  ml-2 font-mono text-lg w-60 text-center sticky left-0 z-11">
+              <h4 className>Grand Total</h4>
+            </div>
+            <div className="flex justify-center items-center gap-3 mr-4">
+              <div className="bg-green-600 px-5 py-2 rounded-lg text-white font-mono w-24 text-center">
+                <h4>{calculateGrandTotal()}</h4>
+              </div>
+              <div className="bg-green-600 px-5 py-2 rounded-lg text-white font-mono w-24 text-center">
+                <h4>{calculateEffectiveTotal()}</h4>
+              </div>
+            </div>
           </div>
-          <div className="bg-green-600 px-5 py-2 rounded-lg text-white font-mono w-24 text-center">
-            <h4>{calculateEffectiveTotal()}</h4>
-          </div>
         </div>
       </div>
-
-      {/* <LastButtons current={'SprintCapacity'} /> */}
     </div>
   );
 };
