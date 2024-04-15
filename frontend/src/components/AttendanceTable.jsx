@@ -15,13 +15,21 @@ const AttendanceTable = ({ sidebarToggle }) => {
 
 
   useEffect(() => {
-    // Retrieve stored attendance data and allocations data
-    const storedData = JSON.parse(localStorage.getItem("attendanceData")) || [];
-    setSelectedValues(storedData);
-
     // Retrieve selected project and sprint from local storage
     const selectedProjectName = localStorage.getItem("selectedProjectName");
     const selectedSprintName = localStorage.getItem("selectedSprintName");
+
+    // Retrieve stored attendance data and allocations data
+
+    const sData = JSON.parse(localStorage.getItem("attendanceData")) || [];
+    let storedData = sData;
+    if (sData) {
+      storedData = sData[`${selectedProjectName}${selectedSprintName}`] || [];
+    }
+    
+    setSelectedValues(storedData);
+    
+    
 
     // Fetch main company data from localStorage
     const mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
@@ -82,7 +90,9 @@ const AttendanceTable = ({ sidebarToggle }) => {
     }
 
     setSelectedValues(updatedValues);
-    localStorage.setItem("attendanceData", JSON.stringify(updatedValues));
+    const attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || {}
+    attendanceData[`${selectedProjectName}${selectedSprintName}`] = updatedValues
+    localStorage.setItem("attendanceData", JSON.stringify(attendanceData));
 
     // Update main company data with selected values for the current sprint
     if (selectedProject && selectedSprint) {

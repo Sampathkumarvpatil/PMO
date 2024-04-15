@@ -140,9 +140,11 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
   };
 
   const calculateSubTotal = (rowIndex) => {
+    const selectedSprintName = localStorage.getItem('selectedSprintName')
+    const selectedProjectName = localStorage.getItem('selectedProjectName')
     let subTotal = 0;
     const attendanceData =
-      JSON.parse(localStorage.getItem("attendanceData")) || [];
+      JSON.parse(localStorage.getItem("attendanceData"))[`${selectedProjectName}${selectedSprintName}`] || [];
     const row = storedAllocationsData[rowIndex];
     // console.log('storedAllocationsData[rowIndex]',storedAllocationsData[rowIndex].name)
 
