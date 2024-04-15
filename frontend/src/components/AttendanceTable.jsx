@@ -216,8 +216,8 @@ const AttendanceTable = ({ sidebarToggle }) => {
           {/* </select> */}
         </div>
       </div>
+      <div className="grid justify-center">
       <div className="py-1 mt-8 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg flex justify-flex-start">
-
         <table className="border border-collapse-2 border-white rounded-xl bg-gray-100">
           <thead>
             <tr>
@@ -258,7 +258,7 @@ const AttendanceTable = ({ sidebarToggle }) => {
             ))}
           </tbody>
         </table>
-
+        </div>
       </div>
 
       

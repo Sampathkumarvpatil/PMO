@@ -291,8 +291,8 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
     return grandTotal;
   };
   return (
-    <div className={``}>
-      <div className="mt-8 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg">
+    <div className="grid justify-center">
+      <div className="mt-8 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg grid justify-start">
         <div style={{ width: 'fit-content' }}>
           <table className="min-w-max border border-collapse-2 border-white rounded-xl bg-gray-100">
             <thead>
