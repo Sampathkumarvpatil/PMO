@@ -120,17 +120,6 @@ setRefreshSprint(!refreshSprint)
               required
             />
           </div>
-          <div className="mt-5">
-            <label htmlFor="resourcesTotalNumber" className="block text-base font-bold mb-2">
-              Validation Code: 
-            </label>
-            <input
-              type="text"
-              className="border w-full text-base px-2 py-2 focus:outline-none focus:ring-1 gray-600 rounded-lg"
-              placeholder="Enter Validation Code for Project"
-              required
-            />
-          </div>
 
           <div className="mt-5 text-center">
             <button onClick={handleCreateProject} className="text-white font-bold py-2 px-4 w-40 rounded-xl border-2 border-gray-300 shadow-xl" 

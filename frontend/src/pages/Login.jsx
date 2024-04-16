@@ -2,13 +2,11 @@ import Header from "../loginForm/Header";
 import Login from "../loginForm/Login";
 // import loginGif from "../assets/header-login.webp";
 import "./form.css"
-export default function LoginPage({ sidebarToggle }) {
+export default function LoginPage({buttonClick }) {
   return (
     <>
       <div
-        className={`flex justify-center transition-all duration-300 my-auto ${
-          sidebarToggle ? "ml-0" : "ml-64"
-        }`}
+        className={`flex justify-center transition-all duration-300 my-auto`}
       >
         <div className="wrapper bg-gray-200 p-8 my-8 rounded-lg shadow-2xl">
           <Header
@@ -17,7 +15,7 @@ export default function LoginPage({ sidebarToggle }) {
             linkName="Signup"
             linkUrl="/signup"
           />
-          <Login />
+          <Login buttonClick={buttonClick} />
         </div>
         {/* <div className="w-[500px] mt-8">
           <img src={loginGif} alt="" className="h-[530px] rounded-xl" />

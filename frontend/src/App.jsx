@@ -41,62 +41,83 @@ import FileUpload from "./components/FileUpload";
 
 
 function App() {
-  const [sidebarToggle , setSidebarToggle] = useState(true)
- 
-  const changeToogle = ()=>{
+  const [sidebarToggle, setSidebarToggle] = useState(true)
+  const [displayPmo, setDisplayPmo] = useState(false);
+  const changeToogle = () => {
     setSidebarToggle(!sidebarToggle)
-  } 
+  }
+
+  const buttonClick = () => {
+    setDisplayPmo(true)
+  }
   return (
     <BrowserRouter>
-    <Main changeToogle={changeToogle }
-    sidebarToggle = {sidebarToggle}
-    />
+      {/* {!displayPmo ? <LoginPage buttonClick={buttonClick}
+    />  : <></>} */}
+      {displayPmo ? <Main changeToogle={changeToogle}
+        sidebarToggle={sidebarToggle}
+      />
+        : null}
+      {/* {displayPmo ? <Routes> */}
       <Routes>
-        {/* <Route path="/" element={<Main />} /> */}
-        <Route path="/" element={<Dashboard sidebarToggle = {sidebarToggle}/>}/>
-        <Route path="/LoginOrSignup" element={<LoginPage sidebarToggle = {sidebarToggle}/>} />
-            <Route path="/signup" element={<SignupPage sidebarToggle = {sidebarToggle}/>} />
-        <Route path="/NewProject" element={<NewProject sidebarToggle = {sidebarToggle}/>} />
-        {/* <Route path="/NewSprint" element={<NewSprint sidebarToggle = {sidebarToggle}/>} /> */}
-        <Route path="/AllocationAndHoliday" element={<AllocationInput sidebarToggle = {sidebarToggle}/>} />
-        <Route path="/AttendanceTable" element={<AttendanceTable sidebarToggle = {sidebarToggle}/>} />
+        {/* <Route path="/login" element={<LoginPage buttonClick={buttonClick} />}/>
+        <Route path="/signup" element={<SignupPage />} /> */}
+        {displayPmo ? (
+          <>
+            {/* <Route path="/" element={<Main />} /> */}
+            <Route path="/" element={<NewProject sidebarToggle={sidebarToggle} />} />
+            <Route path="/Dashboard" element={<Dashboard sidebarToggle={sidebarToggle} />} />
+            {/* <Route path="/LoginOrSignup" element={<LoginPage sidebarToggle = {sidebarToggle}/>} /> */}
+            {/* <Route path="/signup" element={<SignupPage sidebarToggle = {sidebarToggle}/>} /> */}
 
-        {/* <Route path="/:id/Kpi" element={<KpiRoute sidebarToggle = {sidebarToggle}/>} /> */}
-        {/* <Route path='/list' element={<ProjectList sidebarToggle = {sidebarToggle}/>}/> */}
-        <Route path='/list' element={<TaskForm sidebarToggle = {sidebarToggle}/>} />
-        <Route path='/planningpoker/:id' element={<Home sidebarToggle = {sidebarToggle}/>}/>  
-        <Route path='/list/status/:id' element={<Status sidebarToggle = {sidebarToggle}/>}/>   
+            {/* <Route path="/NewSprint" element={<NewSprint sidebarToggle = {sidebarToggle}/>} /> */}
+            <Route path="/AllocationAndHoliday" element={<AllocationInput sidebarToggle={sidebarToggle} />} />
+            <Route path="/AttendanceTable" element={<AttendanceTable sidebarToggle={sidebarToggle} />} />
 
-        <Route path="/retrospective" element={<BoardHome sidebarToggle = {sidebarToggle}/>}></Route>
-        <Route path="/retrospective/:id" element={<Room sidebarToggle = {sidebarToggle}/>}></Route>
-        <Route path="/retrospective/:id/download" element={<Getpdf sidebarToggle = {sidebarToggle}/>}></Route>
+            {/* <Route path="/:id/Kpi" element={<KpiRoute sidebarToggle = {sidebarToggle}/>} /> */}
+            {/* <Route path='/list' element={<ProjectList sidebarToggle = {sidebarToggle}/>}/> */}
+            <Route path='/list' element={<TaskForm sidebarToggle={sidebarToggle} />} />
+            <Route path='/planningpoker/:id' element={<Home sidebarToggle={sidebarToggle} />} />
+            <Route path='/list/status/:id' element={<Status sidebarToggle={sidebarToggle} />} />
 
-        <Route path="/KPI's" element={<Sprints sidebarToggle = {sidebarToggle}/>} />
-          <Route path="/sprints" element={<Sprints sidebarToggle = {sidebarToggle}/>} />
-          <Route path="/sprints/:sprintId" element={<Sprints sidebarToggle = {sidebarToggle}/>} />
-          <Route path="/chart" element={
-          <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"} flex flex-wrap grid grid-cols-3 overflow-hidden`}>
-            <ChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" />
-            <GaugeChartComponent className="col-span-3 md:col-span-1" />
-            <FunnelChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" />
-            <SpeedometerChartComponent className="col-span-3 md:col-span-1" /> 
-            <CylinderChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" />
-            <ColumnChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" /> 
-          </div>
-          
-          } />
-          <Route path="/multipleSprintsChart" element={
-            <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"} flex flex-wrap grid grid-cols-3 h-screen overflow-hidden`}>
-              <SprientsColumnChartComponent/>
-              <ExtraTaskbysprintsChartComponent/>
-              <WorkEfficiencyRatiochart/>
-              <CompletionRateOverviewbysprintsComponent/>
-              <Problemdetcationratesprintchart/>
-            </div>
-          } />
+            <Route path="/retrospective" element={<BoardHome sidebarToggle={sidebarToggle} />}></Route>
+            <Route path="/retrospective/:id" element={<Room sidebarToggle={sidebarToggle} />}></Route>
+            <Route path="/retrospective/:id/download" element={<Getpdf sidebarToggle={sidebarToggle} />}></Route>
 
-          <Route path="/uploadFile" element={<FileUpload sidebarToggle={sidebarToggle}/>} />
+            <Route path="/KPI's" element={<Sprints sidebarToggle={sidebarToggle} />} />
+            <Route path="/sprints" element={<Sprints sidebarToggle={sidebarToggle} />} />
+            <Route path="/sprints/:sprintId" element={<Sprints sidebarToggle={sidebarToggle} />} />
+            <Route path="/chart" element={
+              <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"} flex flex-wrap grid grid-cols-3 overflow-hidden`}>
+                <ChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" />
+                <GaugeChartComponent className="col-span-3 md:col-span-1" />
+                <FunnelChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" />
+                <SpeedometerChartComponent className="col-span-3 md:col-span-1" />
+                <CylinderChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" />
+                <ColumnChartComponent sidebarToggle={sidebarToggle} className="col-span-3 md:col-span-1" />
+              </div>
+
+            } />
+            <Route path="/multipleSprintsChart" element={
+              <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"} flex flex-wrap grid grid-cols-3 h-screen overflow-hidden`}>
+                <SprientsColumnChartComponent />
+                <ExtraTaskbysprintsChartComponent />
+                <WorkEfficiencyRatiochart />
+                <CompletionRateOverviewbysprintsComponent />
+                <Problemdetcationratesprintchart />
+              </div>
+            } />
+
+            <Route path="/uploadFile" element={<FileUpload sidebarToggle={sidebarToggle} />} />
+          </>
+        ) : (
+          <>
+            <Route path="*" element={<LoginPage buttonClick={buttonClick} />} />
+            <Route path="/signup" element={<SignupPage />} />
+          </>
+        )}
       </Routes>
+      {/* : null} */}
     </BrowserRouter>
   );
 }

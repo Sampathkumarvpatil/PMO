@@ -3,26 +3,27 @@ import { loginFields } from "../constants/formFields";
 import FormAction from "./FormAction";
 import FormExtra from "./FormExtra";
 import Input from "./Input";
-
+ 
 const fields = loginFields;
 let fieldsState = {};
 fields.forEach((field) => (fieldsState[field.id] = ""));
-
-export default function Login() {
+ 
+export default function Login({buttonClick}) {
   const [loginState, setLoginState] = useState(fieldsState);
-
+ 
   const handleChange = (e) => {
     setLoginState({ ...loginState, [e.target.id]: e.target.value });
   };
-
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     authenticateUser();
+    buttonClick();
   };
-
+ 
   //Handle Login API Integration here
   const authenticateUser = () => { };
-
+ 
   return (
     <div className="w-100">
       <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -49,7 +50,7 @@ export default function Login() {
             />
           ))}
         {/* </div> */}
-
+ 
         <FormExtra />
         <FormAction handleSubmit={handleSubmit} text="Login" />
       </form>

@@ -114,7 +114,7 @@ const NewSprint = ({refreshSprint}) => {
 
  
     setTimeout(() => {
-      navigate("/");
+      navigate("/Dashboard");
  
      
     }, 2000);

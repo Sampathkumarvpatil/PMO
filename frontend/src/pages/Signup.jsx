@@ -4,13 +4,11 @@ import Signup from "../loginForm/Signup";
 import "./form.css"
 
 
-export default function SignupPage({ sidebarToggle }) {
+export default function SignupPage() {
   return (
     <>
       <div
-        className={`flex justify-center transition-all duration-300 my-auto ${
-          sidebarToggle ? "ml-0" : "ml-64"
-        }`}
+        className={`flex justify-center transition-all duration-300 my-auto`}
       >
         {/* <div className="w-[475px] mt-8">
           <img src={signUpImage} alt="" className="h-[625px] rounded-xl" />
@@ -20,7 +18,7 @@ export default function SignupPage({ sidebarToggle }) {
             heading="Sign-Up your account"
             paragraph="Already have an account? "
             linkName="Login"
-            linkUrl="/LoginOrSignup"
+            linkUrl="/"
           />
           <Signup />
         </div>

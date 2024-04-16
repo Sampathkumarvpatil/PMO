@@ -8,9 +8,9 @@ const LastButtons = ({ current }) => {
 
   const back = () => {
     if (current === "Dashboard") {
-      navigate("/NewProject");
-    } else if (current === "AllocationInput") {
       navigate("/");
+    } else if (current === "AllocationInput") {
+      navigate("/Dashboard");
     } else if (current === "AttendanceTable") {
       navigate("/AllocationAndHoliday");
     } else if (current === "TaskForm") {

@@ -1,7 +1,7 @@
 import React from "react";
 import "../Sidebar.css";
 import { Link } from "react-router-dom";
-
+ 
  
 import {
   FaRegFileArchive,
@@ -26,14 +26,14 @@ const Sidebar = ({sidebarToggle}) => {
         />
       </div>
       <ul className="mt-3 ml-3 font-bold">
-      <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
+      {/* <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/LoginOrSignup" className="px-3">
             <FaUser className="inline-block w-6 h-6 mr-2 -mt-2"></FaUser>
             Login/SignUp
           </Link>
-        </li>
+        </li> */}
         <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
-          <Link to="/NewProject" className="px-3">
+          <Link to="/" className="px-3">
             <FaFolderOpen className="inline-block w-6 h-6 mr-2 -mt-2"></FaFolderOpen>
             Add New Project/Sprint
           </Link>
@@ -45,7 +45,7 @@ const Sidebar = ({sidebarToggle}) => {
           </Link>
         </li> */}
         <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
-          <Link to="/" className="px-3">
+          <Link to="/Dashboard" className="px-3">
             <FaTable className="inline-block w-6 h-6 mr-2 -mt-2"></FaTable>
             Sprint Ceremony Organiser
           </Link>
@@ -77,27 +77,27 @@ const Sidebar = ({sidebarToggle}) => {
         <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/list" className="px-3">
             <FaProjectDiagram className="inline-block w-6 h-6 mr-2 -mt-2"></FaProjectDiagram>
-            
+           
             Sprint Status
           </Link>
         </li>
         <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/KPI's" className="px-3">
             <FaChartBar className="inline-block w-6 h-6 mr-2 -mt-2"></FaChartBar>
-            
+           
             Sprint KPI's
           </Link>
         </li>
-
-
+ 
+ 
         <li className=" rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/uploadFile" className="px-3">  
               <FaList className="inline-block w-6 h-6 mr-2 -mt-2"></FaList>
                 Upload Files
           </Link>
           </li>
-        
-
+       
+ 
         <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/retrospective" className="px-3">
             <FaList className="inline-block w-6 h-6 mr-2 -mt-2"></FaList>
@@ -105,8 +105,8 @@ const Sidebar = ({sidebarToggle}) => {
             Sprint Retrospective
           </Link>
         </li>
-
-        
+ 
+       
       </ul>
     </div>
   );
