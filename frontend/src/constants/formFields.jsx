@@ -18,6 +18,16 @@ const loginFields=[
         autoComplete:"current-password",
         isRequired:true,
         placeholder:"Password"   
+    },
+    {
+        labelText:"Validation Code",
+        labelFor:"validation",
+        id:"validation",
+        name:"validation",
+        type:"text",
+        autoComplete:"validation",
+        isRequired:true,
+        placeholder:"Validation Key"   
     }
 ]
 
@@ -61,6 +71,26 @@ const signupFields=[
         autoComplete:"confirm-password",
         isRequired:true,
         placeholder:"Confirm Password"   
+    },
+    {
+        labelText:"BU Name",
+        labelFor:"BU Name",
+        id:"BU Name",
+        name:"BU Name",
+        type:"text",
+        autoComplete:"BU Name",
+        isRequired:true,
+        placeholder:"BU Name"   
+    },
+    {
+        labelText:"Validation Key",
+        labelFor:"validation",
+        id:"validation",
+        name:"validation",
+        type:"text",
+        autoComplete:"validation",
+        isRequired:true,
+        placeholder:"Validation Key"   
     }
 ]
 

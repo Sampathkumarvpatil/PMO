@@ -200,7 +200,6 @@ const AttendanceTable = ({ sidebarToggle }) => {
           {/* } */}
           {/* </select> */}
         </div>
-        <h1 className="mt-12">A clear, day-by-day attendance log to support effective sprint management and coordination.</h1>
         <div className="bg-blue-600 text-white rounded-xl p-1.5 pl-4 pr-4 flex items-center w-[19%] mt-8 mr-4">
           <label className="font-bold mr-2">Selected Sprint:</label>
           <h2 className="text-black rounded-lg pl-3 py-1 bg-white border shadow-xl w-[48%]">{selectedSprintName}</h2>
@@ -216,8 +215,9 @@ const AttendanceTable = ({ sidebarToggle }) => {
           {/* </select> */}
         </div>
       </div>
+      <h1 className="mt-4 text-center font-serif capitalize font-bold" style={{fontSize:'20px'}}>A clear, day-by-day attendance log to support effective sprint management and coordination.</h1>
       <div className="grid justify-center">
-      <div className="py-1 mt-8 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg flex justify-flex-start">
+      <div className="py-1 mt-2 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg flex justify-flex-start">
         <table className="border border-collapse-2 border-white rounded-xl bg-gray-100">
           <thead>
             <tr>
@@ -263,7 +263,7 @@ const AttendanceTable = ({ sidebarToggle }) => {
 
       
       <div className="my-20 border-t-2 border-gray-300 text-center ">
-      <h1 className="mt-16 font-mono px-24" style={{fontSize:'20px'}}>Review the complete availability and contribution hours of each team member for the entire sprint cycle, ensuring resource allocation aligns with project needs.</h1>
+      <h1 className="mt-16 text-center font-serif capitalize px-48 font-bold" style={{fontSize:'20px'}}>Review the complete availability and contribution hours of each team member for the entire sprint cycle, ensuring resource allocation aligns with project needs.</h1>
         <SprintCapacity showGraph={showGraph} setShowGraph={setShowGraph} />
       </div>
 

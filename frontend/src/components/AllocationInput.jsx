@@ -169,7 +169,6 @@ const AllocationInput = ({sidebarToggle}) => {
           {/* } */}
           {/* </select> */}
         </div>
-        <h1 className="mt-12">Allocate work hours efficiently and track upcoming holidays to ensure seamless project continuity.</h1>
         <div className="bg-blue-600 text-white rounded-xl p-1.5 pl-4 pr-4 flex items-center w-[19%] mt-8 mr-4">
           <label className="font-bold mr-2">Selected Sprint:</label>
           <h2 className="text-black rounded-lg pl-3 py-1 bg-white border shadow-xl w-[48%]">{selectedSprintName}</h2>
@@ -185,8 +184,9 @@ const AllocationInput = ({sidebarToggle}) => {
           {/* </select> */}
         </div>
       </div>
+      <h1 className="mt-4 text-center font-serif capitalize font-bold" style={{fontSize:'20px'}}>Allocate work hours efficiently and track upcoming holidays to ensure seamless project continuity.</h1>
       <div className={`grid grid-cols-5 gap-10 mx-2`}>
-      <div className="col-span-3 p-2 border border-red-100 my-5 ">
+      <div className="col-span-3 p-2 border border-red-100 my-2 ">
         <div className="flex justify-around gap-1.5 py-8 ">
           <div>
             <input
@@ -312,7 +312,7 @@ const AllocationInput = ({sidebarToggle}) => {
         </TableContainer>
     
       </div>
-      <div className="col-span-2 p-2 border border-red-100 my-5">
+      <div className="col-span-2 p-2 border border-red-100 my-2">
         <HolidayInputs/>
       </div>
       

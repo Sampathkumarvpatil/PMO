@@ -33,7 +33,7 @@ export default function Login() {
           <option className="px-4 py-2">Developers/Testers</option>
           </select>
         </div>
-        <div className="-space-y-px">
+        {/* <div className="-space-y-px"> */}
           {fields.map((field) => (
             <Input
               key={field.id}
@@ -48,7 +48,7 @@ export default function Login() {
               placeholder={field.placeholder}
             />
           ))}
-        </div>
+        {/* </div> */}
 
         <FormExtra />
         <FormAction handleSubmit={handleSubmit} text="Login" />
