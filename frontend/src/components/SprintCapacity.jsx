@@ -47,7 +47,7 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
       const effectiveTotal = calculateEffectiveTotal();
       setTotal(effectiveTotal); // Set the state for the effective total
     }
-    console.log("Consoled the use Effect");
+
     setShowGraph(!showGraph);
   }, []);
 
@@ -99,26 +99,26 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
       cellValue === "0"
         ? "red" // Red background color for absent days
         : cellValue === "4"
-          ? "blue"
-          : cellValue === 4
-            ? "blue" // Blue background color for half-day
-            : cellValue === "8"
-              ? "inherit"
-              : isWeekend
-                ? "gray" // Gray background color for Saturdays and Sundays
-                : "inherit"; // Default background color
+        ? "blue"
+        : cellValue === 4
+        ? "blue" // Blue background color for half-day
+        : cellValue === "8"
+        ? "inherit"
+        : isWeekend
+        ? "gray" // Gray background color for Saturdays and Sundays
+        : "inherit"; // Default background color
 
     const textColor = isWeekend
       ? cellValue === "8"
         ? "black"
         : "white"
       : cellValue === "0"
-        ? "white"
-        : cellValue === "4"
-          ? "white"
-          : cellValue === 4
-            ? "white"
-            : "black";
+      ? "white"
+      : cellValue === "4"
+      ? "white"
+      : cellValue === 4
+      ? "white"
+      : "black";
 
     return (
       <td
@@ -140,18 +140,17 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
   };
 
   const calculateSubTotal = (rowIndex) => {
-    const selectedSprintName = localStorage.getItem('selectedSprintName')
-    const selectedProjectName = localStorage.getItem('selectedProjectName')
+    const selectedSprintName = localStorage.getItem("selectedSprintName");
+    const selectedProjectName = localStorage.getItem("selectedProjectName");
     let subTotal = 0;
-    const atData = JSON.parse(localStorage.getItem("attendanceData"))
-    let attendanceData = []
-    if(atData && atData[`${selectedProjectName}${selectedSprintName}`]){
-      attendanceData = atData[`${selectedProjectName}${selectedSprintName}`]
+    const atData = JSON.parse(localStorage.getItem("attendanceData"));
+    let attendanceData = [];
+    if (atData && atData[`${selectedProjectName}${selectedSprintName}`]) {
+      attendanceData = atData[`${selectedProjectName}${selectedSprintName}`];
     }
     // const attendanceData =
     //   JSON.parse(localStorage.getItem("attendanceData"))[`${selectedProjectName}${selectedSprintName}`] || [];
     const row = storedAllocationsData[rowIndex];
-    // console.log('storedAllocationsData[rowIndex]',storedAllocationsData[rowIndex].name)
 
     for (const datePair of dateWeekdayPairs) {
       const date = datePair.date;
@@ -213,7 +212,6 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
       return project;
     });
 
-    // console.log(storedAllocationsData[rowIndex]);
     localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyData));
     // localStorage.setItem()
     return subTotal;
@@ -224,7 +222,6 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
     for (let i = 0; i < storedAllocationsData.length; i++) {
       grandTotal += calculateTotal(i);
       grandTotal = Number(grandTotal.toFixed(2));
-      console.log(grandTotal)
     }
 
     localStorage.setItem("effectiveHours", grandTotal);
@@ -293,7 +290,7 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
   return (
     <div className="grid justify-center">
       <div className="mt-2 mx-2 overflow-x-scroll border-4 border-gray-400 rounded-lg grid justify-start">
-        <div style={{ width: 'fit-content' }}>
+        <div style={{ width: "fit-content" }}>
           <table className="min-w-max border border-collapse-2 border-white rounded-xl bg-gray-100">
             <thead>
               <tr>
@@ -340,8 +337,9 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
               {storedAllocationsData.map((row, rowIndex) => (
                 <tr
                   key={rowIndex}
-                  className={`${rowIndex % 2 === 0 ? "bg-green-50" : "bg-gray-200"
-                    }`}
+                  className={`${
+                    rowIndex % 2 === 0 ? "bg-green-50" : "bg-gray-200"
+                  }`}
                 >
                   <td className="border-2 border-white text-center px-8 sticky left-0 z-10 bg-gray-100 font-bold">
                     {row.name}

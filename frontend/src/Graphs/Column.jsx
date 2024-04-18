@@ -17,7 +17,7 @@ const ColumnChartComponent = () => {
     postSprintDefectsRatio: 0,
   };
   const highestValue = Math.max(inSprintDefectsRatio, postSprintDefectsRatio);
-  console.log(location.state);
+
   const chartOptions = {
     chart: {
       type: "column",

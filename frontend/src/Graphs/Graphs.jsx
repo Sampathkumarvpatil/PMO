@@ -12,10 +12,10 @@ Highcharts3D(Highcharts);
 const ChartComponent = () => {
   const location = useLocation();
   const plannedTasks = location.state?.plannedTasks || 0;
-  console.log("pt", plannedTasks);
+
   const highestValue = Math.max(plannedTasks);
   //const selectedSprint = location.state?.selectedSprint || 'Sprint';
-  console.log(location.state);
+
   const chartOptions = {
     chart: {
       type: "column",

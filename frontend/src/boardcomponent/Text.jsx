@@ -11,8 +11,6 @@ function Test() {
   useEffect(() => {
     socket.on("message", (msg) => {
       setReceivedMessage(msg);
-      console.log(msg);
-      console.log("==========");
     });
 
     // return () => {

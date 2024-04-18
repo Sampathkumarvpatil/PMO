@@ -1,141 +1,139 @@
 import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 
-import "./vizualization.css"
-const SprintVizualization = ({showGraph, setShowGraph}) => {
-
+import "./vizualization.css";
+const SprintVizualization = ({ showGraph, setShowGraph }) => {
   // const [graphGenerated, setGraphGenerated] = useState(false);
   useEffect(() => {
-      generateGraph();  
+    generateGraph();
   }, [showGraph]);
 
   const generateGraph = () => {
-    const mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
+    const mainCompanyData =
+      JSON.parse(localStorage.getItem("mainCompanyData")) || [];
     let devNames = [];
-    let totalHoursPerDevData = []
+    let totalHoursPerDevData = [];
     let overallTotalHour = 0;
-  
+
     const selectedProjectName = localStorage.getItem("selectedProjectName");
     const selectedSprintName = localStorage.getItem("selectedSprintName");
-  
-    const selectedProject = mainCompanyData.find(project => project.projectName === selectedProjectName);
-  
+
+    const selectedProject = mainCompanyData.find(
+      (project) => project.projectName === selectedProjectName
+    );
+
     if (selectedProject) {
-      const selectedSprint = selectedProject.sprints.find(sprint => sprint.sprintName === selectedSprintName);
-      if (selectedSprint && selectedSprint.allocations) { // Check if allocations is defined
-        selectedSprint.allocations.forEach(allocation => {
+      const selectedSprint = selectedProject.sprints.find(
+        (sprint) => sprint.sprintName === selectedSprintName
+      );
+      if (selectedSprint && selectedSprint.allocations) {
+        // Check if allocations is defined
+        selectedSprint.allocations.forEach((allocation) => {
           devNames.push(allocation.name);
           totalHoursPerDevData.push(allocation.sumTotalWorkingHours);
         });
-        console.log(selectedSprint, "Trying to debug the sprint");
+
         overallTotalHour = parseInt(selectedSprint.final_hrs) || 0;
-        console.log(parseInt(selectedSprint.final_hrs));
       }
     }
-    
-  
+
     // devNames = [...new Set(devNames)];
-    console.log(devNames);
-    console.log(totalHoursPerDevData)
-  
+
     // const totalHoursPerDev = JSON.parse(localStorage.getItem("TotalHoursPerDev")) || [];
-  
-  
+
     const options = {
-        credits: {
-          enabled: false,
-        },
+      credits: {
+        enabled: false,
+      },
+      title: {
+        text: "Workload Distribution Visualization",
+        align: "left",
+      },
+      xAxis: {
+        categories: devNames,
+      },
+      yAxis: {
         title: {
-          text: "Workload Distribution Visualization",
-          align: "left",
+          text: "Total Hours",
         },
-        xAxis: {
-          categories: devNames,
+      },
+      tooltip: {
+        enabled: true,
+        valueSuffix: " hours",
+      },
+      plotOptions: {
+        series: {
+          borderRadius: "30%",
         },
-        yAxis: {
-          title: {
-            text: "Total Hours",
+        column: {
+          dataLabels: {
+            enabled: true,
+            format: "{point.y} hours",
           },
         },
-        tooltip: {
-          enabled: true,
-          valueSuffix: " hours",
-        },
-        plotOptions: {
-            series: {
-                borderRadius: "30%",
-              },
-          column: {
-            dataLabels: {
-              enabled: true,
-              format: "{point.y} hours",
-            },
-          },
-          line: {
-            dataLabels: {
-              enabled: true,
-              format: "{point.y} hours", // Display total hours on each line point
-            },
+        line: {
+          dataLabels: {
+            enabled: true,
+            format: "{point.y} hours", // Display total hours on each line point
           },
         },
-        series: [
-          {
-            type: "column",
-            name: "Hours",
-            data: totalHoursPerDevData,
+      },
+      series: [
+        {
+          type: "column",
+          name: "Hours",
+          data: totalHoursPerDevData,
+        },
+        {
+          type: "line",
+          step: "center",
+          name: "Average",
+          data: totalHoursPerDevData,
+          color: Highcharts.getOptions().colors[7],
+          marker: {
+            lineWidth: 2,
+            lineColor: Highcharts.getOptions().colors[2],
+            fillColor: "white",
           },
-          {
-            type: "line",
-            step: "center",
-            name: "Average",
-            data: totalHoursPerDevData,
-            color: Highcharts.getOptions().colors[7],
-            marker: {
-              lineWidth: 2,
-              lineColor: Highcharts.getOptions().colors[2],
-              fillColor: "white",
-            },
-          },
-          {
-            type: "pie",
-            name: "Grand Total",
-            data: [
-              {
-                name: "Employees Data",
-                y: overallTotalHour,
-                color: Highcharts.getOptions().colors[5],
-                dataLabels: {
-                  enabled: true,
-                  distance: -50,
-                  format: "{point.y} hr",
-                  style: {
+        },
+        {
+          type: "pie",
+          name: "Grand Total",
+          data: [
+            {
+              name: "Employees Data",
+              y: overallTotalHour,
+              color: Highcharts.getOptions().colors[5],
+              dataLabels: {
+                enabled: true,
+                distance: -50,
+                format: "{point.y} hr",
+                style: {
                   fontSize: "10px",
-                  },
                 },
               },
-            ],
-            center: [50, 15],
-            size: 100,
-            innerSize: "70%",
-            showInLegend: false,
-            dataLabels: {
-              enabled: false,
             },
+          ],
+          center: [50, 15],
+          size: 100,
+          innerSize: "70%",
+          showInLegend: false,
+          dataLabels: {
+            enabled: false,
           },
-        ],
-      };
-  
-      // Render Highcharts chart
-      Highcharts.chart("container", options);
+        },
+      ],
     };
-  
-    return(
-        <figure class="highcharts-figure">
-            <div id="container"></div>
-            
-        </figure>
 
-    )
+    // Render Highcharts chart
+    Highcharts.chart("container", options);
   };
+
+  return (
+    <figure class="highcharts-figure">
+      <div id="container"></div>
+    </figure>
+  );
+};
 
 export default SprintVizualization;

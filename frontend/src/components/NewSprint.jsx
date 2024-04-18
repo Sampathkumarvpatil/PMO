@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./newInputs.css";
-import {useNavigate} from "react-router-dom"
- 
- 
-const NewSprint = ({refreshSprint}) => {
+import { useNavigate } from "react-router-dom";
+
+const NewSprint = ({ refreshSprint }) => {
   const [mainCompanyArr, setMainCompanyArr] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [sprintName, setSprintName] = useState("");
@@ -11,28 +10,27 @@ const NewSprint = ({refreshSprint}) => {
   const [endDate, setEndDate] = useState("");
   const [numOfResources, setNumOfResources] = useState("");
   const [SprintCreated, setSprintCreated] = useState(false);
- 
+
   const navigate = useNavigate();
-  const selectedProjectName = localStorage.getItem('selectedProjectName')
+  const selectedProjectName = localStorage.getItem("selectedProjectName");
   useEffect(() => {
-    const dataFromLocalStorage = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
+    const dataFromLocalStorage =
+      JSON.parse(localStorage.getItem("mainCompanyData")) || [];
     setMainCompanyArr(dataFromLocalStorage);
     if (dataFromLocalStorage.length > 0) {
       setSelectedProject(dataFromLocalStorage[0]);
       setNumOfResources(dataFromLocalStorage[0].resources);
     }
   }, [refreshSprint]);
- 
+
   const handleProjectChange = (e) => {
     const projectName = e.target.value;
     const project = mainCompanyArr.find((p) => p.projectName === projectName);
     setSelectedProject(project);
     setNumOfResources(project.resources);
-   
   };
- 
+
   const handleCreateSprint = () => {
-   
     if (selectedProject) {
       const newSprint = {
         sprintName,
@@ -40,40 +38,43 @@ const NewSprint = ({refreshSprint}) => {
         endDate,
         numOfResources,
         remaining_hrs: 0,
-        final_hrs:0,
-        effective_hrs:0,
+        final_hrs: 0,
+        effective_hrs: 0,
       };
- 
+
       const updatedProject = {
         ...selectedProject,
         sprints: [...(selectedProject.sprints || []), newSprint],
       };
- 
+
       const updatedMainCompanyArr = mainCompanyArr.map((project) =>
-        project.projectName === selectedProject.projectName ? updatedProject : project
+        project.projectName === selectedProject.projectName
+          ? updatedProject
+          : project
       );
- 
+
       setMainCompanyArr(updatedMainCompanyArr);
-      localStorage.setItem("mainCompanyData", JSON.stringify(updatedMainCompanyArr));
+      localStorage.setItem(
+        "mainCompanyData",
+        JSON.stringify(updatedMainCompanyArr)
+      );
       // localStorage.setItem("sprintStartDate", startDate);
       // localStorage.setItem("sprintEndDate", endDate);
-      localStorage.setItem('selectedSprintName',sprintName)
+      localStorage.setItem("selectedSprintName", sprintName);
       // Reset the form fields
       setSprintName("");
       setStartDate("");
       setEndDate("");
       setNumOfResources("");
     }
-    if(!sprintName||!startDate||!endDate) {
-      alert('Please fill all the fields')
+    if (!sprintName || !startDate || !endDate) {
+      alert("Please fill all the fields");
       return;
-     
     }
- 
-   
+
     setSprintCreated(true);
- 
-    const data = JSON.parse(localStorage.getItem('sprintsData')) || {};
+
+    const data = JSON.parse(localStorage.getItem("sprintsData")) || {};
 
     // Check if the selected project name exists in the data
     if (data[selectedProjectName]) {
@@ -89,39 +90,34 @@ const NewSprint = ({refreshSprint}) => {
           postSprintDefects: 0,
           descopedTasks: 0,
           totalAvailableWorkHours: 0,
-        }
+        },
       });
     } else {
       // If the selected project name doesn't exist, create a new array with the sprintName object
-      data[selectedProjectName] = [{
-        [sprintName]: {
-          plannedTasks: 0,
-          tasksCompleted: 0,
-          extraTasksAdded: 0,
-          plannedWorkHours: 0,
-          workHoursUsed: 0,
-          inSprintDefects: 0,
-          postSprintDefects: 0,
-          descopedTasks: 0,
-          totalAvailableWorkHours: 0,
-        }
-      }];
+      data[selectedProjectName] = [
+        {
+          [sprintName]: {
+            plannedTasks: 0,
+            tasksCompleted: 0,
+            extraTasksAdded: 0,
+            plannedWorkHours: 0,
+            workHoursUsed: 0,
+            inSprintDefects: 0,
+            postSprintDefects: 0,
+            descopedTasks: 0,
+            totalAvailableWorkHours: 0,
+          },
+        },
+      ];
     }
 
-    console.log('data', data);
-    console.log('selected proj', selectedProjectName);
-    localStorage.setItem('sprintsData', JSON.stringify(data));
+    localStorage.setItem("sprintsData", JSON.stringify(data));
 
- 
     setTimeout(() => {
       navigate("/Dashboard");
- 
-     
     }, 2000);
- 
- 
   };
- 
+
   return (
     <div className={`flex justify-center items-center`}>
       <div className="w-96 p-6 shadow-lg rounded-md container">
@@ -129,7 +125,10 @@ const NewSprint = ({refreshSprint}) => {
           New Sprint
         </h2>
         <div className="mt-5">
-          <label htmlFor="projectName" className="block text-base font-bold mb-2">
+          <label
+            htmlFor="projectName"
+            className="block text-base font-bold mb-2"
+          >
             Project Name
           </label>
           <select
@@ -140,14 +139,17 @@ const NewSprint = ({refreshSprint}) => {
             value={selectedProject?.projectName || ""}
           >
             {mainCompanyArr.map((project) => (
-              <option key={project.projectName} value={project.projectName} >
+              <option key={project.projectName} value={project.projectName}>
                 {project.projectName}
               </option>
             ))}
           </select>
         </div>
         <div className="mt-5">
-          <label htmlFor="sprintName" className="block text-base font-bold mb-2">
+          <label
+            htmlFor="sprintName"
+            className="block text-base font-bold mb-2"
+          >
             Sprint Name
           </label>
           <input
@@ -161,7 +163,10 @@ const NewSprint = ({refreshSprint}) => {
           />
         </div>
         <div className="mt-5">
-          <label htmlFor="numOfResources" className="block text-base font-bold mb-2">
+          <label
+            htmlFor="numOfResources"
+            className="block text-base font-bold mb-2"
+          >
             Number of Resources
           </label>
           <input
@@ -199,7 +204,7 @@ const NewSprint = ({refreshSprint}) => {
           />
         </div>
         <div className="mt-5 text-center">
-        <button
+          <button
             onClick={handleCreateSprint}
             className="border-none font-semibold text-white rounded-lg px-4 py-2"
             style={{
@@ -222,7 +227,7 @@ const NewSprint = ({refreshSprint}) => {
           <div>
             {SprintCreated && (
               <div className="text-green-500 font-bold mt-4 text-center">
-              Your Sprint is created!
+                Your Sprint is created!
               </div>
             )}
           </div>
@@ -231,5 +236,5 @@ const NewSprint = ({refreshSprint}) => {
     </div>
   );
 };
- 
+
 export default NewSprint;

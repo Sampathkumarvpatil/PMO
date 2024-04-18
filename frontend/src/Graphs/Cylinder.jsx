@@ -23,7 +23,7 @@ const CylinderChartComponent = () => {
       workHoursUsed: 0,
     };
   const highestValue = Math.max(plannedWorkHours, workHoursUsed);
-  console.log(location.state);
+
   const chartOptions = {
     chart: {
       type: "cylinder",

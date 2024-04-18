@@ -13,7 +13,6 @@ const sortSprintData = (data) => {
   });
 };
 function Sprints({ sidebarToggle }) {
-  console.log("sbt", sidebarToggle);
   const navigate = useNavigate();
   const [selectedProject, setSelectedProject] = useState(null);
   const [startSprint, setStartSprint] = useState();
@@ -35,22 +34,17 @@ function Sprints({ sidebarToggle }) {
     setSelectedProject(selectedProject);
   }, []);
 
-  console.log(selectedProject,'sele')
   useEffect(() => {
-    const selectedProjectName =localStorage.getItem("selectedProjectName");
+    const selectedProjectName = localStorage.getItem("selectedProjectName");
 
-    console.log(selectedProjectName,selectedProject,'-----')
     const sData = JSON.parse(localStorage.getItem("sprintsData"));
-    // console.log(sData);
-    for (let key in Object.keys(sData[selectedProjectName])) {
-      // console.log('key',key)
-      let sName = Object.keys(sData[selectedProjectName][key])[0];
-      // console.log('first',sData[selectedProjectName][key])
-      // console.log('pname',selectedProjectName)
-      // console.log('sname',sName)
-      // console.log(sData[selectedProjectName][key][sName])
 
-      const tasks =JSON.parse(localStorage.getItem(`${selectedProjectName}${sName}`)) || {}
+    for (let key in Object.keys(sData[selectedProjectName])) {
+      let sName = Object.keys(sData[selectedProjectName][key])[0];
+
+      const tasks =
+        JSON.parse(localStorage.getItem(`${selectedProjectName}${sName}`)) ||
+        {};
       sData[selectedProjectName][key][sName]["plannedTasks"] =
         Object.values(tasks).length;
 
@@ -63,25 +57,28 @@ function Sprints({ sidebarToggle }) {
 
       sData[selectedProjectName][key][sName]["tasksCompleted"] = tasksCompleted;
 
-      const mainCompanyData = JSON.parse(localStorage.getItem('mainCompanyData'))
-      mainCompanyData.map((item)=>{
-        if(item.projectName == selectedProjectName){
-          item.sprints.map((it)=>{
-            if(it['sprintName'] == sName){
-              sData[selectedProjectName][key][sName]['workHoursUsed'] = it['remaining_hrs']
-              sData[selectedProjectName][key][sName]['totalAvailableWorkHours'] = it['final_hrs']
-              sData[selectedProjectName][key][sName]['plannedWorkHours'] = it['effective_hrs']
+      const mainCompanyData = JSON.parse(
+        localStorage.getItem("mainCompanyData")
+      );
+      mainCompanyData.map((item) => {
+        if (item.projectName == selectedProjectName) {
+          item.sprints.map((it) => {
+            if (it["sprintName"] == sName) {
+              sData[selectedProjectName][key][sName]["workHoursUsed"] =
+                it["remaining_hrs"];
+              sData[selectedProjectName][key][sName][
+                "totalAvailableWorkHours"
+              ] = it["final_hrs"];
+              sData[selectedProjectName][key][sName]["plannedWorkHours"] =
+                it["effective_hrs"];
             }
-          })
-        }  
-      })
-      // console.log('----',sData[selectedProjectName][key][sName])
-      localStorage.setItem('sprintsData',JSON.stringify(sData))
+          });
+        }
+      });
 
+      localStorage.setItem("sprintsData", JSON.stringify(sData));
     }
   }, []);
-
-  
 
   useEffect(() => {
     const selectedProjectName = localStorage.getItem("selectedProjectName");
@@ -99,11 +96,6 @@ function Sprints({ sidebarToggle }) {
         const sprintKeys = sortedSprintData.map(
           (sprint) => Object.keys(sprint)[0]
         );
-
-        // console.log('sortedSprintData',sortedSprintData)
-        // sortedSprintData.forEach((it)=>{
-        //   console.log(it)
-        // })
 
         setSprintsData(sortedSprintData);
         setSprintsList(sprintKeys);
@@ -132,9 +124,7 @@ function Sprints({ sidebarToggle }) {
         for (let i = startSprintIndex; i <= endSprintIndex; i++) {
           activeSprints.push(sprintsData[i]);
         }
-        // console.log("Im called and pushed..", activeSprints);
         setSelectedSprintData(activeSprints);
-        console.log(selectedSprintData);
       } else {
         setSelectedSprintData([]);
       }
@@ -166,7 +156,7 @@ function Sprints({ sidebarToggle }) {
       //     : 0;
       //   return sprintNumber >= startNumber && sprintNumber <= endNumber;
       // });
-      console.log(selectedSprintData);
+
       navigate("/multipleSprintsChart", {
         state: {
           selectedSprints: selectedSprintData,
@@ -176,7 +166,7 @@ function Sprints({ sidebarToggle }) {
       });
     } else {
       const singleSprintData = Object.values(selectedSprintData[0])[0];
-      console.log(singleSprintData);
+
       const completionRate =
         singleSprintData.plannedTasks === 0 ||
         singleSprintData.tasksCompleted === 0
@@ -227,19 +217,7 @@ function Sprints({ sidebarToggle }) {
                 100 *
                 1000
             ) / 1000;
-      console.log({
-        completionRate,
-        plannedTasks: singleSprintData.plannedTasks,
-        tasksCompleted: singleSprintData.tasksCompleted,
-        workEfficiencyRatio,
-        plannedWorkHours: singleSprintData.plannedWorkHours,
-        workHoursUsed: singleSprintData.workHoursUsed,
-        inSprintDefectsRatio,
-        postSprintDefectsRatio,
-        extraTasksRate,
-        extraTasksAdded: singleSprintData.extraTasksAdded,
-        selectedSprint: startSprint,
-      });
+
       navigate("/chart", {
         state: {
           completionRate,
@@ -270,8 +248,6 @@ function Sprints({ sidebarToggle }) {
       Object.keys(selectedSprintData[sprintIndex])[0]
     ][field] = value;
     setSprintsData(stateSprintData);
-    console.log(sprintsData);
-    console.log(selectedSprintData);
   };
 
   const renderSprintsData = () => {
@@ -424,7 +400,11 @@ function Sprints({ sidebarToggle }) {
             >
               {selectedProject &&
                 selectedProject.sprints.map((sprint) => (
-                  <option key={sprint.sprintName} value={sprint.sprintName} className="text-xl text-center">
+                  <option
+                    key={sprint.sprintName}
+                    value={sprint.sprintName}
+                    className="text-xl text-center"
+                  >
                     {sprint.sprintName}
                   </option>
                 ))}
@@ -451,7 +431,11 @@ function Sprints({ sidebarToggle }) {
                       )
                   )
                   .map((sprint) => (
-                    <option key={sprint.sprintName} value={sprint.sprintName} className="text-xl text-center">
+                    <option
+                      key={sprint.sprintName}
+                      value={sprint.sprintName}
+                      className="text-xl text-center"
+                    >
                       {sprint.sprintName}
                     </option>
                   ))}
@@ -497,11 +481,11 @@ function Sprints({ sidebarToggle }) {
             </button>
           )} */}
           <button className="save-button" onClick={handleSave}>
-              Submit
-            </button>
+            Submit
+          </button>
         </div>
       </div>
-      <LastButtons current={"Sprints"}/>
+      <LastButtons current={"Sprints"} />
     </div>
   );
 }

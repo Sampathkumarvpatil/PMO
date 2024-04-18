@@ -38,7 +38,6 @@ const CompletionRateOverviewbysprintsComponent = ({ sidebarToggle }) => {
         ).toFixed(2)
       : 0,
   }));
-  console.log(processedSprints);
 
   const chartOptions = {
     chart: {

@@ -52,8 +52,7 @@ const Dashboard = ({ sidebarToggle }) => {
 
   const handleSprintChange = (e) => {
     const sprintName = e.target.value;
-    console.log(sprintName);
-    console.log("object");
+
     const sprint = selectedProject.sprints.find(
       (s) => s.sprintName === sprintName
     );
