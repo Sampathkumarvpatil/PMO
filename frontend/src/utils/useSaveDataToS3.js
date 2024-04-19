@@ -1,14 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export const useSaveDataToS3 = (file_name, json_data) => {
+export const useSaveDataToS3 = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    saveData();
-  }, [file_name, json_data]);
-
-  async function saveData() {
+  async function saveData(file_name, json_data) {
     try {
       const res = await fetch(process.env.SAVE_FILE_TO_S3, {
         method: "POST",
@@ -26,4 +22,5 @@ export const useSaveDataToS3 = (file_name, json_data) => {
       setError(e?.message || "Error while fetching data from s3..");
     }
   }
+  return { success, error, saveData };
 };

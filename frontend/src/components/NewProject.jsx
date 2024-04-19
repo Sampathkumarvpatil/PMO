@@ -1,29 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import './newInputs.css';
+import "./newInputs.css";
 import NewSprint from "./NewSprint";
-
-const NewProject = ({sidebarToggle}) => {
+import { useSaveDataToS3 } from "../utils/useSaveDataToS3";
+const NewProject = ({ sidebarToggle }) => {
   const [mainCompanyArr, setMainCompanyArr] = useState([]);
   const [companyName, setCompanyName] = useState("");
   const [projectName, setProjectName] = useState("");
   const [buName, setBuName] = useState("");
   const [resourcesTotalNumber, setResourcesTotalNumber] = useState("");
   const [projectCreated, setProjectCreated] = useState(false);
-  const [refreshSprint, setRefreshSprint] = useState(true)
+  const [refreshSprint, setRefreshSprint] = useState(true);
+  const { error, saveData, success } = useSaveDataToS3();
 
-
-  // const navigate = useNavigate();
-useEffect(()=>{
-
-},[setRefreshSprint])
   useEffect(() => {
-    const dataFromLocalStorage = JSON.parse(localStorage.getItem("mainCompanyData")) || [];
+    const dataFromLocalStorage =
+      JSON.parse(localStorage.getItem("mainCompanyData")) || [];
     setMainCompanyArr(dataFromLocalStorage);
   }, []);
 
   const handleCreateProject = () => {
-    let existingProject = mainCompanyArr.find(project => project.projectName === projectName);
+    let existingProject = mainCompanyArr.find(
+      (project) => project.projectName === projectName
+    );
 
     if (existingProject) {
       existingProject.companyName = companyName;
@@ -45,27 +43,36 @@ useEffect(()=>{
     setResourcesTotalNumber("");
 
     localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyArr));
-    if(!companyName||!projectName||!buName||!resourcesTotalNumber){
+    if (!companyName || !projectName || !buName || !resourcesTotalNumber) {
       alert("Please fill all the fields");
       return;
     }
 
     setProjectCreated(true);
 
-localStorage.setItem("selectedProjectName", projectName);
-setRefreshSprint(!refreshSprint)
+    localStorage.setItem("selectedProjectName", projectName);
+    setRefreshSprint(!refreshSprint);
     // setTimeout(() => {
     //   navigate("/NewSprint");
     // }, 2000);
   };
 
   return (
-    <div className={`flex justify-around mt-16 transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
-        <div className={`flex justify-center items-center`}>
+    <div
+      className={`flex justify-around mt-16 transition-all duration-300 ${
+        sidebarToggle ? "ml-0" : "ml-64"
+      }`}
+    >
+      <div className={`flex justify-center items-center`}>
         <div className="w-96 p-6 shadow-lg rounded-md container">
-          <h2 className="text-2xl block text-center font-bold mb-14 text-purple-500">New Project</h2>
+          <h2 className="text-2xl block text-center font-bold mb-14 text-purple-500">
+            New Project
+          </h2>
           <div className="mt-5">
-            <label htmlFor="companyName" className="block text-base font-bold mb-2">
+            <label
+              htmlFor="companyName"
+              className="block text-base font-bold mb-2"
+            >
               Company Name
             </label>
             <input
@@ -79,7 +86,10 @@ setRefreshSprint(!refreshSprint)
             />
           </div>
           <div className="mt-5">
-            <label htmlFor="projectName" className="block text-base font-bold mb-2">
+            <label
+              htmlFor="projectName"
+              className="block text-base font-bold mb-2"
+            >
               Project Name
             </label>
             <input
@@ -107,7 +117,10 @@ setRefreshSprint(!refreshSprint)
             />
           </div>
           <div className="mt-5">
-            <label htmlFor="resourcesTotalNumber" className="block text-base font-bold mb-2">
+            <label
+              htmlFor="resourcesTotalNumber"
+              className="block text-base font-bold mb-2"
+            >
               Number of Resources
             </label>
             <input
@@ -122,20 +135,23 @@ setRefreshSprint(!refreshSprint)
           </div>
 
           <div className="mt-5 text-center">
-            <button onClick={handleCreateProject} className="text-white font-bold py-2 px-4 w-40 rounded-xl border-2 border-gray-300 shadow-xl" 
-            style={{
-              background:
-                "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
-              transition: "background-color 0.3s ease-in-out",
-            }}
-            onMouseEnter={(e) =>
-              (e.target.style.background =
-                "linear-gradient(0deg, rgba(253,187,45,1) 0%, rgba(34,193,195,1) 100%)")
-            }
-            onMouseLeave={(e) =>
-              (e.target.style.background =
-                "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)")
-            }>
+            <button
+              onClick={handleCreateProject}
+              className="text-white font-bold py-2 px-4 w-40 rounded-xl border-2 border-gray-300 shadow-xl"
+              style={{
+                background:
+                  "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
+                transition: "background-color 0.3s ease-in-out",
+              }}
+              onMouseEnter={(e) =>
+                (e.target.style.background =
+                  "linear-gradient(0deg, rgba(253,187,45,1) 0%, rgba(34,193,195,1) 100%)")
+              }
+              onMouseLeave={(e) =>
+                (e.target.style.background =
+                  "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)")
+              }
+            >
               Create Project
             </button>
           </div>
@@ -146,7 +162,7 @@ setRefreshSprint(!refreshSprint)
           )}
         </div>
       </div>
-      <NewSprint refreshSprint = {refreshSprint}/>
+      <NewSprint refreshSprint={refreshSprint} />
     </div>
   );
 };
