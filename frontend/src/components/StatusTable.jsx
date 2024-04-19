@@ -13,20 +13,21 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
     dependencies_2: "",
   });
   const textAreaRefs = useRef([]);
-  
-  const selectedProjectName = localStorage.getItem('selectedProjectName')
-  const selectedSprintName = localStorage.getItem('selectedSprintName')
-  const {id} = useParams();
-  
-  const allStatus = JSON.parse(localStorage.getItem('status'))
-  // console.log(allStatus[id][sr-1].worked_hrs)
-  const [hrsWorked,setHrsWorked] = useState(allStatus[id][sr-1].total_worked);
-  
-  const selectedProject = localStorage.getItem('selectedProjectName')
-  const selectedSprint = localStorage.getItem('selectedSprintName')
-  const taskId = selectedProject+selectedSprint
-  const storedTasks = JSON.parse(localStorage.getItem(`${taskId}`))
-  const [hrsAllocated,setHrsAllocated] = useState(storedTasks[id]['totHours']);
+
+  const selectedProjectName = localStorage.getItem("selectedProjectName");
+  const selectedSprintName = localStorage.getItem("selectedSprintName");
+  const { id } = useParams();
+
+  const allStatus = JSON.parse(localStorage.getItem("status"));
+  const [hrsWorked, setHrsWorked] = useState(
+    allStatus[id][sr - 1].total_worked
+  );
+
+  const selectedProject = localStorage.getItem("selectedProjectName");
+  const selectedSprint = localStorage.getItem("selectedSprintName");
+  const taskId = selectedProject + selectedSprint;
+  const storedTasks = JSON.parse(localStorage.getItem(`${taskId}`));
+  const [hrsAllocated, setHrsAllocated] = useState(storedTasks[id]["totHours"]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,34 +61,36 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
     textarea.style.height = `${textarea.scrollHeight}px`; // Set height to match content
   };
 
-
-  const data = JSON.parse(localStorage.getItem('mainCompanyData'))
+  const data = JSON.parse(localStorage.getItem("mainCompanyData"));
   let projectNo;
-  for(projectNo in data){
-    if(data[projectNo].projectName === selectedProjectName) break;
+  for (projectNo in data) {
+    if (data[projectNo].projectName === selectedProjectName) break;
   }
- 
+
   let sprintNo;
-  for(sprintNo in data[projectNo].sprints){
-    if(data[projectNo].sprints[sprintNo].sprintName === selectedSprintName) break;
+  for (sprintNo in data[projectNo].sprints) {
+    if (data[projectNo].sprints[sprintNo].sprintName === selectedSprintName)
+      break;
   }
-  const allocations = data[projectNo].sprints[sprintNo].allocations || null
-  const onChangeHandler = (e)=>{
-    stat['resource'] = e.target.value;
-    // console.log(stat)
-    const allStatus = JSON.parse(localStorage.getItem('status'))
-    
-    allStatus[`${id}`][sr-1] = stat;
-    localStorage.setItem('status',JSON.stringify(allStatus))
-  }
+  const allocations = data[projectNo].sprints[sprintNo].allocations || null;
+  const onChangeHandler = (e) => {
+    stat["resource"] = e.target.value;
+
+    const allStatus = JSON.parse(localStorage.getItem("status"));
+
+    allStatus[`${id}`][sr - 1] = stat;
+    localStorage.setItem("status", JSON.stringify(allStatus));
+  };
 
   return (
     <tr key={stat.id} className="m-2">
       <td className="border-2 border-gray-400 p-2 text-center">{sr}</td>
       <td className="border-2 border-gray-400 p-2 text-center">
         <select name="res" id="resource" onChange={onChangeHandler}>
-          <option value={stat['resource']}>{stat['resource']}</option>
-          {allocations.map((item)=><option value={`${item.name}`}>{item.name}</option>)}
+          <option value={stat["resource"]}>{stat["resource"]}</option>
+          {allocations.map((item) => (
+            <option value={`${item.name}`}>{item.name}</option>
+          ))}
         </select>
       </td>
       <td className="border-2 border-gray-400 p-2 text-sm">
@@ -106,7 +109,7 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
           onChange={handleChange}
         />
       </td>
- 
+
       <td className="border-2 border-gray-400 p-2">
         <div className="flex flex-col gap-10">
           <textarea
@@ -128,18 +131,18 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
               e.target.style.height = e.target.scrollHeight + "px"; // Set the height to match the content
             }}
           />
- 
+
           <div className="flex flex-col gap-[2px] w-full ">
-          <div
-            className={`border-[2px] border-gray-600 h-1 bg-gray-400 rounded-lg`}
-            style={{ top: `${maxHeight / 20}px` }}
-          ></div>
-          <div
-            className={`border-[2px] border-gray-600 h-1 bg-gray-400 rounded-lg`}
-            style={{ top: `${maxHeight / 20}px` }}
-          ></div>
+            <div
+              className={`border-[2px] border-gray-600 h-1 bg-gray-400 rounded-lg`}
+              style={{ top: `${maxHeight / 20}px` }}
+            ></div>
+            <div
+              className={`border-[2px] border-gray-600 h-1 bg-gray-400 rounded-lg`}
+              style={{ top: `${maxHeight / 20}px` }}
+            ></div>
           </div>
- 
+
           <textarea
             rows={5}
             cols={5}
@@ -160,7 +163,7 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
           />
         </div>
       </td>
- 
+
       <td className="border-2 border-gray-400 p-2 w-[120%] h-full">
         <div className="flex flex-col gap-10 mt-4">
           <textarea
@@ -184,16 +187,16 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
               e.target.style.height = e.target.scrollHeight + "px"; // Set the height to match the content
             }}
           />
- 
+
           <div className="flex flex-col gap-[2px] w-full ">
-          <div
-            className={`border-[2px] border-gray-600 h-1 bg-gray-400 rounded-lg`}
-            style={{ top: `${maxHeight / 20}px` }}
-          ></div>
-          <div
-            className={`border-[2px] border-gray-600 h-1 bg-gray-400 rounded-lg`}
-            style={{ top: `${maxHeight / 20}px` }}
-          ></div>
+            <div
+              className={`border-[2px] border-gray-600 h-1 bg-gray-400 rounded-lg`}
+              style={{ top: `${maxHeight / 20}px` }}
+            ></div>
+            <div
+              className={`border-[2px] border-gray-600 h-1 bg-gray-400 rounded-lg`}
+              style={{ top: `${maxHeight / 20}px` }}
+            ></div>
           </div>
           <textarea
             id="taskDescTextarea"
@@ -238,16 +241,16 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
               e.target.style.height = e.target.scrollHeight + "px"; // Set the height to match the content
             }}
           />
- 
+
           <div className="flex flex-col gap-[2px] w-full ">
-          <div
-            className={`border-[2px] border-gray-600 h-1 bg-gray-400 rounded-lg`}
-            style={{ top: `${maxHeight / 20}px` }}
-          ></div>
-          <div
-            className={`border-[2px] border-gray-600 h-1 bg-gray-400 rounded-lg`}
-            style={{ top: `${maxHeight / 20}px` }}
-          ></div>
+            <div
+              className={`border-[2px] border-gray-600 h-1 bg-gray-400 rounded-lg`}
+              style={{ top: `${maxHeight / 20}px` }}
+            ></div>
+            <div
+              className={`border-[2px] border-gray-600 h-1 bg-gray-400 rounded-lg`}
+              style={{ top: `${maxHeight / 20}px` }}
+            ></div>
           </div>
           <textarea
             rows={5}
@@ -295,7 +298,7 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
             />
             %
           </div>
-              
+
           <div
             className={`text-center w-full h-[100px] p-6 ${
               stat.work_completed_2 < 40
@@ -347,11 +350,10 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
           name="remaining_hrs"
           onChange={handleChange}
         />{" "} */}
-        {hrsAllocated-hrsWorked} hrs
+        {hrsAllocated - hrsWorked} hrs
       </td>
     </tr>
   );
 };
- 
-export default StatusTable;
 
+export default StatusTable;
