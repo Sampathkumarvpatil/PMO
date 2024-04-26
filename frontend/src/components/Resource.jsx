@@ -21,10 +21,10 @@ const Resource = ({heading,item,edit}) => {
     <div style={{ width: '100px' }} className='flex justify-center mx-auto'>
          {/* R{heading}:   */}
          <br />
-          {edit ? 
+          {
           
             <input 
-            className='border-gray-400 w-full h-full border-2 box-border shadow-md text-center'
+            className='border-none w-full h-full border-2 box-border text-center'
             value={resource}
             onChange={(e)=>{
               const newResource = e.target.value
@@ -36,8 +36,7 @@ const Resource = ({heading,item,edit}) => {
             }}
             />
             
-           : 
-          <span className='text-emerald-600 font-bold ml-2'>{resource}</span>
+           
            }
     </div>
   )

@@ -131,16 +131,12 @@ const Task = ({ item, sr, list, setList,edit}) => {
       <td className='p-2 border-solid border-2 border-[#aaa] w-[50px] text-center'>{sr}</td>
       <td className='p-2 border-solid border-2 border-[#aaa] w-[150px]'><span className='text-xs'>{item.id}</span></td>
       <td className='p-2 border-solid border-2 border-[#aaa] w-[250px] text-center'>
-        {edit ? (
-            <input type='text'
+        {
+            <textarea type='text'
             value={editableTitle}
             onChange={handleTitleSave}
-            className='border-gray-400 border-2 w-[100px] p-1 box-border shadow-md' />
-        ) : (
-          <>
-            {editableTitle}<br />  
-          </>
-        )}
+            className='border-none border-2 w-[200px] p-1 box-border shadow-md' />
+         }
       </td>
       <td className='p-2 border-solid border-2 border-[#aaa]'>
        

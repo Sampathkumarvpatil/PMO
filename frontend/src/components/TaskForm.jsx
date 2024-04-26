@@ -49,10 +49,23 @@ const TaskForm = ({ sidebarToggle }) => {
   const { taskId } = useParams();
 
   useEffect(() => {
-    const storedTasks =
-      JSON.parse(
-        localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)
-      ) || {};
+    const storedTasks = JSON.parse(localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)) || {};
+    if(Object.keys(storedTasks).length === 0){
+      const newTask = { id: uuidv4(), title: 'New Task'};
+    res.map((item)=>{
+      newTask[item] = 0
+    })
+    newTask['totHours'] = 0;
+    newTask['resource'] = '-'
+    newTask['total'] = 0
+    newTask['status'] = 0
+    console.log(newTask)
+    const storedTasks = JSON.parse(localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)) || {}; // Retrieve tasks from local storage, use object instead of array
+    storedTasks[newTask.id] = newTask; // Set the new task with its id as the key
+    localStorage.setItem(`${selectedProjectName}${selectedSprintName}`, JSON.stringify(storedTasks)); // Save the updated object back to local storage
+    setList([...list, newTask]);
+    }
+    
     setList(Object.values(storedTasks));
 
     const updatedTremaining = { ...tremaining }; // Create a copy of tremaining
@@ -117,164 +130,59 @@ const TaskForm = ({ sidebarToggle }) => {
   };
 
   return (
-    <div
-      className={`transition-all duration-300 ${
-        sidebarToggle ? "ml-0" : "ml-64"
-      }`}
-    >
+    <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
       <ProjOptions />
-      <div className="flex justify-end"></div>
-      <table
-        className="p-2 text-[18px] border-collapse border-2 border-[#aaa] m-2"
-        ref={targetRef}
-      >
-        <thead>
-          <tr>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            >
-              Available
-            </td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            >
-              Hours:
-            </td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            ></td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            ></td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            ></td>
-            {Object.values(thrs).map((item, index) => (
-              <td
-                key={index}
-                style={cellStyle}
-                className="p-2 border-solid border-2 border-[#aaa] bg-gray-300 text-center text-blue-700"
-              >
-                {item}
-              </td>
-            ))}
-            <td
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            ></td>
-          </tr>
 
-          <tr className="m-2 sticky top-0">
-            <th
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            >
-              Sr
-            </th>
-            <th
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            >
-              Task ID
-            </th>
-            <th
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            >
-              Title
-            </th>
-            <th
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            >
-              Planning Poker
-            </th>
-            <th
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            >
-              Status
-            </th>
-            {res.map((item, index) => (
-              <th
-                key={index}
-                style={cellStyle}
-                className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-              >
-                {item}
-              </th>
+    <div className={`overflow-x-scroll`}>
+      
+      <table className='w-full p-2 text-[18px] border-collapse border-2 border-[#aaa] m-2' ref={targetRef}>
+      <thead>
+            <tr>
+              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'>Available Hours:</td>
+              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
+              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
+              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
+              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
+              {Object.values(thrs).map((item,index)=>
+                <td key={index} style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300 text-center text-blue-700'>
+                  {item}</td>
+              )}
+              <td style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'></td>
+            </tr>
+       
+ 
+       
+            <tr className='m-2 sticky top-0'>
+              <th style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Sr</th>
+              <th style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Task ID</th>
+              <th style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Title</th>
+              <th style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Planning Poker</th>
+              <th style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Status</th>
+              {res.map((item,index)=>
+                <th key={index} style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>{item}</th>
+              )}
+              <th style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Total Hours</th>
+              <th style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Delete Task</th>
+            </tr>
+          </thead>
+          <tbody >
+            {list.map((item, index) => (
+              <Task key={item.id} item={item} sr={index + 1}  list={list} setList={setList} edit={edit}/>
             ))}
-            <th
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            >
-              Total Hours
-            </th>
-            <th
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            >
-              Delete Task
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {list.map((item, index) => (
-            <Task
-              key={item.id}
-              item={item}
-              sr={index + 1}
-              list={list}
-              setList={setList}
-              edit={edit}
-            />
-          ))}
-        </tbody>
-
+          </tbody>
+ 
         <tfoot>
           <tr>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            >
-              Remaining{" "}
-            </td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            >
-              Hours:
-            </td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            ></td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            ></td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            ></td>
-            {Object.values(tremaining).map((item, index) => (
-              <td
-                style={cellStyle}
-                key={index}
-                className="p-2 border-solid border-2 border-[#aaa] bg-gray-300 text-center text-red-600"
-              >
-                {item}
-              </td>
-            ))}
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            ></td>
+              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'>Remaining Hours:</td>
+              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
+              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
+              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
+              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
+              {Object.values(tremaining).map((item,index)=>
+                  <td style={cellStyle} key={index} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300 text-center text-red-600'>
+                    {item}</td>
+                )}
+              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
           </tr>
         </tfoot>
       </table>
@@ -303,8 +211,10 @@ const TaskForm = ({ sidebarToggle }) => {
           Download PDF
         </button>
       </div>
-
-      <LastButtons current={"TaskForm"} />
+     
+      
+    </div>
+    <LastButtons current={"TaskForm"}/>
     </div>
   );
 };

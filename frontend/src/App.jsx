@@ -38,6 +38,8 @@ import SignupPage from "./pages/Signup";
 import LoginPage from "./pages/Login";
 import FileUpload from "./components/FileUpload";
 import ProjectContext from "./utils/ProjectContext";
+import LastButtons from "./components/LastButtons";
+
 function App() {
   const [sidebarToggle, setSidebarToggle] = useState(true);
   const [displayPmo, setDisplayPmo] = useState(false);
@@ -129,45 +131,55 @@ function App() {
               <Route
                 path="/chart"
                 element={
-                  <div
-                    className={`transition-all duration-300 ${
-                      sidebarToggle ? "ml-0" : "ml-64"
-                    } flex flex-wrap grid grid-cols-3 overflow-hidden`}
-                  >
-                    <ChartComponent
-                      sidebarToggle={sidebarToggle}
-                      className="col-span-3 md:col-span-1"
-                    />
-                    <GaugeChartComponent className="col-span-3 md:col-span-1" />
-                    <FunnelChartComponent
-                      sidebarToggle={sidebarToggle}
-                      className="col-span-3 md:col-span-1"
-                    />
-                    <SpeedometerChartComponent className="col-span-3 md:col-span-1" />
-                    <CylinderChartComponent
-                      sidebarToggle={sidebarToggle}
-                      className="col-span-3 md:col-span-1"
-                    />
-                    <ColumnChartComponent
-                      sidebarToggle={sidebarToggle}
-                      className="col-span-3 md:col-span-1"
-                    />
+                  <div className={`transition-all duration-300 ${
+                    sidebarToggle ? "ml-0" : "ml-64"
+                  }`}>
+                    <div
+                      className={`grid grid-cols-3 overflow-hidden`}
+                    >
+                      <ChartComponent
+                        sidebarToggle={sidebarToggle}
+                        className="col-span-3 md:col-span-1"
+                      />
+                      <GaugeChartComponent className="col-span-3 md:col-span-1" />
+                      <FunnelChartComponent
+                        sidebarToggle={sidebarToggle}
+                        className="col-span-3 md:col-span-1"
+                      />
+                      <SpeedometerChartComponent className="col-span-3 md:col-span-1" />
+                      <CylinderChartComponent
+                        sidebarToggle={sidebarToggle}
+                        className="col-span-3 md:col-span-1"
+                      />
+                      <ColumnChartComponent
+                        sidebarToggle={sidebarToggle}
+                        className="col-span-3 md:col-span-1"
+                      />
+                    </div>
+                    <div className="">
+                      <LastButtons current={"Graph"} />
+                    </div>
                   </div>
                 }
               />
               <Route
                 path="/multipleSprintsChart"
                 element={
-                  <div
-                    className={`transition-all duration-300 ${
-                      sidebarToggle ? "ml-0" : "ml-64"
-                    } flex flex-wrap grid grid-cols-3 h-screen overflow-hidden`}
-                  >
-                    <SprientsColumnChartComponent />
-                    <ExtraTaskbysprintsChartComponent />
-                    <WorkEfficiencyRatiochart />
-                    <CompletionRateOverviewbysprintsComponent />
-                    <Problemdetcationratesprintchart />
+                  <div className={`transition-all duration-300 ${
+                    sidebarToggle ? "ml-0" : "ml-64"
+                  }`}>
+                    <div
+                      className={`grid grid-cols-3 h-screen overflow-hidden`}
+                    >
+                      <SprientsColumnChartComponent />
+                      <ExtraTaskbysprintsChartComponent />
+                      <CompletionRateOverviewbysprintsComponent />
+                      <Problemdetcationratesprintchart />
+                      <WorkEfficiencyRatiochart/>
+                    </div>
+                    <div className="">
+                      <LastButtons current={"Graph"} />
+                    </div>
                   </div>
                 }
               />

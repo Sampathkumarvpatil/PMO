@@ -17,8 +17,12 @@ const LastButtons = ({ current, handleSave }) => {
       navigate("/AttendanceTable");
     } else if (current === "Sprints") {
       navigate("/list");
-    } else if (current === "FileUpload") {
+    }else if (current === "FileUpload") {
+      navigate("/retrospective");
+    }else if (current === "Graph"){
       navigate("/KPI's");
+    }else if(current === "Retrospective"){
+      navigate("/KPI's")
     }
   };
   const next = () => {
@@ -32,16 +36,19 @@ const LastButtons = ({ current, handleSave }) => {
       navigate("/KPI's");
     } else if (current === "Sprints") {
       save();
-      // navigate("/uploadFile");
     } else if (current === "FileUpload") {
-      navigate("/");
+      return;
+    }else if (current === "Graph"){
+      navigate("/retrospective");
+    }else if(current === "Retrospective"){
+      navigate("/uploadFile")
     }
-  };
-  const save = () => {
-    if (current === "Sprints") {
-      handleSave()
-    } else {
-      return
+  }
+  const save = () =>{
+    if(current === "Sprints"){
+      handleSave();
+    }else{
+      return;
     }
   }
   return (

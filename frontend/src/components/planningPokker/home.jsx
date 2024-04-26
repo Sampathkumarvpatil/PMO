@@ -1,9 +1,9 @@
 // Home.js
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import io from "socket.io-client";
-import { FaUser } from "react-icons/fa";
-import { RiSendPlaneFill } from "react-icons/ri";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import io from 'socket.io-client';
+import { FaUser } from 'react-icons/fa';
+import {RiSendPlaneFill} from 'react-icons/ri'
 
 const socket = io.connect("http://localhost:5000");
 
@@ -104,6 +104,8 @@ const Home = ({ sidebarToggle }) => {
     setMessage("");
   };
 
+  const navigate = useNavigate();
+
   const leaveRoom = () => {
     if (isRoomCreator) {
       // The user is the creator of the room
@@ -118,6 +120,7 @@ const Home = ({ sidebarToggle }) => {
       // The user is not the creator, simply leave the room
       socket.emit("leave_room", { userName, roomName });
     }
+    navigate('/list')
     setShowForm(true);
   };
 
