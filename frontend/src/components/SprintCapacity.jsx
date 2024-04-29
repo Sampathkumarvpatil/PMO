@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import LastButtons from "./LastButtons";
 import "./newInputs.css";
 
-const SprintCapacity = ({ showGraph, setShowGraph }) => {
+const SprintCapacity = ({ showGraph, setShowGraph, selectedValues }) => {
   const [storedAllocationsData, setStoredAllocationsData] = useState([]);
   const [dateWeekdayPairs, setDateWeekdayPairs] = useState([]);
   const [totalCeremonyHours, setTotalCeremonyHours] = useState(0);
@@ -10,34 +9,25 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [total, setTotal] = useState(0); // Define the state for total
 
-  const selectedProjectName = localStorage.getItem("selectedProjectName");
-  const selectedSprintName = localStorage.getItem("selectedSprintName");
-
   useEffect(() => {
-    const mainCompanyData =
-      JSON.parse(localStorage.getItem("mainCompanyData")) || [];
-    const selectedProjectName = localStorage.getItem("selectedProjectName");
-    const selectedSprintName = localStorage.getItem("selectedSprintName");
+    let currentProject = localStorage.getItem("currentProject");
+    let currentSprint = localStorage.getItem("currentSprint");
+    if (currentProject && currentSprint) {
+      currentProject = JSON.parse(currentProject);
+      currentSprint = JSON.parse(currentSprint);
+      setSelectedProject(currentProject);
+      setSelectedSprint(currentSprint);
+    }
 
-    const project = mainCompanyData.find(
-      (project) => project.projectName === selectedProjectName
-    );
-    const sprint = project?.sprints.find(
-      (sprint) => sprint.sprintName === selectedSprintName
-    );
-
-    setSelectedProject(project);
-    setSelectedSprint(sprint);
-
-    if (sprint) {
-      if (!sprint.allocations) {
+    if (currentSprint) {
+      if (!currentSprint?.allocations) {
         alert("Allocations data is not available. Please check your data.");
         return;
       }
 
-      setStoredAllocationsData(sprint.allocations || []);
+      setStoredAllocationsData(currentSprint?.allocations || []);
       setDateWeekdayPairs(
-        generateDateWeekdayPairs(sprint.startDate, sprint.endDate)
+        generateDateWeekdayPairs(currentSprint.startDate, currentSprint.endDate)
       );
       // Fetch TotalCeremonyHours from localStorage
       const ceremonyHours = localStorage.getItem("TotalCeremonyHours");
@@ -70,7 +60,7 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
   };
 
   const renderAttendanceOptions = (index, pair) => {
-    const selectedValue = selectedSprint?.selectedValues?.find(
+    const selectedValue = selectedValues.find(
       (value) =>
         value.name === storedAllocationsData[index].name &&
         value.date === pair.date
@@ -140,14 +130,15 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
   };
 
   const calculateSubTotal = (rowIndex) => {
-    const selectedSprintName = localStorage.getItem("selectedSprintName");
-    const selectedProjectName = localStorage.getItem("selectedProjectName");
+    // const selectedSprintName = localStorage.getItem("selectedSprintName");
+    // const selectedProjectName = localStorage.getItem("selectedProjectName");
     let subTotal = 0;
-    const atData = JSON.parse(localStorage.getItem("attendanceData"));
-    let attendanceData = [];
-    if (atData && atData[`${selectedProjectName}${selectedSprintName}`]) {
-      attendanceData = atData[`${selectedProjectName}${selectedSprintName}`];
-    }
+    // const atData = JSON.parse(localStorage.getItem("attendanceData"));
+    // let attendanceData = [];
+    // if (atData && atData[`${selectedProjectName}${selectedSprintName}`]) {
+    //   attendanceData = atData[`${selectedProjectName}${selectedSprintName}`];
+    // }
+    const attendanceData = selectedValues;
     // const attendanceData =
     //   JSON.parse(localStorage.getItem("attendanceData"))[`${selectedProjectName}${selectedSprintName}`] || [];
     const row = storedAllocationsData[rowIndex];
@@ -155,9 +146,9 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
     for (const datePair of dateWeekdayPairs) {
       const date = datePair.date;
       const currentDate = new Date(date);
-      const mainCompanyData = JSON.parse(
-        localStorage.getItem("mainCompanyData")
-      );
+      // const mainCompanyData = JSON.parse(
+      //   localStorage.getItem("mainCompanyData")
+      // );
       if (currentDate.getDay() === 6 || currentDate.getDay() === 0) {
         const attendance = attendanceData.find(
           (item) => item.name === row?.name && item.date === date
@@ -192,7 +183,15 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
 
     let mainCompanyData =
       JSON.parse(localStorage.getItem("mainCompanyData")) || [];
+
     storedAllocationsData[rowIndex]["sumTotalWorkingHours"] = subTotal;
+
+    if (selectedSprint) {
+      const sprintCopy = { ...selectedSprint };
+      sprintCopy["allocations"] = storedAllocationsData;
+      localStorage.setItem("currentSprint", JSON.stringify(sprintCopy));
+    }
+
     // Update the specific storedAllocationsData object within mainCompanyData
     mainCompanyData = mainCompanyData.map((project) => {
       if (project.projectName === selectedProject.projectName) {
@@ -212,7 +211,7 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
       return project;
     });
 
-    localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyData));
+    // localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyData));
     // localStorage.setItem()
     return subTotal;
   };
@@ -226,29 +225,29 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
 
     localStorage.setItem("effectiveHours", grandTotal);
 
-    let mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData"));
+    // let mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData"));
 
-    if (mainCompanyData && Array.isArray(mainCompanyData)) {
-      mainCompanyData = mainCompanyData.map((project) => {
-        if (project.projectName === selectedProjectName) {
-          return {
-            ...project,
-            sprints: project.sprints.map((sprint) => {
-              if (sprint.sprintName === selectedSprintName) {
-                return {
-                  ...sprint,
-                  effective_hrs: grandTotal,
-                };
-              }
-              return sprint;
-            }),
-          };
-        }
-        return project;
-      });
+    // if (mainCompanyData && Array.isArray(mainCompanyData)) {
+    //   mainCompanyData = mainCompanyData.map((project) => {
+    //     if (project.projectName === selectedProjectName) {
+    //       return {
+    //         ...project,
+    //         sprints: project.sprints.map((sprint) => {
+    //           if (sprint.sprintName === selectedSprintName) {
+    //             return {
+    //               ...sprint,
+    //               effective_hrs: grandTotal,
+    //             };
+    //           }
+    //           return sprint;
+    //         }),
+    //       };
+    //     }
+    //     return project;
+    //   });
 
-      localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyData));
-    }
+    //   localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyData));
+    // }
     return grandTotal;
   };
   const calculateGrandTotal = () => {
@@ -259,31 +258,31 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
     grandTotal += storedAllocationsData.length * totalCeremonyHours;
     localStorage.setItem("finalHours", grandTotal);
 
-    let mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData"));
+    // let mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData"));
 
-    if (mainCompanyData && Array.isArray(mainCompanyData)) {
-      mainCompanyData = mainCompanyData.map((project) => {
-        if (project.projectName === selectedProjectName) {
-          return {
-            ...project,
-            sprints: project.sprints.map((sprint) => {
-              if (sprint.sprintName === selectedSprintName) {
-                return {
-                  ...sprint,
-                  final_hrs: grandTotal,
-                };
-              }
-              return sprint;
-            }),
-          };
-        }
-        return project;
-      });
-      // Update localStorage with the modified mainCompanyData
-      localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyData));
-    } else {
-      console.error("mainCompanyData is null or not an array");
-    }
+    // if (mainCompanyData && Array.isArray(mainCompanyData)) {
+    //   mainCompanyData = mainCompanyData.map((project) => {
+    //     if (project.projectName === selectedProjectName) {
+    //       return {
+    //         ...project,
+    //         sprints: project.sprints.map((sprint) => {
+    //           if (sprint.sprintName === selectedSprintName) {
+    //             return {
+    //               ...sprint,
+    //               final_hrs: grandTotal,
+    //             };
+    //           }
+    //           return sprint;
+    //         }),
+    //       };
+    //     }
+    //     return project;
+    //   });
+    //   // Update localStorage with the modified mainCompanyData
+    //   localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyData));
+    // } else {
+    //   console.error("mainCompanyData is null or not an array");
+    // }
 
     return grandTotal;
   };
@@ -296,6 +295,7 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
               <tr>
                 <th className="sticky left-0 z-10 bg-gray-200">Days</th>
                 <th className="sticky left-28 z-10 bg-gray-200"></th>
+
                 {dateWeekdayPairs.map((pair, index) => (
                   <th
                     key={index}
@@ -315,6 +315,7 @@ const SprintCapacity = ({ showGraph, setShowGraph }) => {
                 <th className="border-2 border-white sticky left-28 z-10 bg-gray-100 font-mono">
                   Roles
                 </th>
+                {/* {JSON.stringify(dateWeekdayPairs)} */}
                 {dateWeekdayPairs.map((pair, index) => (
                   <th
                     key={index}

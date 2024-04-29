@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 const StatusTable = ({ sr, stat, onStatusChange }) => {
   const [maxHeight, setMaxHeight] = useState(0);
   const [maxAreaHeight, setMaxAreaHeight] = useState(0);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedSprint, setSelectedSprint] = useState(null);
+  const [allocations, setAllocations] = useState([]);
   const [textValues, setTextValues] = useState({
     bug_1: "",
     bug_2: "",
@@ -14,8 +17,21 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
   });
   const textAreaRefs = useRef([]);
 
-  const selectedProjectName = localStorage.getItem("selectedProjectName");
-  const selectedSprintName = localStorage.getItem("selectedSprintName");
+  useEffect(() => {
+    let currentProject = localStorage.getItem("currentProject");
+    let currentSprint = localStorage.getItem("currentSprint");
+    if (currentProject && currentSprint) {
+      currentProject = JSON.parse(currentProject);
+      currentSprint = JSON.parse(currentSprint);
+
+      if (currentSprint?.allocations) {
+        setAllocations(currentSprint?.allocations);
+      }
+      setSelectedProject(currentProject);
+      setSelectedSprint(currentSprint);
+    }
+  }, []);
+
   const { id } = useParams();
 
   const allStatus = JSON.parse(localStorage.getItem("status"));
@@ -23,18 +39,21 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
     allStatus[id][sr - 1].total_worked
   );
 
-  const selectedProject = localStorage.getItem("selectedProjectName");
-  const selectedSprint = localStorage.getItem("selectedSprintName");
-  const taskId = selectedProject + selectedSprint;
+  const taskId =
+    selectedProject?.baseInfo?.projectName + selectedSprint?.sprintName;
   const storedTasks = JSON.parse(localStorage.getItem(`${taskId}`));
-  const [hrsAllocated, setHrsAllocated] = useState(storedTasks[id]["totHours"]);
+  const [hrsAllocated, setHrsAllocated] = useState(0);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     const updatedStatus = { ...stat, [name]: value };
+
     onStatusChange(updatedStatus);
+
     setTextValues({ ...textValues, [name]: value });
     updateTextAreaHeight(e.target); // Update textarea height when text changes
+
+    console.log(updatedStatus);
   };
 
   useEffect(() => {
@@ -61,34 +80,36 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
     textarea.style.height = `${textarea.scrollHeight}px`; // Set height to match content
   };
 
-  const data = JSON.parse(localStorage.getItem("mainCompanyData"));
-  let projectNo;
-  for (projectNo in data) {
-    if (data[projectNo].projectName === selectedProjectName) break;
-  }
+  // const data = JSON.parse(localStorage.getItem("mainCompanyData"));
+  // let projectNo;
+  // for (projectNo in data) {
+  //   if (data[projectNo].projectName === selectedProjectName) break;
+  // }
 
-  let sprintNo;
-  for (sprintNo in data[projectNo].sprints) {
-    if (data[projectNo].sprints[sprintNo].sprintName === selectedSprintName)
-      break;
-  }
-  const allocations = data[projectNo].sprints[sprintNo].allocations || null;
+  // let sprintNo;
+  // for (sprintNo in data[projectNo].sprints) {
+  //   if (data[projectNo].sprints[sprintNo].sprintName === selectedSprintName)
+  //     break;
+  // }
+
   const onChangeHandler = (e) => {
     stat["resource"] = e.target.value;
 
     const allStatus = JSON.parse(localStorage.getItem("status"));
 
     allStatus[`${id}`][sr - 1] = stat;
+    console.log(allStatus);
     localStorage.setItem("status", JSON.stringify(allStatus));
   };
 
   return (
     <tr key={stat.id} className="m-2">
       <td className="border-2 border-gray-400 p-2 text-center">{sr}</td>
+
       <td className="border-2 border-gray-400 p-2 text-center">
         <select name="res" id="resource" onChange={onChangeHandler}>
           <option value={stat["resource"]}>{stat["resource"]}</option>
-          {allocations.map((item) => (
+          {allocations?.map((item) => (
             <option value={`${item.name}`}>{item.name}</option>
           ))}
         </select>

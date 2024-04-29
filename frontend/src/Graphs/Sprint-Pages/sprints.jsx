@@ -15,6 +15,7 @@ const sortSprintData = (data) => {
 function Sprints({ sidebarToggle }) {
   const navigate = useNavigate();
   const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedSprint, setSelectedSprint] = useState(null);
   const [startSprint, setStartSprint] = useState();
   const [endSprint, setEndSprint] = useState();
   const [sprintsData, setSprintsData] = useState([]);
@@ -35,18 +36,25 @@ function Sprints({ sidebarToggle }) {
   }, []);
 
   useEffect(() => {
-    const selectedProjectName = localStorage.getItem("selectedProjectName");
+    let currentProject = localStorage.getItem("currentProject");
+    let currentSprint = localStorage.getItem("currentSprint");
+    if (currentProject && currentSprint) {
+      currentProject = JSON.parse(currentProject);
+      currentSprint = JSON.parse(currentSprint);
+      setSelectedProject(currentProject);
+      setSelectedSprint(currentSprint);
+    }
 
-    const sData = JSON.parse(localStorage.getItem("sprintsData"));
-
-    for (let key in Object.keys(sData[selectedProjectName])) {
-      let sName = Object.keys(sData[selectedProjectName][key])[0];
+    for (let i = 0; i < selectedProject?.sprints?.length; i++) {
+      let sName = selectedProject?.sprints[i];
 
       const tasks =
-        JSON.parse(localStorage.getItem(`${selectedProjectName}${sName}`)) ||
-        {};
-      sData[selectedProjectName][key][sName]["plannedTasks"] =
-        Object.values(tasks).length;
+        JSON.parse(
+          localStorage.getItem(
+            `${selectedProject?.baseInfo?.projectName}${sName}`
+          )
+        ) || {};
+      currentSprint["plannedTasks"] = Object.values(tasks).length;
 
       let tasksCompleted = 0;
       Object.values(tasks).map((it) => {
@@ -55,28 +63,28 @@ function Sprints({ sidebarToggle }) {
         }
       });
 
-      sData[selectedProjectName][key][sName]["tasksCompleted"] = tasksCompleted;
+      currentSprint["tasksCompleted"] = tasksCompleted;
 
       const mainCompanyData = JSON.parse(
         localStorage.getItem("mainCompanyData")
       );
-      mainCompanyData.map((item) => {
-        if (item.projectName == selectedProjectName) {
-          item.sprints.map((it) => {
-            if (it["sprintName"] == sName) {
-              sData[selectedProjectName][key][sName]["workHoursUsed"] =
-                it["remaining_hrs"];
-              sData[selectedProjectName][key][sName][
-                "totalAvailableWorkHours"
-              ] = it["final_hrs"];
-              sData[selectedProjectName][key][sName]["plannedWorkHours"] =
-                it["effective_hrs"];
-            }
-          });
-        }
-      });
+      // mainCompanyData.map((item) => {
+      //   if (item.projectName == selectedProjectName) {
+      //     item.sprints.map((it) => {
+      //       if (it["sprintName"] == sName) {
+      //         sData[selectedProjectName][key][sName]["workHoursUsed"] =
+      //           it["remaining_hrs"];
+      //         sData[selectedProjectName][key][sName][
+      //           "totalAvailableWorkHours"
+      //         ] = it["final_hrs"];
+      //         sData[selectedProjectName][key][sName]["plannedWorkHours"] =
+      //           it["effective_hrs"];
+      //       }
+      //     });
+      //   }
+      // });
 
-      localStorage.setItem("sprintsData", JSON.stringify(sData));
+      // localStorage.setItem("sprintsData", JSON.stringify(sData));
     }
   }, []);
 

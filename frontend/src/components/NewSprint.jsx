@@ -1,36 +1,69 @@
 import React, { useState, useEffect } from "react";
 import "./newInputs.css";
 import { useNavigate } from "react-router-dom";
+import { useGetS3Folders } from "../utils/useGetS3Folders";
+import { useFetchDataFromS3 } from "../utils/useFetchDataFromS3";
+import { useSaveDataToS3 } from "../utils/useSaveDataToS3";
+import { loggedUserValidationKey } from "../utils/temp";
 
 const NewSprint = ({ refreshSprint }) => {
   const [mainCompanyArr, setMainCompanyArr] = useState([]);
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [sprintName, setSprintName] = useState("");
+
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [numOfResources, setNumOfResources] = useState("");
   const [SprintCreated, setSprintCreated] = useState(false);
-
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [sprintName, setSprintName] = useState("");
+  const {
+    data: s3FoldersData,
+    error: getFolderErrror,
+    fetchData: fetchS3Folders,
+  } = useGetS3Folders(); // getting all project details and and based on names need to show the project list
+  const [availableProjects, setAvailableProjects] = useState([]);
+  const {
+    saveData,
+    error: singleProjectSaveError,
+    success,
+  } = useSaveDataToS3();
+  const [isPageError, setIsPageError] = useState(false);
   const navigate = useNavigate();
-  const selectedProjectName = localStorage.getItem("selectedProjectName");
+
   useEffect(() => {
-    const dataFromLocalStorage =
-      JSON.parse(localStorage.getItem("mainCompanyData")) || [];
-    setMainCompanyArr(dataFromLocalStorage);
-    if (dataFromLocalStorage.length > 0) {
-      setSelectedProject(dataFromLocalStorage[0]);
-      setNumOfResources(dataFromLocalStorage[0].resources);
+    const fetchFolders = async () => {
+      const key = sessionStorage.getItem("key");
+      await fetchS3Folders(key);
+    };
+    fetchFolders();
+  }, []);
+
+  useEffect(() => {
+    if (
+      s3FoldersData &&
+      s3FoldersData?.length > 0 &&
+      Array.isArray(s3FoldersData)
+    ) {
+      const parsedProjectData = s3FoldersData.map((file) => {
+        return JSON.parse(file?.Content);
+      });
+      console.log(parsedProjectData);
+
+      setSelectedProject(parsedProjectData[0]);
+      setNumOfResources(parsedProjectData[0]?.baseInfo?.resources);
+      setAvailableProjects(parsedProjectData);
     }
-  }, [refreshSprint]);
+  }, [s3FoldersData]);
 
   const handleProjectChange = (e) => {
     const projectName = e.target.value;
-    const project = mainCompanyArr.find((p) => p.projectName === projectName);
+    const project = availableProjects.find(
+      (p) => p.baseInfo.projectName === projectName
+    );
     setSelectedProject(project);
-    setNumOfResources(project.resources);
+    setNumOfResources(project?.baseInfo?.resources);
   };
 
-  const handleCreateSprint = () => {
+  const handleCreateSprint = async () => {
     if (selectedProject) {
       const newSprint = {
         sprintName,
@@ -40,24 +73,57 @@ const NewSprint = ({ refreshSprint }) => {
         remaining_hrs: 0,
         final_hrs: 0,
         effective_hrs: 0,
+
+        plannedTasks: 0,
+        tasksCompleted: 0,
+        extraTasksAdded: 0,
+        plannedWorkHours: 0,
+        workHoursUsed: 0,
+        inSprintDefects: 0,
+        postSprintDefects: 0,
+        descopedTasks: 0,
+        totalAvailableWorkHours: 0,
+        meetings: [
+          "Daily Sync",
+          "Sprint Planning",
+          "Iteration Review",
+          "Cycle Retrospective",
+          "Story Refinement",
+        ],
+        allocations: [],
+        holidays: [],
+        collaborative_time: {},
+        attendanceData: [],
+        status: {},
       };
-
-      const updatedProject = {
-        ...selectedProject,
-        sprints: [...(selectedProject.sprints || []), newSprint],
-      };
-
-      const updatedMainCompanyArr = mainCompanyArr.map((project) =>
-        project.projectName === selectedProject.projectName
-          ? updatedProject
-          : project
+      const projectNeedToUpdate = { ...selectedProject };
+      if (projectNeedToUpdate["sprints"]) {
+        projectNeedToUpdate?.sprints?.push(newSprint);
+      } else {
+        projectNeedToUpdate["sprints"] = [];
+        projectNeedToUpdate?.sprints?.push(newSprint);
+      }
+      const key = sessionStorage.getItem("key");
+      const response = await saveData(
+        selectedProject?.baseInfo?.projectName,
+        { ...projectNeedToUpdate },
+        key
       );
+      if (!response.success) {
+        setIsPageError(true);
+        return;
+      }
+      // const updatedProject = {
+      //   ...selectedProject,
+      //   sprints: [...(selectedProject.sprints || []), newSprint],
+      // };
 
-      setMainCompanyArr(updatedMainCompanyArr);
-      localStorage.setItem(
-        "mainCompanyData",
-        JSON.stringify(updatedMainCompanyArr)
-      );
+      // const updatedMainCompanyArr = mainCompanyArr.map((project) =>
+      //   project.projectName === selectedProject.projectName
+      //     ? updatedProject
+      //     : project
+      // );
+
       // localStorage.setItem("sprintStartDate", startDate);
       // localStorage.setItem("sprintEndDate", endDate);
       localStorage.setItem("selectedSprintName", sprintName);
@@ -74,44 +140,44 @@ const NewSprint = ({ refreshSprint }) => {
 
     setSprintCreated(true);
 
-    const data = JSON.parse(localStorage.getItem("sprintsData")) || {};
+    // const data = JSON.parse(localStorage.getItem("sprintsData")) || {};
 
     // Check if the selected project name exists in the data
-    if (data[selectedProjectName]) {
-      // If the selected project name exists, push a new object with sprintName as key
-      data[selectedProjectName].push({
-        [sprintName]: {
-          plannedTasks: 0,
-          tasksCompleted: 0,
-          extraTasksAdded: 0,
-          plannedWorkHours: 0,
-          workHoursUsed: 0,
-          inSprintDefects: 0,
-          postSprintDefects: 0,
-          descopedTasks: 0,
-          totalAvailableWorkHours: 0,
-        },
-      });
-    } else {
-      // If the selected project name doesn't exist, create a new array with the sprintName object
-      data[selectedProjectName] = [
-        {
-          [sprintName]: {
-            plannedTasks: 0,
-            tasksCompleted: 0,
-            extraTasksAdded: 0,
-            plannedWorkHours: 0,
-            workHoursUsed: 0,
-            inSprintDefects: 0,
-            postSprintDefects: 0,
-            descopedTasks: 0,
-            totalAvailableWorkHours: 0,
-          },
-        },
-      ];
-    }
+    // if (data[selectedProjectName]) {
+    //   // If the selected project name exists, push a new object with sprintName as key
+    //   data[selectedProjectName].push({
+    //     [sprintName]: {
+    //       plannedTasks: 0,
+    //       tasksCompleted: 0,
+    //       extraTasksAdded: 0,
+    //       plannedWorkHours: 0,
+    //       workHoursUsed: 0,
+    //       inSprintDefects: 0,
+    //       postSprintDefects: 0,
+    //       descopedTasks: 0,
+    //       totalAvailableWorkHours: 0,
+    //     },
+    //   });
+    // } else {
+    //   // If the selected project name doesn't exist, create a new array with the sprintName object
+    //   data[selectedProjectName] = [
+    //     {
+    //       [sprintName]: {
+    //         plannedTasks: 0,
+    //         tasksCompleted: 0,
+    //         extraTasksAdded: 0,
+    //         plannedWorkHours: 0,
+    //         workHoursUsed: 0,
+    //         inSprintDefects: 0,
+    //         postSprintDefects: 0,
+    //         descopedTasks: 0,
+    //         totalAvailableWorkHours: 0,
+    //       },
+    //     },
+    //   ];
+    // }
 
-    localStorage.setItem("sprintsData", JSON.stringify(data));
+    // localStorage.setItem("sprintsData", JSON.stringify(data));
 
     setTimeout(() => {
       navigate("/Dashboard");
@@ -136,11 +202,14 @@ const NewSprint = ({ refreshSprint }) => {
             transition duration-75 rounded-lg group hover:bg-gray-100 
             hover:text-white hover:bg-gray-700 font-mono"
             onChange={handleProjectChange}
-            value={selectedProject?.projectName || ""}
+            value={selectedProject?.baseInfo?.projectName}
           >
-            {mainCompanyArr.map((project) => (
-              <option key={project.projectName} value={project.projectName}>
-                {project.projectName}
+            {availableProjects.map((project) => (
+              <option
+                key={project?.baseInfo?.projectName}
+                value={project?.baseInfo?.projectName}
+              >
+                {project?.baseInfo?.projectName}
               </option>
             ))}
           </select>

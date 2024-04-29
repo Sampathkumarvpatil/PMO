@@ -5,24 +5,55 @@ import { usePDF } from "react-to-pdf";
 import { useParams } from "react-router-dom";
 import ProjOptions from "./ProjOptions";
 import LastButtons from "./LastButtons";
+import { useGetS3Folders } from "../utils/useGetS3Folders";
 
 const TaskForm = ({ sidebarToggle }) => {
-  const selectedProjectName = localStorage.getItem("selectedProjectName");
-  const selectedSprintName = localStorage.getItem("selectedSprintName");
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedSprint, setSelectedSprint] = useState(null);
+  // getting all project details and and based on names need to show the project list
+  useEffect(() => {
+    let currentProject = localStorage.getItem("currentProject");
+    let currentSprint = localStorage.getItem("currentSprint");
+    if (currentProject && currentSprint) {
+      currentProject = JSON.parse(currentProject);
+      currentSprint = JSON.parse(currentSprint);
+      setSelectedProject(currentProject);
+      setSelectedSprint(currentSprint);
+    }
+  }, []);
 
-  const data = JSON.parse(localStorage.getItem("mainCompanyData"));
+  const selectedSprintName = localStorage.getItem("selectedSprintName");
+  const companyData = localStorage.getItem("mainCompanyData");
+
+  const data =
+    companyData && companyData !== "undefined"
+      ? JSON.parse(companyData ?? {})
+      : null;
   let projectNo;
   for (projectNo in data) {
-    if (data[projectNo].projectName === selectedProjectName) break;
-  }
-
-  let sprintNo;
-  for (sprintNo in data[projectNo].sprints) {
-    if (data[projectNo].sprints[sprintNo].sprintName === selectedSprintName)
+    if (
+      data &&
+      projectNo &&
+      data[projectNo]?.projectName ===
+        selectedProject?.baseInfo?.selectedProject
+    )
       break;
   }
 
-  const allocations = data[projectNo].sprints[sprintNo].allocations || null;
+  let sprintNo;
+  if (sprintNo && data && projectNo) {
+    for (sprintNo in data[projectNo]?.sprints) {
+      if (
+        projectNo &&
+        data &&
+        data[projectNo]?.sprints[sprintNo]?.sprintName === selectedSprintName
+      )
+        break;
+    }
+  }
+
+  const allocations =
+    (projectNo && data[projectNo]?.sprints[sprintNo]?.allocations) || null;
 
   const res = allocations?.map((item) => item.name) || [];
 
@@ -51,7 +82,9 @@ const TaskForm = ({ sidebarToggle }) => {
   useEffect(() => {
     const storedTasks =
       JSON.parse(
-        localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)
+        localStorage.getItem(
+          `${selectedProject?.baseInfo?.projectName}${selectedSprint?.sprintName}`
+        )
       ) || {};
     setList(Object.values(storedTasks));
 
@@ -66,14 +99,19 @@ const TaskForm = ({ sidebarToggle }) => {
     setTremaining(updatedTremaining);
   }, []);
 
-  let mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData"));
+  const companyDataMain = localStorage.getItem("mainCompanyData");
 
-  mainCompanyData = mainCompanyData.map((project) => {
-    if (project.projectName === selectedProjectName) {
+  let mainCompanyData =
+    companyDataMain && companyDataMain !== "undefined"
+      ? JSON.parse(companyDataMain ?? {})
+      : null;
+
+  mainCompanyData = mainCompanyData?.map((project) => {
+    if (project.projectName === selectedProject?.baseInfo?.projectName) {
       return {
         ...project,
-        sprints: project.sprints.map((sprint) => {
-          if (sprint.sprintName === selectedSprintName) {
+        sprints: project?.sprints.map((sprint) => {
+          if (sprint?.sprintName === selectedSprintName) {
             return {
               ...sprint,
               remaining_hrs: thrs["total"] - tremaining["total"],
@@ -102,11 +140,13 @@ const TaskForm = ({ sidebarToggle }) => {
 
     const storedTasks =
       JSON.parse(
-        localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)
+        localStorage.getItem(
+          `${selectedProject?.baseInfo?.projectName}${selectedSprint?.sprintName}`
+        )
       ) || {}; // Retrieve tasks from local storage, use object instead of array
     storedTasks[newTask.id] = newTask; // Set the new task with its id as the key
     localStorage.setItem(
-      `${selectedProjectName}${selectedSprintName}`,
+      `${selectedProject?.baseInfo?.projectName}${selectedSprint?.sprintName}`,
       JSON.stringify(storedTasks)
     ); // Save the updated object back to local storage
     setList([...list, newTask]);
