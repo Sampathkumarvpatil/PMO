@@ -60,7 +60,7 @@ const AllocationInput = ({ sidebarToggle }) => {
       currentProject = JSON.parse(currentProject);
       currentSprint = JSON.parse(currentSprint);
       setSelectedProject(currentProject);
-      console.log(currentSprint);
+
       if (currentSprint?.allocations) {
         setAllocations(currentSprint?.allocations);
       }
@@ -286,7 +286,6 @@ const AllocationInput = ({ sidebarToggle }) => {
     return pairs;
   };
   const getHour = (day, hour) => {
-    console.log(day, hour);
     if (day === 0 || day === 6) {
       return 0;
     } else {

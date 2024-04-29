@@ -32,7 +32,6 @@ export default function Login({ buttonClick }) {
 
   //Handle Login API Integration here
   const authenticateUser = async () => {
-    console.log(loginState);
     const data = {
       operation: "login",
       username: loginState.username,

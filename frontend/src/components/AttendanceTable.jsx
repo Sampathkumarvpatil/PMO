@@ -43,7 +43,6 @@ const AttendanceTable = ({ sidebarToggle }) => {
     setSelectedValues(result);
 
     // Fetch main company data from localStorage
-    console.log(currentSprint?.allocations);
     if (currentSprint?.allocations && currentSprint?.allocations?.length > 0) {
       // Set storedAllocationsData based on the selected sprint's allocations
       setStoredAllocationsData(currentSprint.allocations || []);
@@ -53,7 +52,6 @@ const AttendanceTable = ({ sidebarToggle }) => {
         currentSprint.startDate,
         currentSprint.endDate
       );
-      console.log(dateWeekdayPairs);
       setDateWeekdayPairs(dateWeekdayPairs);
     }
   }, []);

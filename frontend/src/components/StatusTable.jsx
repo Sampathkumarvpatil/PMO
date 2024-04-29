@@ -52,8 +52,6 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
 
     setTextValues({ ...textValues, [name]: value });
     updateTextAreaHeight(e.target); // Update textarea height when text changes
-
-    console.log(updatedStatus);
   };
 
   useEffect(() => {
@@ -98,7 +96,6 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
     const allStatus = JSON.parse(localStorage.getItem("status"));
 
     allStatus[`${id}`][sr - 1] = stat;
-    console.log(allStatus);
     localStorage.setItem("status", JSON.stringify(allStatus));
   };
 

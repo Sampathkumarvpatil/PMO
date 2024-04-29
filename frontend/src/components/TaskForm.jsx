@@ -52,8 +52,7 @@ const TaskForm = ({ sidebarToggle }) => {
     }
   }
 
-  const allocations =
-    (projectNo && data[projectNo]?.sprints[sprintNo]?.allocations) || null;
+  const allocations = selectedSprint?.allocations || null;
 
   const res = allocations?.map((item) => item.name) || [];
 
@@ -80,12 +79,7 @@ const TaskForm = ({ sidebarToggle }) => {
   const { taskId } = useParams();
 
   useEffect(() => {
-    const storedTasks =
-      JSON.parse(
-        localStorage.getItem(
-          `${selectedProject?.baseInfo?.projectName}${selectedSprint?.sprintName}`
-        )
-      ) || {};
+    const storedTasks = selectedSprint?.status || {};
     setList(Object.values(storedTasks));
 
     const updatedTremaining = { ...tremaining }; // Create a copy of tremaining

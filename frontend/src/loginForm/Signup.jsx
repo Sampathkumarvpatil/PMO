@@ -24,7 +24,6 @@ export default function Signup() {
 
   //handle Signup API Integration here
   const createAccount = async () => {
-    console.log(role);
     const data = {
       operation: "signup",
       username: signupState.username,

@@ -12,17 +12,23 @@ const Task = ({ item, sr, list, setList, edit }) => {
   const [res, setRes] = useState("");
   const navigate = useNavigate();
   const [total, setTotal] = useState(0);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedSprint, setSelectedSprint] = useState(null);
   // console.log('item',item)
 
-  const selectedProjectName = localStorage.getItem("selectedProjectName");
-  const selectedSprintName = localStorage.getItem("selectedSprintName");
+  useEffect(() => {
+    let currentProject = localStorage.getItem("currentProject");
+    let currentSprint = localStorage.getItem("currentSprint");
+    if (currentProject && currentSprint) {
+      currentProject = JSON.parse(currentProject);
+      currentSprint = JSON.parse(currentSprint);
+      setSelectedProject(currentProject);
+      setSelectedSprint(currentSprint);
+    }
+  }, []);
 
   useEffect(() => {
-    console.log(); // Logging the item data whenever it changes
-    const storedTasks =
-      JSON.parse(
-        localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)
-      ) || {};
+    const storedTasks = selectedSprint?.status || {};
     if (storedTasks) {
       const taskToCheck = storedTasks[item.id];
       if (taskToCheck?.totHours) setTotHours(taskToCheck["totHours"]);
@@ -41,17 +47,17 @@ const Task = ({ item, sr, list, setList, edit }) => {
             individual_status["total_worked"]
           );
 
-          const storedTasks =
-            JSON.parse(
-              localStorage.getItem(
-                `${selectedProjectName}${selectedSprintName}`
-              )
-            ) || {};
-          storedTasks[item.id] = item;
-          localStorage.setItem(
-            `${selectedProjectName}${selectedSprintName}`,
-            JSON.stringify(storedTasks)
-          );
+          // const storedTasks =
+          //   JSON.parse(
+          //     localStorage.getItem(
+          //       `${sele}${selectedSprintName}`
+          //     )
+          //   ) || {};
+          // storedTasks[item.id] = item;
+          // localStorage.setItem(
+          //   `${selectedProjectName}${selectedSprintName}`,
+          //   JSON.stringify(storedTasks)
+          // );
         }
       }
 
@@ -59,15 +65,9 @@ const Task = ({ item, sr, list, setList, edit }) => {
         Object.values(allStatus[item.id]).map((it) => {
           item["status"] = it["work_completed_2"];
         });
-        const storedTasks =
-          JSON.parse(
-            localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)
-          ) || {};
+        const storedTasks = selectedSprint?.status;
+
         storedTasks[item.id] = item;
-        localStorage.setItem(
-          `${selectedProjectName}${selectedSprintName}`,
-          JSON.stringify(storedTasks)
-        );
       } else {
         console.log("No status found for item ID:", item.id);
       }
@@ -116,16 +116,13 @@ const Task = ({ item, sr, list, setList, edit }) => {
   };
 
   const deleteTaskHandler = (id) => {
-    const storedTasks =
-      JSON.parse(
-        localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)
-      ) || {};
+    const storedTasks = selectedSprint?.status;
     const taskToDelete = storedTasks[id];
     delete storedTasks[id];
-    localStorage.setItem(
-      `${selectedProjectName}${selectedSprintName}`,
-      JSON.stringify(storedTasks)
-    );
+    // localStorage.setItem(
+    //   `${selectedProjectName}${selectedSprintName}`,
+    //   JSON.stringify(storedTasks)
+    // );
     setList(Object.values(storedTasks));
   };
 
@@ -149,15 +146,8 @@ const Task = ({ item, sr, list, setList, edit }) => {
     setEditableTitle(newTitle);
 
     // Update the title in localStorage
-    const storedTasks =
-      JSON.parse(
-        localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)
-      ) || {};
+    const storedTasks = selectedSprint?.status;
     storedTasks[item.id]["title"] = newTitle;
-    localStorage.setItem(
-      `${selectedProjectName}${selectedSprintName}`,
-      JSON.stringify(storedTasks)
-    );
   };
 
   const handleTitleChange = (e) => {

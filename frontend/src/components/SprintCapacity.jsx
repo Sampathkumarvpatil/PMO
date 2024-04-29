@@ -181,8 +181,8 @@ const SprintCapacity = ({ showGraph, setShowGraph, selectedValues }) => {
       }
     }
 
-    let mainCompanyData =
-      JSON.parse(localStorage.getItem("mainCompanyData")) || [];
+    // let mainCompanyData =
+    //   JSON.parse(localStorage.getItem("mainCompanyData")) || [];
 
     storedAllocationsData[rowIndex]["sumTotalWorkingHours"] = subTotal;
 
@@ -193,23 +193,23 @@ const SprintCapacity = ({ showGraph, setShowGraph, selectedValues }) => {
     }
 
     // Update the specific storedAllocationsData object within mainCompanyData
-    mainCompanyData = mainCompanyData.map((project) => {
-      if (project.projectName === selectedProject.projectName) {
-        return {
-          ...project,
-          sprints: project.sprints.map((sprint) => {
-            if (sprint.sprintName === selectedSprint.sprintName) {
-              return {
-                ...sprint,
-                allocations: storedAllocationsData,
-              };
-            }
-            return sprint;
-          }),
-        };
-      }
-      return project;
-    });
+    // mainCompanyData = mainCompanyData.map((project) => {
+    //   if (project.projectName === selectedProject.projectName) {
+    //     return {
+    //       ...project,
+    //       sprints: project.sprints.map((sprint) => {
+    //         if (sprint.sprintName === selectedSprint.sprintName) {
+    //           return {
+    //             ...sprint,
+    //             allocations: storedAllocationsData,
+    //           };
+    //         }
+    //         return sprint;
+    //       }),
+    //     };
+    //   }
+    //   return project;
+    // });
 
     // localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyData));
     // localStorage.setItem()

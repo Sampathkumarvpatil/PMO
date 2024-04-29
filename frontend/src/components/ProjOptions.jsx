@@ -31,22 +31,30 @@ const ProjOptions = () => {
       const parsedProjectData = s3FoldersData.map((file) => {
         return JSON.parse(file?.Content);
       });
-
-      setSelectedProject(parsedProjectData[0]);
-      localStorage.setItem(
-        "currentProject",
-        JSON.stringify(parsedProjectData[0])
-      );
-
-      if (parsedProjectData[0]?.sprints?.length > 0) {
-        setSprintData(parsedProjectData[0]?.sprints);
-        setSelectedSprint(parsedProjectData[0]?.sprints[0]);
-        localStorage.setItem(
-          "currentSprint",
-          JSON.stringify(parsedProjectData[0]?.sprints[0])
-        );
+      let currentProject = localStorage.getItem("currentProject");
+      let currentSprint = localStorage.getItem("currentSprint");
+      if (currentProject && currentSprint) {
+        currentProject = JSON.parse(currentProject);
+        currentSprint = JSON.parse(currentSprint);
+        setSelectedProject(currentProject);
+        setSelectedSprint(currentSprint);
       } else {
-        localStorage.setItem("currentSprint", JSON.stringify(null));
+        setSelectedProject(parsedProjectData[0]);
+        localStorage.setItem(
+          "currentProject",
+          JSON.stringify(parsedProjectData[0])
+        );
+
+        if (parsedProjectData[0]?.sprints?.length > 0) {
+          setSprintData(parsedProjectData[0]?.sprints);
+          setSelectedSprint(parsedProjectData[0]?.sprints[0]);
+          localStorage.setItem(
+            "currentSprint",
+            JSON.stringify(parsedProjectData[0]?.sprints[0])
+          );
+        } else {
+          localStorage.setItem("currentSprint", JSON.stringify(null));
+        }
       }
 
       setAvailableProjects(parsedProjectData);
@@ -54,6 +62,14 @@ const ProjOptions = () => {
   }, [s3FoldersData]);
 
   useEffect(() => {
+    // let currentProject = localStorage.getItem("currentProject");
+    // let currentSprint = localStorage.getItem("currentSprint");
+    // if (currentProject && currentSprint) {
+    //   currentProject = JSON.parse(currentProject);
+    //   currentSprint = JSON.parse(currentSprint);
+    //   setSelectedProject(currentProject);
+    //   setSelectedSprint(currentSprint);
+    // }
     if (selectedProject) {
       if (selectedProject?.sprints?.length > 0) {
         setSprintData(selectedProject?.sprints);

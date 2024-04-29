@@ -59,7 +59,6 @@ const CeremonyTable = ({
   });
   useEffect(() => {
     if (Object.keys(selectedSprint?.collaborative_time)?.length > 0) {
-      console.log(selectedSprint?.collaborative_time);
       setCeremonyInput(selectedSprint?.collaborative_time);
       updateTotals(getTotalMins(selectedSprint?.collaborative_time || 0));
     } else {
@@ -197,7 +196,6 @@ const CeremonyTable = ({
     if (ceremanyInputCopy[meetingName]) {
       ceremanyInputCopy[meetingName][date] = value;
     }
-    console.log(ceremanyInputCopy);
     setCeremonyInput(ceremanyInputCopy);
 
     setCollaboeativeTime(spreadTime);

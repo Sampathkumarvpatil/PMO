@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import StatusTable from "./components/StatusTable";
+import { useSaveDataToS3 } from "./utils/useSaveDataToS3";
 
 const Status = ({ sidebarToggle }) => {
   const [statusList, setStatusList] = useState([]);
   const { id } = useParams();
+  const { error, saveData, success, isLoading } = useSaveDataToS3();
 
   useEffect(() => {
     const storedStatus = JSON.parse(localStorage.getItem("status")) || {};
@@ -73,12 +75,12 @@ const Status = ({ sidebarToggle }) => {
     localStorage.setItem("status", JSON.stringify(updatedStatusData));
   };
   const navigate = useNavigate();
-  const onSubmitHandler = () => {
+  const onSubmitHandler = (e) => {
     let currentSprint = localStorage.getItem("currentSprint");
-    if (currentSprint) {
-      console.log(currentSprint);
-      console.log(statusList);
+    let currentProject = localStorage.getItem("currentProject");
+    if (currentSprint && currentProject) {
       currentSprint = JSON.parse(currentSprint);
+      currentProject = JSON.parse(currentProject);
       if (statusList.length > 0) {
         const status = statusList.map((status) => {
           const resource_name = status?.resource;
@@ -91,14 +93,57 @@ const Status = ({ sidebarToggle }) => {
 
         const newSprintData = { ...currentSprint };
         newSprintData["status"] = status;
+        const projectData = { ...currentProject };
+        const sprintExistIndex = projectData?.sprints?.findIndex(
+          (sprint) => sprint?.sprintName === newSprintData?.sprintName
+        );
+        if (sprintExistIndex >= 0) {
+          projectData.sprints[sprintExistIndex] = newSprintData;
+        }
         localStorage.setItem("currentSprint", JSON.stringify(newSprintData));
+        localStorage.setItem("currentProject", JSON.stringify(projectData));
       }
     }
-    setTimeout(() => {
-      navigate("/list");
-    }, 2000);
+    saveDataToS3()
+      .then((data) => {
+        navigate("/list");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    // setTimeout(() => {
+    //   navigate("/list");
+    // }, 2000);
   };
 
+  const saveDataToS3 = async () => {
+    let projectNeedToUpdate = localStorage.getItem("currentProject");
+    let currentSprint = localStorage.getItem("currentSprint");
+
+    if (projectNeedToUpdate && currentSprint) {
+      currentSprint = JSON.parse(currentSprint);
+      projectNeedToUpdate = { ...JSON.parse(projectNeedToUpdate) };
+      if (projectNeedToUpdate["sprints"]) {
+        const sprintExistIndex = projectNeedToUpdate?.sprints?.findIndex(
+          (sprint) => sprint?.sprintName === currentSprint?.sprintName
+        );
+        if (sprintExistIndex >= 0) {
+          projectNeedToUpdate.sprints[sprintExistIndex] = currentSprint;
+        } else {
+          projectNeedToUpdate?.sprints?.push(currentSprint);
+        }
+      } else {
+        projectNeedToUpdate["sprints"] = [];
+        projectNeedToUpdate?.sprints?.push(currentSprint);
+      }
+      const key = sessionStorage.getItem("key");
+      await saveData(
+        projectNeedToUpdate?.baseInfo?.projectName,
+        { ...projectNeedToUpdate },
+        key
+      );
+    }
+  };
   return (
     <div
       className={`overflow-x-scroll transition-all duration-300 ${

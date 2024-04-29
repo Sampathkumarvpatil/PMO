@@ -46,7 +46,6 @@ const NewSprint = ({ refreshSprint }) => {
       const parsedProjectData = s3FoldersData.map((file) => {
         return JSON.parse(file?.Content);
       });
-      console.log(parsedProjectData);
 
       setSelectedProject(parsedProjectData[0]);
       setNumOfResources(parsedProjectData[0]?.baseInfo?.resources);

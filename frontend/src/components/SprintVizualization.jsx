@@ -9,8 +9,8 @@ const SprintVizualization = ({ showGraph, setShowGraph }) => {
   }, [showGraph]);
 
   const generateGraph = () => {
-    const mainCompanyData =
-      JSON.parse(localStorage.getItem("mainCompanyData")) || [];
+    // const mainCompanyData =
+    //   JSON.parse(localStorage.getItem("mainCompanyData")) || [];
     let devNames = [];
     let totalHoursPerDevData = [];
     let overallTotalHour = 0;
@@ -18,24 +18,24 @@ const SprintVizualization = ({ showGraph, setShowGraph }) => {
     const selectedProjectName = localStorage.getItem("selectedProjectName");
     const selectedSprintName = localStorage.getItem("selectedSprintName");
 
-    const selectedProject = mainCompanyData.find(
-      (project) => project.projectName === selectedProjectName
-    );
+    // const selectedProject = mainCompanyData.find(
+    //   (project) => project.projectName === selectedProjectName
+    // );
 
-    if (selectedProject) {
-      const selectedSprint = selectedProject.sprints.find(
-        (sprint) => sprint.sprintName === selectedSprintName
-      );
-      if (selectedSprint && selectedSprint.allocations) {
-        // Check if allocations is defined
-        selectedSprint.allocations.forEach((allocation) => {
-          devNames.push(allocation.name);
-          totalHoursPerDevData.push(allocation.sumTotalWorkingHours);
-        });
+    // if (selectedProject) {
+    //   const selectedSprint = selectedProject.sprints.find(
+    //     (sprint) => sprint.sprintName === selectedSprintName
+    //   );
+    //   if (selectedSprint && selectedSprint.allocations) {
+    //     // Check if allocations is defined
+    //     selectedSprint.allocations.forEach((allocation) => {
+    //       devNames.push(allocation.name);
+    //       totalHoursPerDevData.push(allocation.sumTotalWorkingHours);
+    //     });
 
-        overallTotalHour = parseInt(selectedSprint.final_hrs) || 0;
-      }
-    }
+    //     overallTotalHour = parseInt(selectedSprint.final_hrs) || 0;
+    //   }
+    // }
 
     // devNames = [...new Set(devNames)];
 

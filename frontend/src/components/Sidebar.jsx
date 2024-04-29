@@ -15,7 +15,6 @@ import {
   FaUser,
 } from "react-icons/fa";
 const Sidebar = ({ sidebarToggle, role }) => {
-  console.log(role);
   return (
     <div
       className={`${sidebarToggle ? " hidden " : " block "}w-80 fixed h-full`}
