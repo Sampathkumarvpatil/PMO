@@ -19,28 +19,32 @@ const Home = ({ sidebarToggle }) => {
   const [showTotalHours, setShowTotalHours] = useState(false);
   const [optionsSelected, setOptionsSelected] = useState({}); // State to track options selected by users
   const options = [1, 2, 3, 4, 5];
-
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedSprint, setSelectedSprint] = useState(null);
   const [showForm, setShowForm] = useState(true);
   const [isRoomCreator, setIsRoomCreator] = useState(false); // State to track if current user is room creator
 
-  const selectedProjectName = localStorage.getItem("selectedProjectName");
-  const selectedSprintName = localStorage.getItem("selectedSprintName");
+  // const selectedProjectName = localStorage.getItem("selectedProjectName");
+  // const selectedSprintName = localStorage.getItem("selectedSprintName");
 
-  const data = JSON.parse(localStorage.getItem("mainCompanyData"));
-  let projectNo;
-  for (projectNo in data) {
-    if (data[projectNo].projectName === selectedProjectName) break;
-  }
+  // const data = JSON.parse(localStorage.getItem("mainCompanyData"));
+  useEffect(() => {
+    let currentProject = localStorage.getItem("currentProject");
+    let currentSprint = localStorage.getItem("currentSprint");
+    if (currentProject && currentSprint) {
+      currentProject = JSON.parse(currentProject);
+      currentSprint = JSON.parse(currentSprint);
 
-  let sprintNo;
-  for (sprintNo in data[projectNo].sprints) {
-    if (data[projectNo].sprints[sprintNo].sprintName === selectedSprintName)
-      break;
-  }
-  const allocations = data[projectNo].sprints[sprintNo].allocations || null;
+      setSelectedProject(currentProject);
+      setSelectedSprint(currentSprint);
+    }
+  }, []);
+
+  const allocations = selectedSprint?.allocations || null;
 
   const { id } = useParams();
-  const taskId = selectedProjectName + selectedSprintName;
+  const taskId =
+    selectedProject?.baseInfo?.projectName + selectedSprint?.sprintName;
 
   const messageChangeHandler = (e) => {
     setMessage(e.target.value);
@@ -71,7 +75,7 @@ const Home = ({ sidebarToggle }) => {
 
         const scoreDifference = val - prev;
         const newTotalHours = totalHours + scoreDifference;
-
+        console.log(newTotalHours);
         setTotalHours(newTotalHours);
         return val;
       });
@@ -109,11 +113,13 @@ const Home = ({ sidebarToggle }) => {
       // The user is the creator of the room
       socket.emit("session_ended", { roomName });
       socket.emit("leave_room"); // Emit leave_room event for creator
-
-      const storedTasks = JSON.parse(localStorage.getItem(`${taskId}`));
-      storedTasks[id]["totHours"] = (totalHours / users.length).toFixed(2);
-
-      localStorage.setItem(`${taskId}`, JSON.stringify(storedTasks));
+      const currentSprint = { ...selectedSprint };
+      const sprint = currentSprint?.tasks?.find((task) => task.id === taskId);
+      if (sprint) {
+        sprint["totHours"](totalHours / users.length).toFixed(2);
+        localStorage.setItem("currentSprint", JSON.stringify(currentSprint));
+        setSelectedSprint(currentSprint);
+      }
     } else {
       // The user is not the creator, simply leave the room
       socket.emit("leave_room", { userName, roomName });
@@ -177,10 +183,13 @@ const Home = ({ sidebarToggle }) => {
   }, []);
 
   const onChangeHandler = (e) => {
-    const storedTasks = JSON.parse(localStorage.getItem(`${taskId}`));
-    storedTasks[id]["resource"] = e.target.value;
-
-    localStorage.setItem(`${taskId}`, JSON.stringify(storedTasks));
+    const currentSprint = { ...selectedSprint };
+    const sprint = currentSprint?.tasks?.find((task) => task.id === taskId);
+    if (sprint) {
+      sprint["resource"] = e.target.value;
+      localStorage.setItem("currentSprint", JSON.stringify(currentSprint));
+      setSelectedSprint(currentSprint);
+    }
   };
   return (
     <div

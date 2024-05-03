@@ -28,51 +28,57 @@ const Task = ({ item, sr, list, setList, edit }) => {
   }, []);
 
   useEffect(() => {
-    const storedTasks = selectedSprint?.status || {};
+    const storedTasks = selectedSprint?.status || [];
+
     if (storedTasks) {
-      const taskToCheck = storedTasks[item.id];
-      if (taskToCheck?.totHours) setTotHours(taskToCheck["totHours"]);
-      if (taskToCheck?.resource) setRes(taskToCheck["resource"]);
+      const taskToCheck = storedTasks?.find(
+        (task) => task?.status?.id === item.id
+      );
+      console.log(storedTasks);
+      console.log(item);
+      // console.log(taskToCheck["totHours"]);
+      if (taskToCheck?.status?.totHours) setTotHours(taskToCheck["totHours"]);
+      if (taskToCheck?.status?.resource) setRes(taskToCheck["resource"]);
     }
 
-    const allStatus = JSON.parse(localStorage.getItem("status"));
+    // const allStatus = JSON.parse(localStorage.getItem("status"));
     // console.log('allstats',allStatus[item.id])
-    if (allStatus) {
-      for (let status in allStatus[item.id]) {
-        const individual_status = allStatus[item.id][status];
-        // console.log(individual_status['w'])
-        // const val = parseInt(item[individual_status['resource']])
-        if (individual_status["resource"] != "-") {
-          item[individual_status["resource"]] = parseInt(
-            individual_status["total_worked"]
-          );
+    // if (allStatus) {
+    //   for (let status in allStatus[item.id]) {
+    //     const individual_status = allStatus[item.id][status];
+    //     // console.log(individual_status['w'])
+    //     // const val = parseInt(item[individual_status['resource']])
+    //     if (individual_status["resource"] != "-") {
+    //       item[individual_status["resource"]] = parseInt(
+    //         individual_status["total_worked"]
+    //       );
 
-          // const storedTasks =
-          //   JSON.parse(
-          //     localStorage.getItem(
-          //       `${sele}${selectedSprintName}`
-          //     )
-          //   ) || {};
-          // storedTasks[item.id] = item;
-          // localStorage.setItem(
-          //   `${selectedProjectName}${selectedSprintName}`,
-          //   JSON.stringify(storedTasks)
-          // );
-        }
-      }
+    //       // const storedTasks =
+    //       //   JSON.parse(
+    //       //     localStorage.getItem(
+    //       //       `${sele}${selectedSprintName}`
+    //       //     )
+    //       //   ) || {};
+    //       // storedTasks[item.id] = item;
+    //       // localStorage.setItem(
+    //       //   `${selectedProjectName}${selectedSprintName}`,
+    //       //   JSON.stringify(storedTasks)
+    //       // );
+    //     }
+    //   }
 
-      if (allStatus && allStatus[item.id]) {
-        Object.values(allStatus[item.id]).map((it) => {
-          item["status"] = it["work_completed_2"];
-        });
-        const storedTasks = selectedSprint?.status;
+    //   if (allStatus && allStatus[item.id]) {
+    //     Object.values(allStatus[item.id]).map((it) => {
+    //       item["status"] = it["work_completed_2"];
+    //     });
+    //     const storedTasks = selectedSprint?.status;
 
-        storedTasks[item.id] = item;
-      } else {
-        console.log("No status found for item ID:", item.id);
-      }
-    }
-  }, []);
+    //     storedTasks[item.id] = item;
+    //   } else {
+    //     console.log("No status found for item ID:", item.id);
+    //   }
+    // }
+  }, [selectedSprint]);
 
   // useEffect(() => {
   //   const filteredKeys = Object.keys(item).filter(

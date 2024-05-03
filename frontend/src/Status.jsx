@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
+
 import StatusTable from "./components/StatusTable";
 import { useSaveDataToS3 } from "./utils/useSaveDataToS3";
 
@@ -8,11 +8,39 @@ const Status = ({ sidebarToggle }) => {
   const [statusList, setStatusList] = useState([]);
   const { id } = useParams();
   const { error, saveData, success, isLoading } = useSaveDataToS3();
+  const [selectedSprint, setSelectedSprint] = useState(null);
 
   useEffect(() => {
-    const storedStatus = JSON.parse(localStorage.getItem("status")) || {};
-    const statusObjects = storedStatus[id] || [];
-    setStatusList(statusObjects);
+    let currentSprint = localStorage.getItem("currentSprint");
+    if (currentSprint) {
+      currentSprint = JSON.parse(currentSprint);
+      setSelectedSprint(currentSprint);
+      if (currentSprint?.status?.length > 0) {
+        const status = currentSprint?.status
+          ?.map((sprint) => {
+            return {
+              id: sprint?.status?.id,
+              Available: sprint?.status?.Available,
+              start_date: sprint?.status?.start_date,
+              end_date: sprint?.status?.end_date,
+              bug_1: sprint?.status?.bug_1,
+              bug_2: sprint?.status?.bug_2,
+              Task_desc_1: sprint?.status?.Task_desc_1,
+              Task_desc_2: sprint?.status?.Task_desc_2,
+              dependencies_1: sprint?.status?.dependencies_1,
+              dependencies_2: sprint?.status?.dependencies_2,
+              work_completed_1: sprint?.status?.work_completed_1,
+              work_completed_2: sprint?.status?.work_completed_2,
+              worked_hrs: sprint?.status?.worked_hrs,
+              total_worked: sprint?.status?.total_worked,
+              remaining_hrs: sprint?.status?.remaining_hrs,
+              resource: sprint?.resource_name,
+            };
+          })
+          .filter((status) => status.id === id);
+        setStatusList(status);
+      }
+    }
   }, [id]); // Include id as a dependency to re-run the effect when it changes
 
   // Function to handle adding a new status
@@ -25,7 +53,7 @@ const Status = ({ sidebarToggle }) => {
 
     // Create a new status object
     const newStatus = {
-      id: uuidv4(),
+      id: id,
       Available: 0,
       start_date: formattedDate,
       end_date: formattedDate,

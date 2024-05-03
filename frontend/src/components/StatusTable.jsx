@@ -15,8 +15,10 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
     dependencies_1: "",
     dependencies_2: "",
   });
+  const [hrsWorked, setHrsWorked] = useState(0);
+  const [hrsAllocated, setHrsAllocated] = useState(0);
   const textAreaRefs = useRef([]);
-
+  const { id } = useParams();
   useEffect(() => {
     let currentProject = localStorage.getItem("currentProject");
     let currentSprint = localStorage.getItem("currentSprint");
@@ -32,17 +34,11 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
     }
   }, []);
 
-  const { id } = useParams();
+  // const allStatus = JSON.parse(localStorage.getItem("status"));
 
-  const allStatus = JSON.parse(localStorage.getItem("status"));
-  const [hrsWorked, setHrsWorked] = useState(
-    allStatus[id][sr - 1].total_worked
-  );
-
-  const taskId =
-    selectedProject?.baseInfo?.projectName + selectedSprint?.sprintName;
-  const storedTasks = JSON.parse(localStorage.getItem(`${taskId}`));
-  const [hrsAllocated, setHrsAllocated] = useState(0);
+  // const taskId =
+  //   selectedProject?.baseInfo?.projectName + selectedSprint?.sprintName;
+  // const storedTasks = JSON.parse(localStorage.getItem(`${taskId}`));
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -92,6 +88,7 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
 
   const onChangeHandler = (e) => {
     stat["resource"] = e.target.value;
+    const sprint = selectedSprint.tasks.find((task) => task?.id === id);
 
     const allStatus = JSON.parse(localStorage.getItem("status"));
 
