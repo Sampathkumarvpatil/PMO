@@ -66,13 +66,12 @@ const Dashboard = ({ sidebarToggle }) => {
     );
     setSelectedProject(project);
     localStorage.setItem("currentProject", JSON.stringify(project));
-    console.log(project);
+
     if (
       project?.sprints &&
       project.sprints.length > 0 &&
       Array.isArray(project.sprints)
     ) {
-      console.log("im in..");
       setSprintData(project?.sprints);
       setSelectedSprint(project?.sprints[0]);
       localStorage.setItem(

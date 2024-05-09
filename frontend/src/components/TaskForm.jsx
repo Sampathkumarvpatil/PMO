@@ -53,7 +53,7 @@ const TaskForm = ({ sidebarToggle }) => {
   // }
 
   const allocations = selectedSprint?.allocations || null;
-  console.log(allocations);
+
   const res = allocations?.map((item) => item.name) || [];
 
   const [list, setList] = useState([]);
@@ -64,7 +64,7 @@ const TaskForm = ({ sidebarToggle }) => {
     thrs[item["name"]] = item["sumTotalWorkingHours"];
     totHours += item["sumTotalWorkingHours"];
   });
-  console.log(totHours);
+
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
   // const thrs = {1: 230, 2: 230, 3: 230, 4: 230, 5: 230, 6: 230, 7: 230, 8: 230};
 
@@ -77,7 +77,7 @@ const TaskForm = ({ sidebarToggle }) => {
   const [tremaining, setTremaining] = useState({ ...thrs });
   const [edit, setEdit] = useState(false);
 
-  const { taskId } = useParams();
+  // const { taskId } = useParams();
 
   useEffect(() => {
     const storedTasks = selectedSprint?.status || [];
@@ -119,35 +119,6 @@ const TaskForm = ({ sidebarToggle }) => {
     setTremaining(updatedTremaining);
   }, [selectedSprint]);
 
-  // const companyDataMain = localStorage.getItem("mainCompanyData");
-
-  // let mainCompanyData =
-  //   companyDataMain && companyDataMain !== "undefined"
-  //     ? JSON.parse(companyDataMain ?? {})
-  //     : null;
-
-  // mainCompanyData = mainCompanyData?.map((project) => {
-  //   if (project.projectName === selectedProject?.baseInfo?.projectName) {
-  //     return {
-  //       ...project,
-  //       sprints: project?.sprints.map((sprint) => {
-  //         if (sprint?.sprintName === selectedSprintName) {
-  //           return {
-  //             ...sprint,
-  //             remaining_hrs: thrs["total"] - tremaining["total"],
-  //           };
-  //         }
-  //         return sprint;
-  //       }),
-  //     };
-  //   }
-  //   return project;
-  // });
-
-  // localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyData));
-
-  // const numberOfResources = res.length;
-
   const handleAddTask = () => {
     const newTask = { id: uuidv4(), title: "New Task" };
     res.map((item) => {
@@ -158,17 +129,6 @@ const TaskForm = ({ sidebarToggle }) => {
     newTask["total"] = 0;
     newTask["status"] = 0;
 
-    const storedTasks =
-      JSON.parse(
-        localStorage.getItem(
-          `${selectedProject?.baseInfo?.projectName}${selectedSprint?.sprintName}`
-        )
-      ) || {}; // Retrieve tasks from local storage, use object instead of array
-    storedTasks[newTask.id] = newTask; // Set the new task with its id as the key
-    localStorage.setItem(
-      `${selectedProject?.baseInfo?.projectName}${selectedSprint?.sprintName}`,
-      JSON.stringify(storedTasks)
-    ); // Save the updated object back to local storage
     setList([...list, newTask]);
 
     let sprint = localStorage.getItem("currentSprint");
@@ -227,6 +187,7 @@ const TaskForm = ({ sidebarToggle }) => {
               style={cellStyle}
               className="p-2 border-solid  border-[#aaa] bg-gray-300"
             ></td>
+
             {Object.values(thrs).map((item, index) => (
               <td
                 key={index}
@@ -297,7 +258,6 @@ const TaskForm = ({ sidebarToggle }) => {
           </tr>
         </thead>
         <tbody>
-          {/* {JSON.stringify(list)} */}
           {list.map((item, index) => (
             <Task
               key={item.id}

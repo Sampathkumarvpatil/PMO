@@ -29,10 +29,37 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
       if (currentSprint?.allocations) {
         setAllocations(currentSprint?.allocations);
       }
+
+      if (id && currentSprint?.tasks.length > 0) {
+        if (stat) {
+          const resource = stat?.resource;
+          // console.log(resource);
+          // console.log(stat);
+          // console.log(
+          //   resource && Object.keys(stat?.allocatedResource ?? {}).length > 0
+          // );
+          if (
+            resource &&
+            Object.keys(stat?.allocatedResource ?? {}).length > 0
+          ) {
+            // console.log("im here");
+            // console.log(stat["allocatedResource"][resource]);
+            setHrsAllocated(stat["allocatedResource"][resource] ?? 0);
+          }
+        }
+      }
+      if (id && currentSprint?.status?.length > 0) {
+        const status = currentSprint?.status?.find(
+          (status) => status?.status?.id === id
+        );
+        if (status && status?.status?.total_worked) {
+          setHrsWorked(status?.status?.total_worked);
+        }
+      }
       setSelectedProject(currentProject);
       setSelectedSprint(currentSprint);
     }
-  }, []);
+  }, [id, stat]);
 
   // const allStatus = JSON.parse(localStorage.getItem("status"));
 
@@ -42,8 +69,22 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const updatedStatus = { ...stat, [name]: value };
 
+    if (name === "total_worked") {
+      setHrsWorked(value);
+    }
+
+    const updatedStatus = { ...stat, [name]: value };
+    if (name === "work_completed_2") {
+      const sprint = { ...selectedSprint };
+      const taskIndex = sprint?.tasks?.findIndex((task) => task?.id === id);
+      if (taskIndex >= 0) {
+        sprint.tasks[taskIndex]["status"] = value;
+
+        setSelectedSprint(sprint);
+        localStorage.setItem("currentSprint", JSON.stringify(sprint));
+      }
+    }
     onStatusChange(updatedStatus);
 
     setTextValues({ ...textValues, [name]: value });
@@ -347,8 +388,10 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
           name="worked_hrs"
           onChange={handleChange}
         />{" "} */}
+        {/* {JSON.stringify(hrsAllocated)} */}
         {hrsAllocated} hrs
       </td>
+
       <td className="border-2 border-gray-400 p-2">
         <input
           type="number"
@@ -365,7 +408,7 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
           name="remaining_hrs"
           onChange={handleChange}
         />{" "} */}
-        {hrsAllocated - hrsWorked} hrs
+        {hrsAllocated - stat.total_worked} hrs
       </td>
     </tr>
   );

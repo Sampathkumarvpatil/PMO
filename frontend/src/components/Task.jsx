@@ -24,61 +24,96 @@ const Task = ({ item, sr, list, setList, edit }) => {
       currentSprint = JSON.parse(currentSprint);
       setSelectedProject(currentProject);
       setSelectedSprint(currentSprint);
-    }
-  }, []);
-
-  useEffect(() => {
-    const storedTasks = selectedSprint?.status || [];
-
-    if (storedTasks) {
-      const taskToCheck = storedTasks?.find(
-        (task) => task?.status?.id === item.id
+      const names = currentSprint?.allocations?.map(
+        (allocation) => allocation?.name
       );
-      console.log(storedTasks);
-      console.log(item);
-      // console.log(taskToCheck["totHours"]);
-      if (taskToCheck?.status?.totHours) setTotHours(taskToCheck["totHours"]);
-      if (taskToCheck?.status?.resource) setRes(taskToCheck["resource"]);
+      if (names?.length > 0) {
+        setResources(names);
+      }
+      if (currentSprint?.status?.length > 0) {
+        const status = currentSprint?.status?.find(
+          (sprint) => sprint?.status?.sprintId === item?.id
+        );
+        const filterTasks = currentSprint?.status?.filter(
+          (task) => task.status?.sprintId === item?.id
+        );
+        if (filterTasks?.length > 0) {
+          const sum = filterTasks.reduce(
+            (total, currentValue) =>
+              total + (Number(currentValue?.status?.total_worked) ?? 0),
+            0
+          );
+          if (sum > 0) {
+            setTotal(sum);
+          }
+        }
+        const task = currentSprint?.tasks?.find(
+          (task) => task?.id === item?.id
+        );
+
+        if (task?.allocatedResource) {
+          for (let key in task?.allocatedResource) {
+            if (Number(task?.allocatedResource[key]) > 0) {
+              setRes(key);
+              setTotHours(task?.allocatedResource[key] ?? 0);
+            }
+          }
+        }
+      }
     }
+  }, [sr, list, item]);
 
-    // const allStatus = JSON.parse(localStorage.getItem("status"));
-    // console.log('allstats',allStatus[item.id])
-    // if (allStatus) {
-    //   for (let status in allStatus[item.id]) {
-    //     const individual_status = allStatus[item.id][status];
-    //     // console.log(individual_status['w'])
-    //     // const val = parseInt(item[individual_status['resource']])
-    //     if (individual_status["resource"] != "-") {
-    //       item[individual_status["resource"]] = parseInt(
-    //         individual_status["total_worked"]
-    //       );
+  // useEffect(() => {
+  // const storedTasks = selectedSprint?.status || [];
 
-    //       // const storedTasks =
-    //       //   JSON.parse(
-    //       //     localStorage.getItem(
-    //       //       `${sele}${selectedSprintName}`
-    //       //     )
-    //       //   ) || {};
-    //       // storedTasks[item.id] = item;
-    //       // localStorage.setItem(
-    //       //   `${selectedProjectName}${selectedSprintName}`,
-    //       //   JSON.stringify(storedTasks)
-    //       // );
-    //     }
-    //   }
+  // if (storedTasks) {
+  //   const taskToCheck = storedTasks?.find(
+  //     (task) => task?.status?.id === item.id
+  //   );
 
-    //   if (allStatus && allStatus[item.id]) {
-    //     Object.values(allStatus[item.id]).map((it) => {
-    //       item["status"] = it["work_completed_2"];
-    //     });
-    //     const storedTasks = selectedSprint?.status;
+  //   // // console.log(taskToCheck["totHours"]);
+  //   // if (taskToCheck?.status?.totHours) setTotHours(taskToCheck["totHours"]);
+  //   // if (taskToCheck?.status?.resource) setRes(taskToCheck["resource"]);
+  // }
 
-    //     storedTasks[item.id] = item;
-    //   } else {
-    //     console.log("No status found for item ID:", item.id);
-    //   }
-    // }
-  }, [selectedSprint]);
+  // const allStatus = JSON.parse(localStorage.getItem("status"));
+  // console.log('allstats',allStatus[item.id])
+  // if (allStatus) {
+  //   for (let status in allStatus[item.id]) {
+  //     const individual_status = allStatus[item.id][status];
+  //     // console.log(individual_status['w'])
+  //     // const val = parseInt(item[individual_status['resource']])
+  //     if (individual_status["resource"] != "-") {
+  //       item[individual_status["resource"]] = parseInt(
+  //         individual_status["total_worked"]
+  //       );
+
+  //       // const storedTasks =
+  //       //   JSON.parse(
+  //       //     localStorage.getItem(
+  //       //       `${sele}${selectedSprintName}`
+  //       //     )
+  //       //   ) || {};
+  //       // storedTasks[item.id] = item;
+  //       // localStorage.setItem(
+  //       //   `${selectedProjectName}${selectedSprintName}`,
+  //       //   JSON.stringify(storedTasks)
+  //       // );
+  //     }
+  //   }
+
+  //   if (allStatus && allStatus[item.id]) {
+  //     Object.values(allStatus[item.id]).map((it) => {
+  //       item["status"] = it["work_completed_2"];
+  //     });
+  //     const storedTasks = selectedSprint?.status;
+
+  //     storedTasks[item.id] = item;
+  //   } else {
+  //     console.log("No status found for item ID:", item.id);
+  //   }
+  // }
+  // }, [selectedSprint]);
 
   // useEffect(() => {
   //   const filteredKeys = Object.keys(item).filter(
@@ -113,7 +148,7 @@ const Task = ({ item, sr, list, setList, edit }) => {
 
   const planningPokerHandler = (id) => {
     // navigate(`/${taskId}/planningpoker/${id}`);
-    console.log(id);
+
     navigate(`/planningpoker/${id}`);
   };
   const statusHandler = (id) => {
@@ -122,14 +157,28 @@ const Task = ({ item, sr, list, setList, edit }) => {
   };
 
   const deleteTaskHandler = (id) => {
-    const storedTasks = selectedSprint?.status;
-    const taskToDelete = storedTasks[id];
-    delete storedTasks[id];
+    // const storedTasks = selectedSprint?.status;
+    const sprint = { ...selectedSprint };
+    const newTasks = sprint?.tasks?.filter((task) => task.id !== id);
+    const newSprintStatus = sprint?.status?.filter(
+      (singleSprint) => singleSprint?.status?.sprintId !== id
+    );
+
+    sprint["tasks"] = newTasks;
+    sprint["status"] = newSprintStatus;
+
+    localStorage.setItem("currentSprint", JSON.stringify(sprint));
+    // const taskToDelete = storedTasks[id];
+    // delete storedTasks[id];
     // localStorage.setItem(
     //   `${selectedProjectName}${selectedSprintName}`,
     //   JSON.stringify(storedTasks)
     // );
-    setList(Object.values(storedTasks));
+    const updatedList = list.filter((task) => task?.id !== id);
+
+    // Update state with the new list and title change flag
+    setList(updatedList);
+    setList(Object.values(updatedList));
   };
 
   const handleTitleEdit = () => {
@@ -153,7 +202,8 @@ const Task = ({ item, sr, list, setList, edit }) => {
 
     // Update the title in localStorage
     const storedTasks = selectedSprint?.status;
-    storedTasks[item.id]["title"] = newTitle;
+
+    // storedTasks[item.id]["title"] = newTitle;
   };
 
   const handleTitleChange = (e) => {
@@ -190,7 +240,6 @@ const Task = ({ item, sr, list, setList, edit }) => {
               {totHours} hrs
             </div>
             <h2 className="text-center">
-              resource:
               <strong className="text-green-700 font-black">{res}</strong>
             </h2>
           </>
@@ -204,6 +253,7 @@ const Task = ({ item, sr, list, setList, edit }) => {
           </button>
         )}
       </td>
+
       <td className="p-2 border-solid border-2 border-[#aaa] text-center">
         <button
           onClick={() => statusHandler(item.id)}
@@ -214,17 +264,23 @@ const Task = ({ item, sr, list, setList, edit }) => {
           {item["status"]}%
         </button>
       </td>
+
       {resources.map((resource, index) => (
         <td
           key={index}
           className="p-1 border-solid border-2 border-[#aaa] w-[250px]"
         >
-          <Resource heading={resource} item={item} edit={edit} />
+          <Resource
+            heading={resource}
+            item={item}
+            edit={edit}
+            status={selectedSprint?.status}
+          />
         </td>
       ))}
 
       <td className="p-2 border-solid border-2 border-[#aaa] text-center">
-        {total} hrs
+        {total}hrs
       </td>
 
       <td className="p-2 border-solid border-2 border-[#aaa]">

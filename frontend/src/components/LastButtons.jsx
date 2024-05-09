@@ -59,6 +59,10 @@ const LastButtons = ({ current }) => {
         projectNeedToUpdate?.sprints?.push(currentSprint);
       }
       const key = sessionStorage.getItem("key");
+      localStorage.setItem(
+        "currentProject",
+        JSON.stringify(projectNeedToUpdate)
+      );
       await saveData(
         projectNeedToUpdate?.baseInfo?.projectName,
         { ...projectNeedToUpdate },

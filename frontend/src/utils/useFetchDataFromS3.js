@@ -16,7 +16,7 @@ export const useFetchDataFromS3 = () => {
       if (!res.ok) throw new Error("Error while fetching file from s3!!");
       const jsonResponse = await res.json();
       setData(jsonResponse);
-      console.log(jsonResponse);
+
       return jsonResponse;
     } catch (e) {
       console.error(e?.message || "Error while fetching data from s3..");

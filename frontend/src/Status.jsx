@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import StatusTable from "./components/StatusTable";
 import { useSaveDataToS3 } from "./utils/useSaveDataToS3";
-
+import { v4 as uuidv4 } from "uuid";
 const Status = ({ sidebarToggle }) => {
   const [statusList, setStatusList] = useState([]);
   const { id } = useParams();
@@ -12,15 +12,20 @@ const Status = ({ sidebarToggle }) => {
 
   useEffect(() => {
     let currentSprint = localStorage.getItem("currentSprint");
+
     if (currentSprint) {
       currentSprint = JSON.parse(currentSprint);
       setSelectedSprint(currentSprint);
       if (currentSprint?.status?.length > 0) {
         const status = currentSprint?.status
           ?.map((sprint) => {
+            const status = currentSprint?.tasks?.find(
+              (task) => task?.id === sprint?.status?.sprintId
+            );
             return {
               id: sprint?.status?.id,
               Available: sprint?.status?.Available,
+              sprintId: sprint?.status?.sprintId,
               start_date: sprint?.status?.start_date,
               end_date: sprint?.status?.end_date,
               bug_1: sprint?.status?.bug_1,
@@ -35,9 +40,11 @@ const Status = ({ sidebarToggle }) => {
               total_worked: sprint?.status?.total_worked,
               remaining_hrs: sprint?.status?.remaining_hrs,
               resource: sprint?.resource_name,
+              allocatedResource: status?.allocatedResource,
             };
           })
-          .filter((status) => status.id === id);
+          .filter((status) => status.sprintId === id);
+
         setStatusList(status);
       }
     }
@@ -49,11 +56,12 @@ const Status = ({ sidebarToggle }) => {
     const formattedDate = currentDate.toISOString().split("T")[0];
 
     // Retrieve existing status data from local storage
-    const storedStatus = JSON.parse(localStorage.getItem("status")) || {};
+    // const storedStatus = JSON.parse(localStorage.getItem("status")) || {};
 
     // Create a new status object
     const newStatus = {
-      id: id,
+      id: uuidv4(),
+      sprintId: id,
       Available: 0,
       start_date: formattedDate,
       end_date: formattedDate,
@@ -69,12 +77,13 @@ const Status = ({ sidebarToggle }) => {
       total_worked: 0,
       remaining_hrs: 0,
       resource: "-",
+      allocatedResource: {},
     };
 
     // Update the status data in local storage for the current id
     const updatedStatus = {
-      ...storedStatus,
-      [id]: [...(storedStatus[id] || []), newStatus],
+      ...statusList,
+      [id]: [...(statusList[id] || []), newStatus],
     };
     localStorage.setItem("status", JSON.stringify(updatedStatus));
 
@@ -92,6 +101,7 @@ const Status = ({ sidebarToggle }) => {
       }
       return status;
     });
+
     setStatusList(updatedStatusList);
 
     // Retrieve existing status data from local storage
@@ -112,9 +122,12 @@ const Status = ({ sidebarToggle }) => {
       if (statusList.length > 0) {
         const status = statusList.map((status) => {
           const resource_name = status?.resource;
+          const allocatedResource = status.allocatedResource;
           delete status.resource;
+          delete status.allocatedResource;
           return {
             resource_name,
+            allocatedResource,
             status: { ...status },
           };
         });
@@ -164,6 +177,10 @@ const Status = ({ sidebarToggle }) => {
         projectNeedToUpdate["sprints"] = [];
         projectNeedToUpdate?.sprints?.push(currentSprint);
       }
+      localStorage.setItem(
+        "currentProject",
+        JSON.stringify(projectNeedToUpdate)
+      );
       const key = sessionStorage.getItem("key");
       await saveData(
         projectNeedToUpdate?.baseInfo?.projectName,

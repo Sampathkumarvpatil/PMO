@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import io from "socket.io-client";
 import { FaUser } from "react-icons/fa";
 import { RiSendPlaneFill } from "react-icons/ri";
+import { useSaveDataToS3 } from "../../utils/useSaveDataToS3";
 
 const socket = io.connect("http://localhost:5000");
 
@@ -23,9 +24,10 @@ const Home = ({ sidebarToggle }) => {
   const [selectedSprint, setSelectedSprint] = useState(null);
   const [showForm, setShowForm] = useState(true);
   const [isRoomCreator, setIsRoomCreator] = useState(false); // State to track if current user is room creator
-
+  const [selectedResource, setSelectedResource] = useState(null);
   // const selectedProjectName = localStorage.getItem("selectedProjectName");
   // const selectedSprintName = localStorage.getItem("selectedSprintName");
+  const { error, saveData, success, isLoading } = useSaveDataToS3();
 
   // const data = JSON.parse(localStorage.getItem("mainCompanyData"));
   useEffect(() => {
@@ -75,7 +77,7 @@ const Home = ({ sidebarToggle }) => {
 
         const scoreDifference = val - prev;
         const newTotalHours = totalHours + scoreDifference;
-        console.log(newTotalHours);
+
         setTotalHours(newTotalHours);
         return val;
       });
@@ -108,17 +110,56 @@ const Home = ({ sidebarToggle }) => {
     setMessage("");
   };
 
-  const leaveRoom = () => {
+  const leaveRoom = async () => {
     if (isRoomCreator) {
       // The user is the creator of the room
       socket.emit("session_ended", { roomName });
       socket.emit("leave_room"); // Emit leave_room event for creator
       const currentSprint = { ...selectedSprint };
-      const sprint = currentSprint?.tasks?.find((task) => task.id === taskId);
-      if (sprint) {
-        sprint["totHours"](totalHours / users.length).toFixed(2);
+      const taskInd = currentSprint?.tasks?.findIndex(
+        (singleTask) => singleTask?.id === id
+      );
+
+      if (taskInd >= 0 && currentSprint?.tasks?.length > 0) {
+        if (!currentSprint?.tasks[taskInd]["allocatedResource"]) {
+          currentSprint.tasks[taskInd]["allocatedResource"] = {};
+        }
+        currentSprint.tasks[taskInd]["allocatedResource"][selectedResource] = (
+          totalHours / users.length
+        ).toFixed(2);
+
         localStorage.setItem("currentSprint", JSON.stringify(currentSprint));
+
         setSelectedSprint(currentSprint);
+
+        let projectNeedToUpdate = localStorage.getItem("currentProject");
+
+        if (projectNeedToUpdate && currentSprint) {
+          projectNeedToUpdate = { ...JSON.parse(projectNeedToUpdate) };
+          if (projectNeedToUpdate["sprints"]) {
+            const sprintExistIndex = projectNeedToUpdate?.sprints?.findIndex(
+              (sprint) => sprint?.sprintName === currentSprint?.sprintName
+            );
+            if (sprintExistIndex >= 0) {
+              projectNeedToUpdate.sprints[sprintExistIndex] = currentSprint;
+            } else {
+              projectNeedToUpdate?.sprints?.push(currentSprint);
+            }
+          } else {
+            projectNeedToUpdate["sprints"] = [];
+            projectNeedToUpdate?.sprints?.push(currentSprint);
+          }
+          localStorage.setItem(
+            "currentProject",
+            JSON.stringify(projectNeedToUpdate)
+          );
+          const key = sessionStorage.getItem("key");
+          await saveData(
+            projectNeedToUpdate?.baseInfo?.projectName,
+            { ...projectNeedToUpdate },
+            key
+          );
+        }
       }
     } else {
       // The user is not the creator, simply leave the room
@@ -184,9 +225,11 @@ const Home = ({ sidebarToggle }) => {
 
   const onChangeHandler = (e) => {
     const currentSprint = { ...selectedSprint };
-    const sprint = currentSprint?.tasks?.find((task) => task.id === taskId);
+
+    const sprint = currentSprint?.tasks?.find((task) => task.id === id);
     if (sprint) {
       sprint["resource"] = e.target.value;
+      setSelectedResource(e.target.value);
       localStorage.setItem("currentSprint", JSON.stringify(currentSprint));
       setSelectedSprint(currentSprint);
     }
@@ -363,7 +406,7 @@ const Home = ({ sidebarToggle }) => {
                 onChange={onChangeHandler}
               >
                 <option value="-">-</option>
-                {allocations.map((item) => (
+                {allocations?.map((item) => (
                   <option key={item.name} value={item.name}>
                     {item.name}
                   </option>
