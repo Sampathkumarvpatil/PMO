@@ -41,6 +41,15 @@ const SprintVizualization = ({ showGraph, setShowGraph }) => {
 
     // const totalHoursPerDev = JSON.parse(localStorage.getItem("TotalHoursPerDev")) || [];
 
+    let currentSprint = localStorage.getItem("currentSprint");
+
+    if (currentSprint) {
+      currentSprint = JSON.parse(currentSprint);
+      currentSprint?.allocations?.forEach((allocation) => {
+        devNames.push(allocation?.name);
+        totalHoursPerDevData.push(allocation?.sumTotalWorkingHours);
+      });
+    }
     const options = {
       credits: {
         enabled: false,

@@ -158,6 +158,8 @@ const AttendanceTable = ({ sidebarToggle }) => {
           item.date === pair.date
       )?.selectedValue || "";
 
+    const percentAllocationToUser =
+      storedAllocationsData[index]?.allocationPercentage;
     let backgroundColor = "";
     let textColor = "";
     let defaultValue = "8"; // Default value for non-Saturdays and Sundays
@@ -174,7 +176,7 @@ const AttendanceTable = ({ sidebarToggle }) => {
       if (selectedValue === "0") {
         backgroundColor = "red";
         textColor = "white"; // Absent
-      } else if (selectedValue === "4") {
+      } else if (selectedValue === "4" && percentAllocationToUser !== 50) {
         backgroundColor = "blue";
         textColor = "white"; // Half-day
       }
@@ -198,8 +200,8 @@ const AttendanceTable = ({ sidebarToggle }) => {
           className="rounded font-semibold py-1.5"
         >
           <option value="0">A </option>
-          <option value="8">P </option>
-          <option value="4">H </option>
+          <option value={(8 * percentAllocationToUser) / 100}>P </option>
+          <option value={(4 * percentAllocationToUser) / 100}>H </option>
         </select>
       </td>
     );

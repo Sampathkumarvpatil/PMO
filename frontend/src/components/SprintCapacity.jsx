@@ -65,11 +65,18 @@ const SprintCapacity = ({ showGraph, setShowGraph, selectedValues }) => {
         value.name === storedAllocationsData[index].name &&
         value.date === pair.date
     );
+    const percentAllocationToUser =
+      storedAllocationsData[index]?.allocationPercentage;
+
     let allocationPercentage = storedAllocationsData[index].hrPerDay;
     let cellValue = selectedValue
       ? selectedValue.selectedValue
       : storedAllocationsData[index].hrPerDay;
-    if (allocationPercentage === 4 && selectedValue?.selectedValue) {
+
+    if (
+      (percentAllocationToUser * allocationPercentage) / 2 ===
+      selectedValue?.selectedValue
+    ) {
       cellValue = cellValue / 2;
     }
     // Default value is 8 (Present)
