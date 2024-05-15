@@ -187,9 +187,13 @@ const SprintCapacity = ({ showGraph, setShowGraph, selectedValues }) => {
     storedAllocationsData[rowIndex]["sumTotalWorkingHours"] = subTotal;
 
     if (selectedSprint) {
-      const sprintCopy = { ...selectedSprint };
-      sprintCopy["allocations"] = storedAllocationsData;
-      localStorage.setItem("currentSprint", JSON.stringify(sprintCopy));
+      let sprint = localStorage.getItem("currentSprint");
+      if (sprint) {
+        sprint = JSON.parse(sprint);
+        const sprintCopy = { ...sprint };
+        sprintCopy["allocations"] = storedAllocationsData;
+        localStorage.setItem("currentSprint", JSON.stringify(sprintCopy));
+      }
     }
 
     // Update the specific storedAllocationsData object within mainCompanyData
@@ -248,6 +252,12 @@ const SprintCapacity = ({ showGraph, setShowGraph, selectedValues }) => {
 
     //   localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyData));
     // }
+    let sprint = localStorage.getItem("currentSprint");
+    if (sprint) {
+      sprint = JSON.parse(sprint);
+      sprint["plannedWorkHours"] = grandTotal;
+      localStorage.setItem("currentSprint", JSON.stringify(sprint));
+    }
     return grandTotal;
   };
   const calculateGrandTotal = () => {
@@ -284,6 +294,13 @@ const SprintCapacity = ({ showGraph, setShowGraph, selectedValues }) => {
     //   console.error("mainCompanyData is null or not an array");
     // }
 
+    let sprint = localStorage.getItem("currentSprint");
+    if (sprint) {
+      sprint = JSON.parse(sprint);
+      sprint["totalAvailableWorkHours"] = grandTotal;
+
+      localStorage.setItem("currentSprint", JSON.stringify(sprint));
+    }
     return grandTotal;
   };
   return (

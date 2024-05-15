@@ -77,6 +77,7 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
     const updatedStatus = { ...stat, [name]: value };
     if (name === "work_completed_2") {
       const sprint = { ...selectedSprint };
+
       const taskIndex = sprint?.tasks?.findIndex((task) => task?.id === id);
       if (taskIndex >= 0) {
         sprint.tasks[taskIndex]["status"] = value;
@@ -129,12 +130,22 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
 
   const onChangeHandler = (e) => {
     stat["resource"] = e.target.value;
-    const sprint = selectedSprint.tasks.find((task) => task?.id === id);
+    const task = selectedSprint.tasks.find((task) => task?.id === id);
+    if (task) {
+      const resource = e.target.value;
 
-    const allStatus = JSON.parse(localStorage.getItem("status"));
+      if (resource && Object.keys(task?.allocatedResource ?? {}).length > 0) {
+        if (
+          Object.keys(task?.allocatedResource ?? {}).includes(e.target.value)
+        ) {
+          setHrsAllocated(task["allocatedResource"][resource] ?? 0);
+        }
+      }
+    }
+    // const allStatus = JSON.parse(localStorage.getItem("status"));
 
-    allStatus[`${id}`][sr - 1] = stat;
-    localStorage.setItem("status", JSON.stringify(allStatus));
+    // allStatus[`${id}`][sr - 1] = stat;
+    // localStorage.setItem("status", JSON.stringify(allStatus));
   };
 
   return (

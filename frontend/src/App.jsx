@@ -32,7 +32,7 @@ import Room from "../src/boardcomponent/Room";
 import Getpdf from "../src/boardcomponent/Getpdf";
 import SignupPage from "./pages/Signup";
 import LoginPage from "./pages/Login";
-import FileUpload from "./components/FileUpload";
+// import FileUpload from "./components/FileUpload";
 import ProjectContext from "./utils/ProjectContext";
 function App() {
   const [sidebarToggle, setSidebarToggle] = useState(true);
@@ -181,10 +181,10 @@ function App() {
                 path="/retrospective/:id/download"
                 element={<Getpdf sidebarToggle={sidebarToggle} />}
               ></Route>
-              <Route
+              {/* <Route
                 path="/uploadFile"
                 element={<FileUpload sidebarToggle={sidebarToggle} />}
-              />
+              /> */}
             </>
           ) : (
             <>

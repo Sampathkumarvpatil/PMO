@@ -7,9 +7,9 @@ import LastButtons from "../../components/LastButtons";
 
 const sortSprintData = (data) => {
   return data.sort((a, b) => {
-    const sprintNameA = Object.keys(a)[0];
-    const sprintNameB = Object.keys(b)[0];
-    return sprintNameA.localeCompare(sprintNameB, undefined, { numeric: true });
+    return a?.sprintName.localeCompare(b?.sprintName, undefined, {
+      numeric: true,
+    });
   });
 };
 function Sprints({ sidebarToggle }) {
@@ -26,16 +26,6 @@ function Sprints({ sidebarToggle }) {
   // Initialize with 1 as default
 
   useEffect(() => {
-    const selectedProjectName = localStorage.getItem("selectedProjectName");
-    const dataFromLocalStorage =
-      JSON.parse(localStorage.getItem("mainCompanyData")) || [];
-    const selectedProject = dataFromLocalStorage.find(
-      (project) => project.projectName === selectedProjectName
-    );
-    setSelectedProject(selectedProject);
-  }, []);
-
-  useEffect(() => {
     let currentProject = localStorage.getItem("currentProject");
     let currentSprint = localStorage.getItem("currentSprint");
     if (currentProject && currentSprint) {
@@ -44,67 +34,18 @@ function Sprints({ sidebarToggle }) {
       setSelectedProject(currentProject);
       setSelectedSprint(currentSprint);
     }
-
-    for (let i = 0; i < selectedProject?.sprints?.length; i++) {
-      let sName = selectedProject?.sprints[i];
-
-      const tasks =
-        JSON.parse(
-          localStorage.getItem(
-            `${selectedProject?.baseInfo?.projectName}${sName}`
-          )
-        ) || {};
-      currentSprint["plannedTasks"] = Object.values(tasks).length;
-
-      let tasksCompleted = 0;
-      Object.values(tasks).map((it) => {
-        if (it["status"] == 100) {
-          tasksCompleted++;
-        }
-      });
-
-      currentSprint["tasksCompleted"] = tasksCompleted;
-
-      const mainCompanyData = JSON.parse(
-        localStorage.getItem("mainCompanyData")
-      );
-      // mainCompanyData.map((item) => {
-      //   if (item.projectName == selectedProjectName) {
-      //     item.sprints.map((it) => {
-      //       if (it["sprintName"] == sName) {
-      //         sData[selectedProjectName][key][sName]["workHoursUsed"] =
-      //           it["remaining_hrs"];
-      //         sData[selectedProjectName][key][sName][
-      //           "totalAvailableWorkHours"
-      //         ] = it["final_hrs"];
-      //         sData[selectedProjectName][key][sName]["plannedWorkHours"] =
-      //           it["effective_hrs"];
-      //       }
-      //     });
-      //   }
-      // });
-
-      // localStorage.setItem("sprintsData", JSON.stringify(sData));
-    }
   }, []);
 
   useEffect(() => {
-    const selectedProjectName = localStorage.getItem("selectedProjectName");
     // To create new Structure
-    let loadedSprintsData = [];
 
-    const allSprintKpi = JSON.parse(localStorage.getItem("sprintsData")) || {};
-
-    if (selectedProject?.projectName && Object.keys(allSprintKpi)?.length > 0) {
-      loadedSprintsData = allSprintKpi[selectedProject?.projectName];
-
-      const sprints = Object.keys(loadedSprintsData);
+    if (selectedProject?.baseInfo?.projectName) {
+      const sprints = selectedProject?.sprints;
       if (sprints.length > 0) {
-        const sortedSprintData = sortSprintData(loadedSprintsData);
-        const sprintKeys = sortedSprintData.map(
-          (sprint) => Object.keys(sprint)[0]
+        const sortedSprintData = sortSprintData(sprints);
+        const sprintKeys = sortedSprintData?.map(
+          (sprint) => sprint?.sprintName
         );
-
         setSprintsData(sortedSprintData);
         setSprintsList(sprintKeys);
         setStartSprint(sprintKeys[0]);
@@ -132,12 +73,13 @@ function Sprints({ sidebarToggle }) {
         for (let i = startSprintIndex; i <= endSprintIndex; i++) {
           activeSprints.push(sprintsData[i]);
         }
+
         setSelectedSprintData(activeSprints);
       } else {
         setSelectedSprintData([]);
       }
     }
-  }, [startSprint, endSprint]);
+  }, [startSprint, endSprint, sprintsList]);
   const handleSave = () => {
     const startNumber = parseInt(startSprint.split(" ")[1]);
     const endNumber = parseInt(endSprint.split(" ")[1]);
@@ -173,7 +115,7 @@ function Sprints({ sidebarToggle }) {
         },
       });
     } else {
-      const singleSprintData = Object.values(selectedSprintData[0])[0];
+      const singleSprintData = selectedSprintData[0];
 
       const completionRate =
         singleSprintData.plannedTasks === 0 ||
@@ -247,28 +189,33 @@ function Sprints({ sidebarToggle }) {
   const handleInputChange = (sprintIndex, field, value) => {
     const updatedSprintsData = [...selectedSprintData];
 
-    updatedSprintsData[sprintIndex][
-      Object.keys(selectedSprintData[sprintIndex])[0]
-    ][field] = value;
+    updatedSprintsData[sprintIndex][field] = value;
+    let project = localStorage.getItem("currentProject");
+    let sprint = localStorage.getItem("currentSprint");
+    if (project && sprint) {
+      project = JSON.parse(project);
+      sprint = JSON.parse(sprint);
+      if (updatedSprintsData[sprintIndex]?.sprintName === sprint?.sprintName) {
+        sprint[field] = value;
+        localStorage.setItem("currentSprint", JSON.stringify(sprint));
+      }
+      project["sprints"] = updatedSprintsData;
+      localStorage.setItem("currentProject", JSON.stringify(project));
+    }
     setSelectedSprintData(updatedSprintsData);
     const stateSprintData = [...sprintsData];
-    stateSprintData[sprintIndex][
-      Object.keys(selectedSprintData[sprintIndex])[0]
-    ][field] = value;
+    stateSprintData[sprintIndex][field] = value;
     setSprintsData(stateSprintData);
   };
 
   const renderSprintsData = () => {
     return selectedSprintData.map((sprint, index) => {
-      const data = Object.values(sprint)[0];
-      const sprintName = Object.keys(sprint)[0];
-
       return (
         <tr
-          key={sprintName}
+          key={sprint?.sprintName}
           className="points border-b-2 border-gray-400 hover:bg-gray-400"
         >
-          <td className="m-4 ">{sprintName}</td>
+          <td className="m-4 ">{sprint?.sprintName}</td>
           <td
             className="m-4"
             contentEditable={editMode}
@@ -280,7 +227,7 @@ function Sprints({ sidebarToggle }) {
               )
             }
           >
-            {data.plannedTasks}
+            {sprint?.plannedTasks}
           </td>
           <td
             className="m-4 "
@@ -293,7 +240,7 @@ function Sprints({ sidebarToggle }) {
               )
             }
           >
-            {data.tasksCompleted}
+            {sprint?.tasksCompleted}
           </td>
           <td
             className="m-4 "
@@ -306,7 +253,7 @@ function Sprints({ sidebarToggle }) {
               )
             }
           >
-            {data.extraTasksAdded}
+            {sprint?.extraTasksAdded}
           </td>
           <td
             className="m-4 "
@@ -319,7 +266,7 @@ function Sprints({ sidebarToggle }) {
               )
             }
           >
-            {data.descopedTasks}
+            {sprint?.descopedTasks}
           </td>
           <td
             className="m-4 "
@@ -332,7 +279,7 @@ function Sprints({ sidebarToggle }) {
               )
             }
           >
-            {data.totalAvailableWorkHours}
+            {sprint?.totalAvailableWorkHours}
           </td>
           <td
             className="m-4 "
@@ -345,7 +292,7 @@ function Sprints({ sidebarToggle }) {
               )
             }
           >
-            {data.plannedWorkHours}
+            {sprint?.plannedWorkHours}
           </td>
           <td
             className="m-4 "
@@ -358,7 +305,7 @@ function Sprints({ sidebarToggle }) {
               )
             }
           >
-            {data.workHoursUsed}
+            {sprint?.workHoursUsed}
           </td>
           <td
             className="m-4 "
@@ -371,7 +318,7 @@ function Sprints({ sidebarToggle }) {
               )
             }
           >
-            {data.inSprintDefects}
+            {sprint?.inSprintDefects}
           </td>
           <td
             className="m-4 p-6"
@@ -384,7 +331,7 @@ function Sprints({ sidebarToggle }) {
               )
             }
           >
-            {data.postSprintDefects}
+            {sprint?.postSprintDefects}
           </td>
         </tr>
       );

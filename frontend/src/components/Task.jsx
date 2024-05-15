@@ -31,9 +31,9 @@ const Task = ({ item, sr, list, setList, edit }) => {
         setResources(names);
       }
       if (currentSprint?.status?.length > 0) {
-        const status = currentSprint?.status?.find(
-          (sprint) => sprint?.status?.sprintId === item?.id
-        );
+        // const status = currentSprint?.status?.find(
+        //   (sprint) => sprint?.status?.sprintId === item?.id
+        // );
         const filterTasks = currentSprint?.status?.filter(
           (task) => task.status?.sprintId === item?.id
         );
@@ -166,7 +166,17 @@ const Task = ({ item, sr, list, setList, edit }) => {
 
     sprint["tasks"] = newTasks;
     sprint["status"] = newSprintStatus;
-
+    sprint["plannedTasks"] -= 1;
+    let tasksCompleted = 0;
+    newSprintStatus?.forEach((s1) => {
+      if (
+        s1?.status?.work_completed_1 == 100 ||
+        s1?.status?.work_completed_2 == 100
+      ) {
+        tasksCompleted += 1;
+      }
+    });
+    sprint["tasksCompleted"] = tasksCompleted;
     localStorage.setItem("currentSprint", JSON.stringify(sprint));
     // const taskToDelete = storedTasks[id];
     // delete storedTasks[id];

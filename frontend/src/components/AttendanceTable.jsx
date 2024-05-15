@@ -8,7 +8,7 @@ const AttendanceTable = ({ sidebarToggle }) => {
   const [selectedValues, setSelectedValues] = useState([]);
   const [storedAllocationsData, setStoredAllocationsData] = useState([]);
   const [dateWeekdayPairs, setDateWeekdayPairs] = useState([]);
-  const [mainCompanyData, setMainCompanyData] = useState([]);
+
   const [selectedSprint, setSelectedSprint] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
   const [showGraph, setShowGraph] = useState(true);

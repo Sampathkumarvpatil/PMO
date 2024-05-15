@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Task from "./Task";
 import { usePDF } from "react-to-pdf";
-import { useParams } from "react-router-dom";
 import ProjOptions from "./ProjOptions";
 import LastButtons from "./LastButtons";
-import { useGetS3Folders } from "../utils/useGetS3Folders";
 
 const TaskForm = ({ sidebarToggle }) => {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -88,9 +86,9 @@ const TaskForm = ({ sidebarToggle }) => {
 
     const updatedTremaining = { ...thrs }; // Create a copy of tremaining
     // console.log(updatedTremaining);
-    const workedHours = storedTasks.map((task) => {
-      return { [task.resource_name]: task.status.total_worked };
-    });
+    // const workedHours = storedTasks.map((task) => {
+    //   return { [task.resource_name]: task.status.total_worked };
+    // });
     // Object.values(storedTasks).forEach((task) => {
     //   for (const key in updatedTremaining) {
     //     updatedTremaining[key] -= task[key] || 0;
@@ -99,6 +97,16 @@ const TaskForm = ({ sidebarToggle }) => {
     // const remainingHrs = storedTasks?.map((task) => {
     //   return { updatedTremaining[task.resource_name]: task?.status?.total_worked };
     // });
+    let initialTotalCompletedTask = 0;
+    storedTasks?.forEach((singleTask) => {
+      if (
+        singleTask?.status?.work_completed_2 == 100 ||
+        singleTask?.status?.work_completed_1 == 100
+      ) {
+        initialTotalCompletedTask += 1;
+      }
+    });
+
     if (storedTasks?.length > 0) {
       storedTasks.forEach((task) => {
         updatedTremaining[task.resource_name] =
@@ -114,6 +122,11 @@ const TaskForm = ({ sidebarToggle }) => {
         }
       });
       updatedTremaining["total"] = total;
+      const sprint = { ...selectedSprint };
+      // sprint["totalAvailableWorkHours"] = total;
+      sprint["tasksCompleted"] = initialTotalCompletedTask;
+      // setSelectedSprint(sprint);
+      localStorage.setItem("currentSprint", JSON.stringify(sprint));
     }
 
     setTremaining(updatedTremaining);
@@ -135,6 +148,7 @@ const TaskForm = ({ sidebarToggle }) => {
 
     if (sprint) {
       sprint = JSON.parse(sprint);
+      sprint["plannedTasks"] += 1;
       if (sprint?.tasks?.length > 0) {
         sprint.tasks.push(newTask);
       } else {
@@ -148,6 +162,17 @@ const TaskForm = ({ sidebarToggle }) => {
   const cellStyle = {
     width: "150px", // Adjust width as needed
   };
+
+  useEffect(() => {
+    if (thrs && tremaining) {
+      let sprint = localStorage.getItem("currentSprint");
+      if (sprint) {
+        sprint = JSON.parse(sprint);
+        sprint["workHoursUsed"] = thrs["total"] - tremaining["total"];
+        localStorage.setItem("currentSprint", JSON.stringify(sprint));
+      }
+    }
+  }, [thrs, tremaining]);
 
   return (
     <div
@@ -234,6 +259,7 @@ const TaskForm = ({ sidebarToggle }) => {
             >
               Status
             </th>
+
             {res.map((item, index) => (
               <th
                 key={index}

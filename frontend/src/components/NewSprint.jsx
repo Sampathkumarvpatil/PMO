@@ -93,7 +93,7 @@ const NewSprint = ({ refreshSprint }) => {
         holidays: [],
         collaborative_time: {},
         attendanceData: [],
-        status: {},
+        status: [],
       };
       const projectNeedToUpdate = { ...selectedProject };
       if (projectNeedToUpdate["sprints"]) {

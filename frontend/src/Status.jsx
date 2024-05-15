@@ -133,7 +133,27 @@ const Status = ({ sidebarToggle }) => {
         });
 
         const newSprintData = { ...currentSprint };
-        newSprintData["status"] = status;
+        let taskCompleted = newSprintData?.tasksCompleted;
+        statusList.forEach((st) => {
+          if (st?.work_completed_2 == 100 || st?.work_completed_1 == 100) {
+            taskCompleted += 1;
+          }
+        });
+
+        newSprintData["tasksCompleted"] = taskCompleted;
+        status?.forEach((sta) => {
+          let ind = newSprintData?.status?.findIndex(
+            (singleStatus) =>
+              singleStatus?.status?.id === sta?.status?.id &&
+              singleStatus?.status?.sprintId === sta?.status?.sprintId
+          );
+          if (ind >= 0) {
+            newSprintData.status[ind] = sta;
+          } else {
+            newSprintData?.status?.push(sta);
+          }
+        });
+
         const projectData = { ...currentProject };
         const sprintExistIndex = projectData?.sprints?.findIndex(
           (sprint) => sprint?.sprintName === newSprintData?.sprintName

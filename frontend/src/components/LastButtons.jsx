@@ -7,36 +7,48 @@ import { useSaveDataToS3 } from "../utils/useSaveDataToS3";
 const LastButtons = ({ current }) => {
   const navigate = useNavigate();
   const { error, saveData, success, isLoading } = useSaveDataToS3();
-
-  const back = () => {
+  const back = async () => {
     if (current === "Dashboard") {
+      await handleSavebtnClick();
       navigate("/");
     } else if (current === "AllocationInput") {
+      await handleSavebtnClick();
       navigate("/Dashboard");
     } else if (current === "AttendanceTable") {
+      await handleSavebtnClick();
       navigate("/AllocationAndHoliday");
     } else if (current === "TaskForm") {
+      await handleSavebtnClick();
       navigate("/AttendanceTable");
     } else if (current === "Sprints") {
+      await handleSavebtnClick();
       navigate("/list");
     } else if (current === "FileUpload") {
+      await handleSavebtnClick();
       navigate("/KPI's");
     }
   };
-  const next = () => {
+  const next = async () => {
     if (current === "Dashboard") {
+      await handleSavebtnClick();
       navigate("/AllocationAndHoliday");
     } else if (current === "AllocationInput") {
+      await handleSavebtnClick();
       navigate("/AttendanceTable");
     } else if (current === "AttendanceTable") {
+      await handleSavebtnClick();
       navigate("/list");
     } else if (current === "TaskForm") {
+      await handleSavebtnClick();
       navigate("/KPI's");
     } else if (current === "Sprints") {
+      await handleSavebtnClick();
       navigate("/uploadFile");
-    } else if (current === "FileUpload") {
-      navigate("/");
     }
+    // else if (current === "FileUpload") {
+    //   await handleSavebtnClick();
+    //   navigate("/");
+    // }
   };
   const handleSavebtnClick = async () => {
     let projectNeedToUpdate = localStorage.getItem("currentProject");
@@ -113,9 +125,13 @@ const LastButtons = ({ current }) => {
 
         <div>
           <button
-            className="animated-button"
+            className={
+              isLoading || current === "Sprints"
+                ? "disabled-animated"
+                : "animated-button"
+            }
             onClick={() => next()}
-            disabled={isLoading}
+            disabled={isLoading || current === "Sprints"}
           >
             <svg
               viewBox="0 0 24 24"
