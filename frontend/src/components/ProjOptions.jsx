@@ -61,28 +61,6 @@ const ProjOptions = () => {
     }
   }, [s3FoldersData]);
 
-  useEffect(() => {
-    // let currentProject = localStorage.getItem("currentProject");
-    // let currentSprint = localStorage.getItem("currentSprint");
-    // if (currentProject && currentSprint) {
-    //   currentProject = JSON.parse(currentProject);
-    //   currentSprint = JSON.parse(currentSprint);
-    //   setSelectedProject(currentProject);
-    //   setSelectedSprint(currentSprint);
-    // }
-    if (selectedProject) {
-      if (selectedProject?.sprints?.length > 0) {
-        setSprintData(selectedProject?.sprints);
-
-        localStorage.setItem(
-          "currentSprint",
-          JSON.stringify(selectedProject?.sprints[0])
-        );
-        setSelectedSprint(selectedProject?.sprints[0]);
-      }
-    }
-  }, [selectedProject]);
-
   const handleProjectChange = (e) => {
     const projectName = e.target.value;
     const project = availableProjects?.find(
@@ -90,6 +68,7 @@ const ProjOptions = () => {
     );
     setSelectedProject(project);
     localStorage.setItem("currentProject", JSON.stringify(project));
+    window.location.reload();
   };
 
   const handleSprintChange = (e) => {
@@ -103,6 +82,7 @@ const ProjOptions = () => {
     // Stored the date in the local storage
     localStorage.setItem("sprintStartDate", sprint.startDate);
     localStorage.setItem("sprintEndDate", sprint.endDate);
+    window.location.reload();
   };
 
   return (
