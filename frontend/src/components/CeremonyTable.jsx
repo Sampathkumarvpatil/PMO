@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const getInitialDatesWithInitialValues = (start, end) => {
+export const getInitialDatesWithInitialValues = (start, end) => {
   const dates = {};
   let currentDate = new Date(start);
   const stopDate = new Date(end);
@@ -27,17 +27,18 @@ const CeremonyTable = ({
   setSelectedSprint,
 }) => {
   // setCeremonyInput(stateValue);
+
   const savedProjectName = projectName;
   const savedSprintName = selectedSprint?.sprintName;
   const sprintCopy = JSON.parse(JSON.stringify(selectedSprint));
-
-  const meetings = selectedSprint?.meetings || [
+  const [meetings, setMeeings] = useState([
     "Daily Sync",
     "Sprint Planning",
     "Iteration Review",
     "Cycle Retrospective",
     "Story Refinement",
-  ];
+  ]);
+
   const [collaborative_time, setCollaboeativeTime] = useState(undefined);
   let spreadTime = { ...collaborative_time };
   const [ceremonyInput, setCeremonyInput] = useState({
@@ -64,62 +65,65 @@ const CeremonyTable = ({
     } else {
       updateTotals(0);
     }
-  }, [selectedSprint, projectName]);
-
-  if (meetings && meetings.length > 5) {
-    for (let i = 5; i < meetings.length; i++) {
-      let collaborativeTime = JSON.parse(
-        localStorage.getItem("collaborative_time")
-      );
-
-      if (
-        collaborativeTime[savedProjectName][savedSprintName][meetings[i]] ===
-        undefined
-      ) {
-        ceremonyInput[meetings[i]] = {
-          ...getInitialDatesWithInitialValues(startDate, endDate),
-        };
-
-        let sprint = collaborativeTime[savedProjectName][savedSprintName];
-        sprint[meetings[i]] = ceremonyInput[meetings[i]];
-
-        collaborativeTime[savedProjectName][savedSprintName] = sprint;
-
-        localStorage.setItem(
-          "collaborative_time",
-          JSON.stringify(collaborativeTime)
-        );
-      }
-      spreadTime = collaborativeTime;
+    if (selectedSprint?.meetings?.length > 0) {
+      setMeeings(selectedSprint?.meetings);
     }
-  }
+  }, [
+    selectedSprint?.collaborative_time,
+    projectName,
+    selectedSprint?.meetings,
+  ]);
+
+  // if (meetings && meetings.length > 5) {
+  //   for (let i = 5; i < meetings.length; i++) {
+  //     let collaborativeTime = selectedSprint?.collaborative_time;
+
+  //     if (
+  //       collaborativeTime[meetings[i]] ===
+  //       undefined
+  //     ) {
+  //       ceremonyInput[meetings[i]] = {
+  //         ...getInitialDatesWithInitialValues(startDate, endDate),
+  //       };
+
+  //       let sprint = collaborativeTime[savedProjectName][savedSprintName];
+  //       sprint[meetings[i]] = ceremonyInput[meetings[i]];
+
+  //       collaborativeTime[savedProjectName][savedSprintName] = sprint;
+
+  //       localStorage.setItem(
+  //         "collaborative_time",
+  //         JSON.stringify(collaborativeTime)
+  //       );
+  //     }
+  //     spreadTime = collaborativeTime;
+  //   }
+  // }
 
   useEffect(() => {
     // Get the selected project and sprint from local storage
 
     let collaborativeData = selectedSprint?.collaborative_time;
 
-    const initializeCeremonyData = (startDate, endDate) => ({
-      ["Daily Sync"]: {
-        ...getInitialDatesWithInitialValues(startDate, endDate),
-      },
-      ["Sprint Planning"]: {
-        ...getInitialDatesWithInitialValues(startDate, endDate),
-      },
-      ["Iteration Review"]: {
-        ...getInitialDatesWithInitialValues(startDate, endDate),
-      },
-      ["Cycle Retrospective"]: {
-        ...getInitialDatesWithInitialValues(startDate, endDate),
-      },
-      ["Story Refinement"]: {
-        ...getInitialDatesWithInitialValues(startDate, endDate),
-      },
-    });
+    const initializeCeremonyData = (allMeetings, startDate, endDate) => {
+      let allCollabData = {};
+      allMeetings.forEach((meet) => {
+        allCollabData[meet] = {
+          ...getInitialDatesWithInitialValues(startDate, endDate),
+        };
+      });
+      return allCollabData;
+    };
 
     if (savedProjectName && savedSprintName && startDate && endDate) {
       if (!collaborativeData || Object.keys(collaborativeData).length === 0) {
-        collaborativeData = initializeCeremonyData(startDate, endDate);
+        collaborativeData = {
+          ...initializeCeremonyData(
+            selectedSprint?.meetings,
+            startDate,
+            endDate
+          ),
+        };
       }
       const newSprintUpdate = {
         ...selectedSprint,
