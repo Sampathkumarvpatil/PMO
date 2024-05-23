@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import CeremonyTable from "./CeremonyTable";
+import CeremonyTable, {
+  getInitialDatesWithInitialValues,
+} from "./CeremonyTable";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -7,45 +9,17 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
-const CeremonyContainer = ({ startDate, endDate, sprintName, projectName }) => {
+const CeremonyContainer = ({
+  selectedSprint,
+  projectName,
+  setSelectedSprint,
+}) => {
   const [totalMinutes, setTotalMinutes] = useState(0);
   const [totalHours, setTotalHours] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
   const [newMeetingName, setNewMeetingName] = useState("");
-  const [meeting, setMeeting] = useState();
 
-  useEffect(() => {
-    
-    let projectName = localStorage.getItem("selectedProjectName")
-    let sprintName = localStorage.getItem("selectedSprintName")
-    let meetingData = localStorage.getItem("meetings")
-    let data = [
-      { name: "Daily Sync" },
-      { name: "Sprint Planning" },
-      { name: "Iteration Review" },
-      { name: "Cycle Retrospective" },
-      { name: "Story Refinement" },
-      // Add more meetings as needed
-    ]
-    if (meetingData === null) {
-      let obj = { [projectName]: { [sprintName]: data } };
-      localStorage.setItem("meetings", JSON.stringify(obj))
-      setMeeting(data)
-    } else if (JSON.parse(meetingData)[projectName] === undefined) {
-      let meetingData = JSON.parse(localStorage.getItem("meetings"))
-      meetingData[projectName] = { [sprintName]: data }
-      localStorage.setItem("meetings", JSON.stringify(meetingData))
-    } else if (JSON.parse(meetingData)[projectName][sprintName] === undefined) {
-      let meetingData = JSON.parse(localStorage.getItem("meetings"))
-      let projectData = meetingData[projectName]
-      projectData[sprintName] = data
-      meetingData[projectName] = projectData
-      localStorage.setItem("meetings", JSON.stringify(meetingData))
-    } else {
-      setMeeting(JSON.parse(localStorage.getItem("meetings"))[projectName][sprintName])
-    }
-  }, [sprintName,projectName])
-
+  // useEffect(() => {}, [selectedSprint, projectName]);
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -57,14 +31,30 @@ const CeremonyContainer = ({ startDate, endDate, sprintName, projectName }) => {
 
   const handleSaveMeeting = () => {
     if (newMeetingName.trim() !== "") {
-      let data = [...meeting, { name: newMeetingName }]
-      setMeeting(data);
+      let currentSprint = localStorage.getItem("currentSprint");
+      if (currentSprint) {
+        currentSprint = JSON.parse(currentSprint);
+
+        let data = [...currentSprint?.meetings, newMeetingName];
+
+        const collabTimeForNewSprint = {
+          [newMeetingName]: {
+            ...getInitialDatesWithInitialValues(
+              selectedSprint?.startDate,
+              selectedSprint?.endDate
+            ),
+          },
+        };
+        let collaborative_time = {
+          ...currentSprint?.collaborative_time,
+          ...collabTimeForNewSprint,
+        };
+        currentSprint["collaborative_time"] = collaborative_time;
+        currentSprint["meetings"] = data;
+        setSelectedSprint(currentSprint);
+        localStorage.setItem("currentSprint", JSON.stringify(currentSprint));
+      }
       setNewMeetingName("");
-      let meetingData = JSON.parse(localStorage.getItem("meetings"))
-      let projectData = meetingData[projectName]
-      projectData[sprintName] = data
-      meetingData[projectName] = projectData
-      localStorage.setItem("meetings", JSON.stringify(meetingData))
     }
     setOpenDialog(false);
   };
@@ -91,10 +81,12 @@ const CeremonyContainer = ({ startDate, endDate, sprintName, projectName }) => {
       <br />
       <div>
         <CeremonyTable
-          startDate={startDate}
-          endDate={endDate}
+          startDate={selectedSprint?.startDate}
+          endDate={selectedSprint?.endDate}
           updateTotals={updateTotals}
-          meetings={meeting}
+          selectedSprint={selectedSprint}
+          projectName={projectName}
+          setSelectedSprint={setSelectedSprint}
         />
       </div>
       <div className="flex flex-row mt-20">

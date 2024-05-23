@@ -27,13 +27,12 @@ const CompletionRateOverviewbysprintsComponent = ({ sidebarToggle }) => {
   ];
 
   const processedSprints = selectedSprints.map((sprint) => ({
-    ...Object.values(sprint)[0],
-    plannedTasks: Number(Object.values(sprint)[0]?.plannedTasks),
-    tasksCompleted: Number(Object.values(sprint)[0]?.tasksCompleted),
-    completionRate: Object.values(sprint)[0]?.plannedTasks
+    ...sprint,
+    plannedTasks: Number(sprint?.plannedTasks),
+    tasksCompleted: Number(sprint?.tasksCompleted),
+    completionRate: sprint?.plannedTasks
       ? (
-          (Number(Object.values(sprint)[0]?.tasksCompleted) /
-            Number(Object.values(sprint)[0]?.plannedTasks)) *
+          (Number(sprint?.tasksCompleted) / Number(sprint?.plannedTasks)) *
           100
         ).toFixed(2)
       : 0,
@@ -48,7 +47,7 @@ const CompletionRateOverviewbysprintsComponent = ({ sidebarToggle }) => {
       text: "Completion Rate Overview by Sprints",
     },
     xAxis: {
-      categories: selectedSprints.map((sprint) => Object.keys(sprint)[0]),
+      categories: selectedSprints.map((sprint) => sprint?.sprintName),
     },
     yAxis: {
       min: 0,

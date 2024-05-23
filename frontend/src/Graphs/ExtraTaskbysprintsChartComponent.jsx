@@ -12,11 +12,7 @@ const ExtraTaskbysprintsChartComponent = ({ sidebarToggle }) => {
   const { selectedSprints } = location.state || { selectedSprints: [] };
 
   const highestValue =
-    Math.max(
-      ...selectedSprints.map(
-        (sprint) => Object.values(sprint)[0].extraTasksAdded
-      )
-    ) + 10;
+    Math.max(...selectedSprints.map((sprint) => sprint?.extraTasksAdded)) + 10;
 
   const chartOptions = {
     chart: {
@@ -44,11 +40,10 @@ const ExtraTaskbysprintsChartComponent = ({ sidebarToggle }) => {
       {
         name: "Extra Tasks Added",
         data: selectedSprints.map((sprint) => ({
-          name: Object.keys(sprint)[0],
-          y: Object.values(sprint)[0].extraTasksAdded,
+          name: sprint?.sprintName,
+          y: sprint?.extraTasksAdded,
           extraTaskRatio: (
-            (Object.values(sprint)[0].extraTasksAdded /
-              Object.values(sprint)[0].plannedTasks) *
+            (sprint?.extraTasksAdded / sprint?.plannedTasks) *
             100
           ).toFixed(3),
           color: {
@@ -69,7 +64,7 @@ const ExtraTaskbysprintsChartComponent = ({ sidebarToggle }) => {
       },
     },
     xAxis: {
-      categories: selectedSprints.map((sprint) => Object.keys(sprint)[0]),
+      categories: selectedSprints.map((sprint) => sprint?.name),
       labels: {
         enabled: true,
       },

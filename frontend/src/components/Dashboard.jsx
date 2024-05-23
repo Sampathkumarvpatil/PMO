@@ -1,67 +1,108 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 // import Navbar from "./Navbar";
 import { FaCalendarDay, FaClock, FaSquarespace } from "react-icons/fa";
 import "../Sidebar.css";
 import CeremonyContainer from "./CeremonyContainer";
 import LastButtons from "./LastButtons";
+
+import { useGetS3Folders } from "../utils/useGetS3Folders";
 // import AttendanceTable from "./AttendenceTable";
 // import { Link } from 'react-router-dom';
 
 const Dashboard = ({ sidebarToggle }) => {
-  const [mainCompanyArr, setMainCompanyArr] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedSprint, setSelectedSprint] = useState(null);
+  const [sprintData, setSprintData] = useState(null);
+  const {
+    data: s3FoldersData,
+    error: getFolderErrror,
+    fetchData: fetchS3Folders,
+  } = useGetS3Folders(); // getting all project details and and based on names need to show the project list
+  const [availableProjects, setAvailableProjects] = useState([]);
 
   useEffect(() => {
-    const savedProjectName = localStorage.getItem("selectedProjectName");
-    const savedSprintName = localStorage.getItem("selectedSprintName");
-    const dataFromLocalStorage =
-      JSON.parse(localStorage.getItem("mainCompanyData")) || [];
-
-    setMainCompanyArr(dataFromLocalStorage);
-
-    if (dataFromLocalStorage.length > 0) {
-      const selectedProject =
-        dataFromLocalStorage.find(
-          (project) => project.projectName === savedProjectName
-        ) || dataFromLocalStorage[0];
-
-      setSelectedProject(selectedProject);
-
-      if (selectedProject.sprints && selectedProject.sprints.length > 0) {
-        const selectedSprint =
-          selectedProject.sprints.find(
-            (sprint) => sprint.sprintName === savedSprintName
-          ) || selectedProject.sprints[0];
-
-        setSelectedSprint(selectedSprint);
-      }
-    }
+    const fetchFolders = async () => {
+      const key = sessionStorage.getItem("key");
+      await fetchS3Folders(key);
+    };
+    fetchFolders();
   }, []);
-  useEffect(() => {
-    if (selectedSprint?.sprintName)
-      localStorage.setItem("selectedSprintName", selectedSprint?.sprintName);
-  }, [selectedSprint?.sprintName]);
 
-  const handleProjectChange = (e) => {
+  useEffect(() => {
+    if (
+      s3FoldersData &&
+      s3FoldersData?.length > 0 &&
+      Array.isArray(s3FoldersData)
+    ) {
+      const parsedProjectData = s3FoldersData.map((file) => {
+        return JSON.parse(file?.Content);
+      });
+
+      setSelectedProject(parsedProjectData[0]);
+      localStorage.setItem(
+        "currentProject",
+        JSON.stringify(parsedProjectData[0])
+      );
+
+      if (parsedProjectData[0]?.sprints?.length > 0) {
+        setSprintData(parsedProjectData[0]?.sprints);
+        setSelectedSprint(parsedProjectData[0]?.sprints[0]);
+        localStorage.setItem(
+          "currentSprint",
+          JSON.stringify(parsedProjectData[0]?.sprints[0])
+        );
+      } else {
+        localStorage.setItem("currentSprint", JSON.stringify(null));
+      }
+
+      setAvailableProjects(parsedProjectData);
+    }
+  }, [s3FoldersData]);
+
+  const handleProjectChange = async (e) => {
     const projectName = e.target.value;
-    const project = mainCompanyArr.find((p) => p.projectName === projectName);
+    const project = availableProjects.find(
+      (p) => p?.baseInfo?.projectName === projectName
+    );
     setSelectedProject(project);
-    localStorage.setItem("selectedProjectName", projectName);
+    localStorage.setItem("currentProject", JSON.stringify(project));
+
+    if (
+      project?.sprints &&
+      project.sprints.length > 0 &&
+      Array.isArray(project.sprints)
+    ) {
+      setSprintData(project?.sprints);
+      setSelectedSprint(project?.sprints[0]);
+      localStorage.setItem(
+        "currentSprint",
+        JSON.stringify(project?.sprints[0])
+      );
+    } else {
+      setSprintData(null);
+      setSelectedSprint(null);
+      localStorage.setItem("currentSprint", "");
+    }
+    // localStorage.setItem("selectedProjectName", projectName);
+    // const jsonResponse = await fetchData(projectName);
+    // if (jsonResponse) {
+    //   setDbProject(jsonResponse);
+    // } else return;
   };
 
   const handleSprintChange = (e) => {
     const sprintName = e.target.value;
 
-    const sprint = selectedProject.sprints.find(
+    const sprint = selectedProject?.sprints.find(
       (s) => s.sprintName === sprintName
     );
     setSelectedSprint(sprint);
+    localStorage.setItem("currentSprint", JSON.stringify(sprint));
     localStorage.setItem("selectedSprintName", sprintName);
 
     //stored the date in the localstorage
-    localStorage.setItem("sprintStartDate", sprint.startDate);
-    localStorage.setItem("sprintEndDate", sprint.endDate);
+    // localStorage.setItem("sprintStartDate", sprint.startDate);
+    // localStorage.setItem("sprintEndDate", sprint.endDate);
   };
 
   return (
@@ -79,11 +120,14 @@ const Dashboard = ({ sidebarToggle }) => {
             <select
               className="text-black rounded-lg px-9 py-1 bg-white border shadow-xl"
               onChange={handleProjectChange}
-              value={selectedProject?.projectName || ""}
+              value={selectedProject?.baseInfo.projectName || ""}
             >
-              {mainCompanyArr.map((project) => (
-                <option key={project.projectName} value={project.projectName}>
-                  {project.projectName}
+              {availableProjects.map((project) => (
+                <option
+                  key={project?.baseInfo?.projectName}
+                  value={project?.baseInfo?.projectName}
+                >
+                  {project?.baseInfo?.projectName}
                 </option>
               ))}
             </select>
@@ -95,7 +139,7 @@ const Dashboard = ({ sidebarToggle }) => {
               onChange={handleSprintChange}
               value={selectedSprint?.sprintName || ""}
             >
-              {selectedProject?.sprints?.map((sprint) => (
+              {sprintData?.map((sprint) => (
                 <option key={sprint.sprintName} value={sprint.sprintName}>
                   {sprint.sprintName}
                 </option>
@@ -115,7 +159,9 @@ const Dashboard = ({ sidebarToggle }) => {
               <FaSquarespace size={18} color="white" />
             </div>
             <div className="flex justify-start items-center mr-16">
-              <b>Project Name: {selectedProject?.projectName || "N/A"}</b>
+              <b>
+                Project Name: {selectedProject?.baseInfo?.projectName || "N/A"}
+              </b>
             </div>
           </div>
           <div
@@ -148,13 +194,15 @@ const Dashboard = ({ sidebarToggle }) => {
           </div>
         </div>
       </div>
-      {selectedProject?.projectName && selectedSprint?.sprintName && (
+      {selectedProject?.baseInfo?.projectName && selectedSprint?.sprintName && (
         <div>
           <CeremonyContainer
-            startDate={selectedSprint.startDate}
-            endDate={selectedSprint.endDate}
-            projectName={selectedProject.projectName}
-            sprintName={selectedSprint.sprintName}
+            projectName={selectedProject?.baseInfo?.projectName}
+            selectedSprint={selectedSprint}
+            setSelectedSprint={(newSprint) => {
+              localStorage.setItem("currentSprint", JSON.stringify(newSprint));
+              setSelectedSprint(newSprint);
+            }}
           />
 
           {/* <AttendanceTable

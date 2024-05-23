@@ -9,10 +9,7 @@ import Paper from "@mui/material/Paper";
 import React, { useEffect, useState } from "react";
 
 const HolidayInputs = () => {
-  const [allHolidaysArr, setAllHolidaysArr] = useState(() => {
-    const storedAllHolidays = localStorage.getItem("AllHolidays");
-    return storedAllHolidays ? JSON.parse(storedAllHolidays) : [];
-  });
+  const [allHolidaysArr, setAllHolidaysArr] = useState([]);
   // const [allHolidaysArr, setAllHolidaysArr] = useState([]);
   const [holidayDate, setHolidayDate] = useState("");
   const [occasion, setOccasion] = useState("");
@@ -23,6 +20,17 @@ const HolidayInputs = () => {
         holidayDate: holidayDate,
         occasion: occasion,
       };
+      let currentSprint = localStorage.getItem("currentSprint");
+      if (currentSprint) {
+        currentSprint = { ...JSON.parse(currentSprint) };
+        if (currentSprint?.holidays) {
+          currentSprint?.holidays?.push(newHolidayRow);
+        } else {
+          currentSprint["holidays"] = [];
+          currentSprint.holidays.push(newHolidayRow);
+        }
+        localStorage.setItem("currentSprint", JSON.stringify(currentSprint));
+      }
       setAllHolidaysArr([...allHolidaysArr, newHolidayRow]);
       setHolidayDate("");
       setOccasion("");
@@ -32,6 +40,15 @@ const HolidayInputs = () => {
     localStorage.setItem("AllHolidays", JSON.stringify(allHolidaysArr));
   }, [allHolidaysArr]);
 
+  useEffect(() => {
+    let currentSprint = localStorage.getItem("currentSprint");
+    if (currentSprint) {
+      currentSprint = { ...JSON.parse(currentSprint) };
+      if (currentSprint?.holidays) {
+        setAllHolidaysArr(currentSprint?.holidays);
+      }
+    }
+  }, []);
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       addHolidayRow();
