@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./newInputs.css";
 import NewSprint from "./NewSprint";
 import { useSaveDataToS3 } from "../utils/useSaveDataToS3";
+
 const NewProject = ({ sidebarToggle }) => {
-  const [mainCompanyArr, setMainCompanyArr] = useState([]);
   const [companyName, setCompanyName] = useState("");
   const [projectName, setProjectName] = useState("");
   const [buName, setBuName] = useState("");
@@ -11,30 +11,24 @@ const NewProject = ({ sidebarToggle }) => {
   const [projectCreated, setProjectCreated] = useState(false);
   const [refreshSprint, setRefreshSprint] = useState(true);
   const { error, saveData, success } = useSaveDataToS3();
+  const [projectCreationError, setProjetCreationError] = useState(false);
 
-  useEffect(() => {
-    const dataFromLocalStorage =
-      JSON.parse(localStorage.getItem("mainCompanyData")) || [];
-    setMainCompanyArr(dataFromLocalStorage);
-  }, []);
-
-  const handleCreateProject = () => {
-    let existingProject = mainCompanyArr.find(
-      (project) => project.projectName === projectName
-    );
-
-    if (existingProject) {
-      existingProject.companyName = companyName;
-      existingProject.buName = buName;
-      existingProject.resources = resourcesTotalNumber;
-    } else {
-      let newProject = {
-        companyName: companyName,
-        projectName: projectName,
-        buName: buName,
-        resources: resourcesTotalNumber,
-      };
-      mainCompanyArr.push(newProject);
+  const handleCreateProject = async () => {
+    if (!companyName || !projectName || !buName || !resourcesTotalNumber) {
+      alert("Please fill all the fields");
+      return;
+    }
+    const key = sessionStorage.getItem("key");
+    let baseInfo = {
+      companyName: companyName,
+      projectName: projectName,
+      buName: buName,
+      resources: resourcesTotalNumber,
+    };
+    const response = await saveData(projectName, { baseInfo }, key);
+    if (!response.success) {
+      setProjetCreationError(true);
+      return;
     }
 
     setCompanyName("");
@@ -42,19 +36,10 @@ const NewProject = ({ sidebarToggle }) => {
     setBuName("");
     setResourcesTotalNumber("");
 
-    localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyArr));
-    if (!companyName || !projectName || !buName || !resourcesTotalNumber) {
-      alert("Please fill all the fields");
-      return;
-    }
-
     setProjectCreated(true);
 
     localStorage.setItem("selectedProjectName", projectName);
     setRefreshSprint(!refreshSprint);
-    // setTimeout(() => {
-    //   navigate("/NewSprint");
-    // }, 2000);
   };
 
   return (
@@ -158,6 +143,11 @@ const NewProject = ({ sidebarToggle }) => {
           {projectCreated && (
             <div className="text-green-500 font-bold mt-4 text-center">
               Your project is created!
+            </div>
+          )}
+          {projectCreationError && (
+            <div className="text-red-500 font-bold mt-4 text-center">
+              {error}
             </div>
           )}
         </div>

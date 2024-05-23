@@ -1,8 +1,8 @@
 import Header from "../loginForm/Header";
 import Login from "../loginForm/Login";
 // import loginGif from "../assets/header-login.webp";
-import "./form.css"
-export default function LoginPage({buttonClick }) {
+import "./form.css";
+export default function LoginPage({ buttonClick }) {
   return (
     <>
       <div

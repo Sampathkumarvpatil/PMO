@@ -1,10 +1,12 @@
 import React from "react";
 import { FaBars, FaBell, FaSearch, FaUserCircle } from "react-icons/fa";
- 
+
 const Navbar = ({ sidebarToggle, changeToogle }) => {
   return (
     <div
-      className={`${sidebarToggle ? "ml-0" : "ml-64"}  w-full bg-gray-800 px-4 py-4 flex justify-between transition-all duration-300`}
+      className={`${
+        sidebarToggle ? "ml-0" : "ml-64"
+      }  w-full bg-gray-800 px-4 py-4 flex justify-between transition-all duration-300`}
     >
       <div className="flex items-center text-xl">
         <FaBars
@@ -50,5 +52,5 @@ const Navbar = ({ sidebarToggle, changeToogle }) => {
     </div>
   );
 };
- 
+
 export default Navbar;

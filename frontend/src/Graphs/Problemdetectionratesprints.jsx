@@ -16,7 +16,7 @@ const Problemdetectionratesprintchart = ({ sidebarToggle }) => {
       text: "Problem Detection Rates Across Sprints",
     },
     xAxis: {
-      categories: selectedSprints.map((sprint) => Object.keys(sprint)[0]),
+      categories: selectedSprints.map((sprint) => sprint?.sprintName),
     },
     yAxis: {
       min: 0,
@@ -29,11 +29,9 @@ const Problemdetectionratesprintchart = ({ sidebarToggle }) => {
         name: "In-Sprint Defect Ratio",
         data: selectedSprints.map((sprint) => ({
           y: parseFloat(
-            (
-              (Object.values(sprint)[0].inSprintDefects /
-                Object.values(sprint)[0].tasksCompleted) *
-              100
-            ).toFixed(3)
+            ((sprint?.inSprintDefects / sprint?.tasksCompleted) * 100).toFixed(
+              3
+            )
           ),
           color: "#FF5733",
         })),
@@ -47,8 +45,7 @@ const Problemdetectionratesprintchart = ({ sidebarToggle }) => {
         data: selectedSprints.map((sprint) => ({
           y: parseFloat(
             (
-              (Object.values(sprint)[0].postSprintDefects /
-                Object.values(sprint)[0].tasksCompleted) *
+              (sprint?.postSprintDefects / sprint?.tasksCompleted) *
               100
             ).toFixed(3)
           ),
