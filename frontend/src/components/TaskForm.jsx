@@ -2,27 +2,55 @@ import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Task from "./Task";
 import { usePDF } from "react-to-pdf";
-import { useParams } from "react-router-dom";
 import ProjOptions from "./ProjOptions";
 import LastButtons from "./LastButtons";
 
 const TaskForm = ({ sidebarToggle }) => {
-  const selectedProjectName = localStorage.getItem("selectedProjectName");
-  const selectedSprintName = localStorage.getItem("selectedSprintName");
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedSprint, setSelectedSprint] = useState(null);
+  // getting all project details and and based on names need to show the project list
+  useEffect(() => {
+    let currentProject = localStorage.getItem("currentProject");
+    let currentSprint = localStorage.getItem("currentSprint");
+    if (currentProject && currentSprint) {
+      currentProject = JSON.parse(currentProject);
+      currentSprint = JSON.parse(currentSprint);
+      setSelectedProject(currentProject);
+      setSelectedSprint(currentSprint);
+    }
+  }, []);
 
-  const data = JSON.parse(localStorage.getItem("mainCompanyData"));
-  let projectNo;
-  for (projectNo in data) {
-    if (data[projectNo].projectName === selectedProjectName) break;
-  }
+  // const selectedSprintName = localStorage.getItem("selectedSprintName");
+  // const companyData = localStorage.getItem("mainCompanyData");
 
-  let sprintNo;
-  for (sprintNo in data[projectNo].sprints) {
-    if (data[projectNo].sprints[sprintNo].sprintName === selectedSprintName)
-      break;
-  }
+  // const data =
+  //   companyData && companyData !== "undefined"
+  //     ? JSON.parse(companyData ?? {})
+  //     : null;
+  // let projectNo;
+  // for (projectNo in data) {
+  //   if (
+  //     data &&
+  //     projectNo &&
+  //     data[projectNo]?.projectName ===
+  //       selectedProject?.baseInfo?.selectedProject
+  //   )
+  //     break;
+  // }
 
-  const allocations = data[projectNo].sprints[sprintNo].allocations || null;
+  // let sprintNo;
+  // if (sprintNo && data && projectNo) {
+  //   for (sprintNo in data[projectNo]?.sprints) {
+  //     if (
+  //       projectNo &&
+  //       data &&
+  //       data[projectNo]?.sprints[sprintNo]?.sprintName === selectedSprintName
+  //     )
+  //       break;
+  //   }
+  // }
+
+  const allocations = selectedSprint?.allocations || null;
 
   const res = allocations?.map((item) => item.name) || [];
 
@@ -43,65 +71,66 @@ const TaskForm = ({ sidebarToggle }) => {
   //   totHours += thrs[item]
   // })
   thrs["total"] = totHours;
+
   const [tremaining, setTremaining] = useState({ ...thrs });
   const [edit, setEdit] = useState(false);
 
-  const { taskId } = useParams();
+  // const { taskId } = useParams();
 
   useEffect(() => {
-    const storedTasks = JSON.parse(localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)) || {};
-    if(Object.keys(storedTasks).length === 0){
-      const newTask = { id: uuidv4(), title: 'New Task'};
-    res.map((item)=>{
-      newTask[item] = 0
-    })
-    newTask['totHours'] = 0;
-    newTask['resource'] = '-'
-    newTask['total'] = 0
-    newTask['status'] = 0
-    console.log(newTask)
-    const storedTasks = JSON.parse(localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)) || {}; // Retrieve tasks from local storage, use object instead of array
-    storedTasks[newTask.id] = newTask; // Set the new task with its id as the key
-    localStorage.setItem(`${selectedProjectName}${selectedSprintName}`, JSON.stringify(storedTasks)); // Save the updated object back to local storage
-    setList([...list, newTask]);
+    const storedTasks = selectedSprint?.status || [];
+    const taskList = selectedSprint?.tasks || [];
+    if (taskList?.length > 0) {
+      setList(taskList);
     }
-    
-    setList(Object.values(storedTasks));
 
-    const updatedTremaining = { ...tremaining }; // Create a copy of tremaining
-
-    Object.values(storedTasks).forEach((task) => {
-      for (const key in updatedTremaining) {
-        updatedTremaining[key] -= task[key] || 0;
+    const updatedTremaining = { ...thrs }; // Create a copy of tremaining
+    // console.log(updatedTremaining);
+    // const workedHours = storedTasks.map((task) => {
+    //   return { [task.resource_name]: task.status.total_worked };
+    // });
+    // Object.values(storedTasks).forEach((task) => {
+    //   for (const key in updatedTremaining) {
+    //     updatedTremaining[key] -= task[key] || 0;
+    //   }
+    // });
+    // const remainingHrs = storedTasks?.map((task) => {
+    //   return { updatedTremaining[task.resource_name]: task?.status?.total_worked };
+    // });
+    let initialTotalCompletedTask = 0;
+    storedTasks?.forEach((singleTask) => {
+      if (
+        singleTask?.status?.work_completed_2 == 100 ||
+        singleTask?.status?.work_completed_1 == 100
+      ) {
+        initialTotalCompletedTask += 1;
       }
     });
 
-    setTremaining(updatedTremaining);
-  }, []);
-
-  let mainCompanyData = JSON.parse(localStorage.getItem("mainCompanyData"));
-
-  mainCompanyData = mainCompanyData.map((project) => {
-    if (project.projectName === selectedProjectName) {
-      return {
-        ...project,
-        sprints: project.sprints.map((sprint) => {
-          if (sprint.sprintName === selectedSprintName) {
-            return {
-              ...sprint,
-              remaining_hrs: thrs["total"] - tremaining["total"],
-            };
+    if (storedTasks?.length > 0) {
+      storedTasks.forEach((task) => {
+        updatedTremaining[task.resource_name] =
+          Number(updatedTremaining[task.resource_name]) -
+            Number(task?.status?.total_worked ?? "0") || 0;
+      });
+      let total = updatedTremaining[Object.keys(updatedTremaining)[0]];
+      Object.keys(updatedTremaining).forEach((key, i) => {
+        if (i > 0) {
+          if (key !== "total") {
+            total += updatedTremaining[key];
           }
-          return sprint;
-        }),
-      };
+        }
+      });
+      updatedTremaining["total"] = total;
+      const sprint = { ...selectedSprint };
+      // sprint["totalAvailableWorkHours"] = total;
+      sprint["tasksCompleted"] = initialTotalCompletedTask;
+      // setSelectedSprint(sprint);
+      localStorage.setItem("currentSprint", JSON.stringify(sprint));
     }
-    return project;
-  });
 
-  localStorage.setItem("mainCompanyData", JSON.stringify(mainCompanyData));
-
-  const numberOfResources = res.length;
+    setTremaining(updatedTremaining);
+  }, [selectedSprint]);
 
   const handleAddTask = () => {
     const newTask = { id: uuidv4(), title: "New Task" };
@@ -113,76 +142,196 @@ const TaskForm = ({ sidebarToggle }) => {
     newTask["total"] = 0;
     newTask["status"] = 0;
 
-    const storedTasks =
-      JSON.parse(
-        localStorage.getItem(`${selectedProjectName}${selectedSprintName}`)
-      ) || {}; // Retrieve tasks from local storage, use object instead of array
-    storedTasks[newTask.id] = newTask; // Set the new task with its id as the key
-    localStorage.setItem(
-      `${selectedProjectName}${selectedSprintName}`,
-      JSON.stringify(storedTasks)
-    ); // Save the updated object back to local storage
     setList([...list, newTask]);
+
+    let sprint = localStorage.getItem("currentSprint");
+
+    if (sprint) {
+      sprint = JSON.parse(sprint);
+      sprint["plannedTasks"] += 1;
+      if (sprint?.tasks?.length > 0) {
+        sprint.tasks.push(newTask);
+      } else {
+        sprint["tasks"] = [newTask];
+      }
+      setSelectedSprint(sprint);
+      localStorage.setItem("currentSprint", JSON.stringify(sprint));
+    }
   };
 
   const cellStyle = {
     width: "150px", // Adjust width as needed
   };
 
+  useEffect(() => {
+    if (thrs && tremaining) {
+      let sprint = localStorage.getItem("currentSprint");
+      if (sprint) {
+        sprint = JSON.parse(sprint);
+        sprint["workHoursUsed"] = thrs["total"] - tremaining["total"];
+        localStorage.setItem("currentSprint", JSON.stringify(sprint));
+      }
+    }
+  }, [thrs, tremaining]);
+
   return (
     <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
       <ProjOptions />
+      <div className="flex justify-end"></div>
+      <table
+        className="p-2 text-[18px] border-collapse border-2 border-[#aaa] m-2"
+        ref={targetRef}
+      >
+        <thead>
+          <tr>
+            <td
+              style={cellStyle}
+              className="p-2 border-solid  border-[#aaa] bg-gray-300"
+            >
+              Available
+            </td>
+            <td
+              style={cellStyle}
+              className="p-2 border-solid  border-[#aaa] bg-gray-300"
+            >
+              Hours:
+            </td>
+            <td
+              style={cellStyle}
+              className="p-2 border-solid  border-[#aaa] bg-gray-300"
+            ></td>
+            <td
+              style={cellStyle}
+              className="p-2 border-solid  border-[#aaa] bg-gray-300"
+            ></td>
+            <td
+              style={cellStyle}
+              className="p-2 border-solid  border-[#aaa] bg-gray-300"
+            ></td>
 
-    <div className={`overflow-x-scroll`}>
-      
-      <table className='w-full p-2 text-[18px] border-collapse border-2 border-[#aaa] m-2' ref={targetRef}>
-      <thead>
-            <tr>
-              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'>Available Hours:</td>
-              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
-              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
-              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
-              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
-              {Object.values(thrs).map((item,index)=>
-                <td key={index} style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300 text-center text-blue-700'>
-                  {item}</td>
-              )}
-              <td style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'></td>
-            </tr>
-       
- 
-       
-            <tr className='m-2 sticky top-0'>
-              <th style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Sr</th>
-              <th style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Task ID</th>
-              <th style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Title</th>
-              <th style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Planning Poker</th>
-              <th style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Status</th>
-              {res.map((item,index)=>
-                <th key={index} style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>{item}</th>
-              )}
-              <th style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Total Hours</th>
-              <th style={cellStyle} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300'>Delete Task</th>
-            </tr>
-          </thead>
-          <tbody >
-            {list.map((item, index) => (
-              <Task key={item.id} item={item} sr={index + 1}  list={list} setList={setList} edit={edit}/>
+            {Object.values(thrs).map((item, index) => (
+              <td
+                key={index}
+                style={cellStyle}
+                className="p-2 border-solid border-2 border-[#aaa] bg-gray-300 text-center text-blue-700"
+              >
+                {item}
+              </td>
             ))}
-          </tbody>
- 
+            <td
+              style={cellStyle}
+              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+            ></td>
+          </tr>
+
+          <tr className="m-2 sticky top-0">
+            <th
+              style={cellStyle}
+              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+            >
+              Sr
+            </th>
+            <th
+              style={cellStyle}
+              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+            >
+              Task ID
+            </th>
+            <th
+              style={cellStyle}
+              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+            >
+              Title
+            </th>
+            <th
+              style={cellStyle}
+              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+            >
+              Planning Poker
+            </th>
+            <th
+              style={cellStyle}
+              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+            >
+              Status
+            </th>
+
+            {res.map((item, index) => (
+              <th
+                key={index}
+                style={cellStyle}
+                className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+              >
+                {item}
+              </th>
+            ))}
+            <th
+              style={cellStyle}
+              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+            >
+              Total Hours
+            </th>
+            <th
+              style={cellStyle}
+              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+            >
+              Delete Task
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {list.map((item, index) => (
+            <Task
+              key={item.id}
+              item={item}
+              sr={index + 1}
+              list={list}
+              setList={setList}
+              edit={edit}
+            />
+          ))}
+        </tbody>
+
         <tfoot>
           <tr>
-              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'>Remaining Hours:</td>
-              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
-              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
-              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
-              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
-              {Object.values(tremaining).map((item,index)=>
-                  <td style={cellStyle} key={index} className='p-2 border-solid border-2 border-[#aaa] bg-gray-300 text-center text-red-600'>
-                    {item}</td>
-                )}
-              <td style={cellStyle} className='p-2 border-solid  border-[#aaa] bg-gray-300'></td>
+            <td
+              style={cellStyle}
+              className="p-2 border-solid  border-[#aaa] bg-gray-300"
+            >
+              Remaining{" "}
+            </td>
+            <td
+              style={cellStyle}
+              className="p-2 border-solid  border-[#aaa] bg-gray-300"
+            >
+              Hours:
+            </td>
+            <td
+              style={cellStyle}
+              className="p-2 border-solid  border-[#aaa] bg-gray-300"
+            ></td>
+            <td
+              style={cellStyle}
+              className="p-2 border-solid  border-[#aaa] bg-gray-300"
+            ></td>
+            <td
+              style={cellStyle}
+              className="p-2 border-solid  border-[#aaa] bg-gray-300"
+            ></td>
+
+            {Object.values(tremaining).map((item, index) => (
+              <td
+                style={cellStyle}
+                key={index}
+                className="p-2 border-solid border-2 border-[#aaa] bg-gray-300 text-center text-red-600"
+              >
+                {item}
+              </td>
+            ))}
+            <td
+              style={cellStyle}
+              className="p-2 border-solid  border-[#aaa] bg-gray-300"
+            ></td>
           </tr>
         </tfoot>
       </table>

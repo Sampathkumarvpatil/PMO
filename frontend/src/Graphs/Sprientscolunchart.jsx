@@ -36,8 +36,8 @@ const SprintsColumnChartComponent = ({ sidebarToggle }) => {
       {
         name: "Planned Tasks",
         data: selectedSprints.map((sprint, index) => ({
-          name: Object.keys(sprint)[0],
-          y: Object.values(sprint)[0]?.plannedTasks,
+          name: sprint?.sprintName,
+          y: sprint?.plannedTasks,
           color: colors[index % colors.length],
         })),
       },
@@ -49,7 +49,7 @@ const SprintsColumnChartComponent = ({ sidebarToggle }) => {
       },
     },
     xAxis: {
-      categories: selectedSprints.map((sprint) => Object.keys(sprint)[0]),
+      categories: selectedSprints.map((sprint) => sprint?.sprintName),
       title: {
         text: "Sprint Number",
       },

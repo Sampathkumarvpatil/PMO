@@ -21,7 +21,7 @@ const WorkEfficiencyRatiochartcomponent = ({ sidebarToggle }) => {
       text: "Work Hours and Efficiency Ratio by Sprints",
     },
     xAxis: {
-      categories: selectedSprints.map((sprint) => Object.keys(sprint)[0]),
+      categories: selectedSprints.map((sprint) => sprint?.sprintname),
     },
     yAxis: [
       {
@@ -42,27 +42,19 @@ const WorkEfficiencyRatiochartcomponent = ({ sidebarToggle }) => {
     series: [
       {
         name: "Planned Work Hours",
-        data: selectedSprints.map(
-          (sprint) => Object.values(sprint)[0]?.plannedWorkHours
-        ),
+        data: selectedSprints.map((sprint) => sprint?.plannedWorkHours),
         type: "column",
       },
       {
         name: "Work Hours Used",
-        data: selectedSprints.map(
-          (sprint) => Object.values(sprint)[0]?.workHoursUsed
-        ),
+        data: selectedSprints.map((sprint) => sprint?.workHoursUsed),
         type: "column",
       },
       {
         name: "Work Efficiency Ratio",
         data: selectedSprints.map((sprint) => ({
           y: parseFloat(
-            (
-              (Object.values(sprint)[0].workHoursUsed /
-                Object.values(sprint)[0].plannedWorkHours) *
-              100
-            ).toFixed(2)
+            ((sprint.workHoursUsed / sprint.plannedWorkHours) * 100).toFixed(2)
           ), // Ensure values are formatted as percentages
           color: "#00FF00",
         })),

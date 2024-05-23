@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 const StatusTable = ({ sr, stat, onStatusChange }) => {
   const [maxHeight, setMaxHeight] = useState(0);
   const [maxAreaHeight, setMaxAreaHeight] = useState(0);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedSprint, setSelectedSprint] = useState(null);
+  const [allocations, setAllocations] = useState([]);
   const [textValues, setTextValues] = useState({
     bug_1: "",
     bug_2: "",
@@ -12,27 +15,79 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
     dependencies_1: "",
     dependencies_2: "",
   });
+  const [hrsWorked, setHrsWorked] = useState(0);
+  const [hrsAllocated, setHrsAllocated] = useState(0);
   const textAreaRefs = useRef([]);
-
-  const selectedProjectName = localStorage.getItem("selectedProjectName");
-  const selectedSprintName = localStorage.getItem("selectedSprintName");
   const { id } = useParams();
+  useEffect(() => {
+    let currentProject = localStorage.getItem("currentProject");
+    let currentSprint = localStorage.getItem("currentSprint");
+    if (currentProject && currentSprint) {
+      currentProject = JSON.parse(currentProject);
+      currentSprint = JSON.parse(currentSprint);
 
-  const allStatus = JSON.parse(localStorage.getItem("status"));
-  const [hrsWorked, setHrsWorked] = useState(
-    allStatus[id][sr - 1].total_worked
-  );
+      if (currentSprint?.allocations) {
+        setAllocations(currentSprint?.allocations);
+      }
 
-  const selectedProject = localStorage.getItem("selectedProjectName");
-  const selectedSprint = localStorage.getItem("selectedSprintName");
-  const taskId = selectedProject + selectedSprint;
-  const storedTasks = JSON.parse(localStorage.getItem(`${taskId}`));
-  const [hrsAllocated, setHrsAllocated] = useState(storedTasks[id]["totHours"]);
+      if (id && currentSprint?.tasks.length > 0) {
+        if (stat) {
+          const resource = stat?.resource;
+          // console.log(resource);
+          // console.log(stat);
+          // console.log(
+          //   resource && Object.keys(stat?.allocatedResource ?? {}).length > 0
+          // );
+          if (
+            resource &&
+            Object.keys(stat?.allocatedResource ?? {}).length > 0
+          ) {
+            // console.log("im here");
+            // console.log(stat["allocatedResource"][resource]);
+            setHrsAllocated(stat["allocatedResource"][resource] ?? 0);
+          }
+        }
+      }
+      if (id && currentSprint?.status?.length > 0) {
+        const status = currentSprint?.status?.find(
+          (status) => status?.status?.id === id
+        );
+        if (status && status?.status?.total_worked) {
+          setHrsWorked(status?.status?.total_worked);
+        }
+      }
+      setSelectedProject(currentProject);
+      setSelectedSprint(currentSprint);
+    }
+  }, [id, stat]);
+
+  // const allStatus = JSON.parse(localStorage.getItem("status"));
+
+  // const taskId =
+  //   selectedProject?.baseInfo?.projectName + selectedSprint?.sprintName;
+  // const storedTasks = JSON.parse(localStorage.getItem(`${taskId}`));
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "total_worked") {
+      setHrsWorked(value);
+    }
+
     const updatedStatus = { ...stat, [name]: value };
+    if (name === "work_completed_2") {
+      const sprint = { ...selectedSprint };
+
+      const taskIndex = sprint?.tasks?.findIndex((task) => task?.id === id);
+      if (taskIndex >= 0) {
+        sprint.tasks[taskIndex]["status"] = value;
+
+        setSelectedSprint(sprint);
+        localStorage.setItem("currentSprint", JSON.stringify(sprint));
+      }
+    }
     onStatusChange(updatedStatus);
+
     setTextValues({ ...textValues, [name]: value });
     updateTextAreaHeight(e.target); // Update textarea height when text changes
   };
@@ -61,34 +116,46 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
     textarea.style.height = `${textarea.scrollHeight}px`; // Set height to match content
   };
 
-  const data = JSON.parse(localStorage.getItem("mainCompanyData"));
-  let projectNo;
-  for (projectNo in data) {
-    if (data[projectNo].projectName === selectedProjectName) break;
-  }
+  // const data = JSON.parse(localStorage.getItem("mainCompanyData"));
+  // let projectNo;
+  // for (projectNo in data) {
+  //   if (data[projectNo].projectName === selectedProjectName) break;
+  // }
 
-  let sprintNo;
-  for (sprintNo in data[projectNo].sprints) {
-    if (data[projectNo].sprints[sprintNo].sprintName === selectedSprintName)
-      break;
-  }
-  const allocations = data[projectNo].sprints[sprintNo].allocations || null;
+  // let sprintNo;
+  // for (sprintNo in data[projectNo].sprints) {
+  //   if (data[projectNo].sprints[sprintNo].sprintName === selectedSprintName)
+  //     break;
+  // }
+
   const onChangeHandler = (e) => {
     stat["resource"] = e.target.value;
+    const task = selectedSprint.tasks.find((task) => task?.id === id);
+    if (task) {
+      const resource = e.target.value;
 
-    const allStatus = JSON.parse(localStorage.getItem("status"));
+      if (resource && Object.keys(task?.allocatedResource ?? {}).length > 0) {
+        if (
+          Object.keys(task?.allocatedResource ?? {}).includes(e.target.value)
+        ) {
+          setHrsAllocated(task["allocatedResource"][resource] ?? 0);
+        }
+      }
+    }
+    // const allStatus = JSON.parse(localStorage.getItem("status"));
 
-    allStatus[`${id}`][sr - 1] = stat;
-    localStorage.setItem("status", JSON.stringify(allStatus));
+    // allStatus[`${id}`][sr - 1] = stat;
+    // localStorage.setItem("status", JSON.stringify(allStatus));
   };
 
   return (
     <tr key={stat.id} className="m-2">
       <td className="border-2 border-gray-400 p-2 text-center">{sr}</td>
+
       <td className="border-2 border-gray-400 p-2 text-center">
         <select name="res" id="resource" onChange={onChangeHandler}>
           <option value={stat["resource"]}>{stat["resource"]}</option>
-          {allocations.map((item) => (
+          {allocations?.map((item) => (
             <option value={`${item.name}`}>{item.name}</option>
           ))}
         </select>
@@ -332,8 +399,10 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
           name="worked_hrs"
           onChange={handleChange}
         />{" "} */}
+        {/* {JSON.stringify(hrsAllocated)} */}
         {hrsAllocated} hrs
       </td>
+
       <td className="border-2 border-gray-400 p-2">
         <input
           type="number"
@@ -350,7 +419,7 @@ const StatusTable = ({ sr, stat, onStatusChange }) => {
           name="remaining_hrs"
           onChange={handleChange}
         />{" "} */}
-        {hrsAllocated - hrsWorked} hrs
+        {hrsAllocated - stat.total_worked} hrs
       </td>
     </tr>
   );

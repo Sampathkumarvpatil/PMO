@@ -2,46 +2,86 @@ import React from "react";
 import "./newInputs.css";
 import { useNavigate } from "react-router-dom";
 import "./lastButtons.css";
+import { useSaveDataToS3 } from "../utils/useSaveDataToS3";
 
 const LastButtons = ({ current, handleSave }) => {
   const navigate = useNavigate();
-
-  const back = () => {
+  const { error, saveData, success, isLoading } = useSaveDataToS3();
+  const back = async () => {
     if (current === "Dashboard") {
+      await handleSavebtnClick();
       navigate("/");
     } else if (current === "AllocationInput") {
+      await handleSavebtnClick();
       navigate("/Dashboard");
     } else if (current === "AttendanceTable") {
+      await handleSavebtnClick();
       navigate("/AllocationAndHoliday");
     } else if (current === "TaskForm") {
+      await handleSavebtnClick();
       navigate("/AttendanceTable");
     } else if (current === "Sprints") {
+      await handleSavebtnClick();
       navigate("/list");
-    }else if (current === "FileUpload") {
-      navigate("/retrospective");
-    }else if (current === "Graph"){
+    } else if (current === "FileUpload") {
+      await handleSavebtnClick();
       navigate("/KPI's");
     }else if(current === "Retrospective"){
       navigate("/KPI's")
     }
   };
-  const next = () => {
+  const next = async () => {
     if (current === "Dashboard") {
+      await handleSavebtnClick();
       navigate("/AllocationAndHoliday");
     } else if (current === "AllocationInput") {
+      await handleSavebtnClick();
       navigate("/AttendanceTable");
     } else if (current === "AttendanceTable") {
+      await handleSavebtnClick();
       navigate("/list");
     } else if (current === "TaskForm") {
+      await handleSavebtnClick();
       navigate("/KPI's");
     } else if (current === "Sprints") {
-      save();
-    } else if (current === "FileUpload") {
-      return;
-    }else if (current === "Graph"){
-      navigate("/retrospective");
-    }else if(current === "Retrospective"){
-      navigate("/uploadFile")
+      await handleSavebtnClick();
+      navigate("/uploadFile");
+    }
+    // else if (current === "FileUpload") {
+    //   await handleSavebtnClick();
+    //   navigate("/");
+    // }
+  };
+  const handleSavebtnClick = async () => {
+    let projectNeedToUpdate = localStorage.getItem("currentProject");
+    let currentSprint = localStorage.getItem("currentSprint");
+
+    if (projectNeedToUpdate && currentSprint) {
+      currentSprint = JSON.parse(currentSprint);
+      projectNeedToUpdate = { ...JSON.parse(projectNeedToUpdate) };
+      if (projectNeedToUpdate["sprints"]) {
+        const sprintExistIndex = projectNeedToUpdate?.sprints?.findIndex(
+          (sprint) => sprint?.sprintName === currentSprint?.sprintName
+        );
+        if (sprintExistIndex >= 0) {
+          projectNeedToUpdate.sprints[sprintExistIndex] = currentSprint;
+        } else {
+          projectNeedToUpdate?.sprints?.push(currentSprint);
+        }
+      } else {
+        projectNeedToUpdate["sprints"] = [];
+        projectNeedToUpdate?.sprints?.push(currentSprint);
+      }
+      const key = sessionStorage.getItem("key");
+      localStorage.setItem(
+        "currentProject",
+        JSON.stringify(projectNeedToUpdate)
+      );
+      await saveData(
+        projectNeedToUpdate?.baseInfo?.projectName,
+        { ...projectNeedToUpdate },
+        key
+      );
     }
   }
   const save = () =>{
@@ -55,7 +95,11 @@ const LastButtons = ({ current, handleSave }) => {
     <>
       <div className="flex justify-center items-center mt-8 gap-9">
         <div>
-          <button className="animated-button2" onClick={() => back()}>
+          <button
+            className="animated-button2"
+            onClick={() => back()}
+            disabled={isLoading}
+          >
             <svg
               viewBox="0 0 24 24"
               class="arr-2"
@@ -81,13 +125,23 @@ const LastButtons = ({ current, handleSave }) => {
               background:
                 "radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%)",
             }}
+            onClick={handleSavebtnClick}
+            disabled={isLoading}
           >
             Save
           </button>
         </div>
 
         <div>
-          <button className="animated-button" onClick={() => next()}>
+          <button
+            className={
+              isLoading || current === "Sprints"
+                ? "disabled-animated"
+                : "animated-button"
+            }
+            onClick={() => next()}
+            disabled={isLoading || current === "Sprints"}
+          >
             <svg
               viewBox="0 0 24 24"
               class="arr-2"
@@ -107,6 +161,17 @@ const LastButtons = ({ current, handleSave }) => {
           </button>
         </div>
       </div>
+      {isLoading && (
+        <div className="text-black text-center">
+          Saving your data please wait...
+        </div>
+      )}
+      {error && <div className="text-center text-red-500">{error}</div>}
+      {success && (
+        <div className="text-green-500 text-center">
+          Data saved successfully...
+        </div>
+      )}
     </>
   );
 };
