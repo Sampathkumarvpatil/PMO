@@ -10,7 +10,6 @@ import {
   FaList,
   FaProjectDiagram,
   FaChartBar,
-  FaFileUpload,
 } from "react-icons/fa";
 const Sidebar = ({ sidebarToggle, role }) => {
   return (
