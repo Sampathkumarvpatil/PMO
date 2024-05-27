@@ -3,16 +3,13 @@ import "../Sidebar.css";
 import { Link } from "react-router-dom";
 
 import {
-  FaRegFileArchive,
   FaFolderOpen,
   FaTable,
   FaCalendarDay,
   FaCheckSquare,
   FaList,
-  FaChartPie,
   FaProjectDiagram,
   FaChartBar,
-  FaUser,
 } from "react-icons/fa";
 const Sidebar = ({ sidebarToggle, role }) => {
   return (
@@ -39,6 +36,15 @@ const Sidebar = ({ sidebarToggle, role }) => {
             <Link to="/" className="px-3">
               <FaFolderOpen className="inline-block w-6 h-6 mr-2 -mt-2"></FaFolderOpen>
               Add New Project/Sprint
+            </Link>
+          </li>
+        )}
+
+        {role === "Account Manager/Project Manager" && (
+          <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
+            <Link to="/TestResult" className="px-3">
+              <FaFolderOpen className="inline-block w-6 h-6 mr-2 -mt-2"></FaFolderOpen>
+              Test Result
             </Link>
           </li>
         )}
