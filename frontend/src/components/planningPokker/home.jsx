@@ -165,7 +165,7 @@ const Home = ({ sidebarToggle }) => {
       // The user is not the creator, simply leave the room
       socket.emit("leave_room", { userName, roomName });
     }
-    navigate('/list')
+    // navigate('/list')
     setShowForm(true);
   };
 

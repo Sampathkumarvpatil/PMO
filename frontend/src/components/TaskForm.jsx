@@ -177,7 +177,7 @@ const TaskForm = ({ sidebarToggle }) => {
   return (
     <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
       <ProjOptions />
-      <div className="flex justify-end"></div>
+      <div className="flex justify-end">
       <table
         className="p-2 text-[18px] border-collapse border-2 border-[#aaa] m-2"
         ref={targetRef}
