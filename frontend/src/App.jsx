@@ -6,6 +6,7 @@ import NewProject from "./components/NewProject";
 import AllocationInput from "./components/AllocationInput";
 import AttendanceTable from "./components/AttendanceTable";
 import Dashboard from "./components/Dashboard";
+import TestResult from "./components/TestResult";
 import { useEffect, useState } from "react";
 
 import TaskForm from "./components/TaskForm";
@@ -91,6 +92,10 @@ function App() {
                   <Route
                     path="/AllocationAndHoliday"
                     element={<AllocationInput sidebarToggle={sidebarToggle} />}
+                  />
+                  <Route
+                    path="/TestResult"
+                    element={<TestResult sidebarToggle={sidebarToggle} />}
                   />
                   <Route
                     path="/AttendanceTable"
