@@ -117,7 +117,7 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                     {/* <img src="../assets/JavaBuildPath.png" alt="" /> */}
                     <img
                       className="mb-6"
-                      src="../assets/JavaBuildPath.png"
+                      src="https://www.unco.edu/college-bound-colorado/images/group-friends-jumping.jpg"
                       alt=""
                     />
                     <div className="pl-4">
@@ -405,7 +405,8 @@ const TermsAndConditions = ({ sidebarToggle }) => {
               id="project-name"
               value={projectName}
               onChange={handleInputChange}
-              className="w-full p-2 border rounded"
+              className=" p-2 rounded"
+              style={{border : "2px solid black"}}
               placeholder="Enter your project name"
             />
           </div>
