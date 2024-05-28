@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const useFetchTestgeniousClasses = () => {
+export const useFetchClasses = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
 
@@ -13,14 +13,14 @@ export const useFetchTestgeniousClasses = () => {
         },
         body: JSON.stringify({ project_name }),
       });
-      if (!res.ok) throw new Error("Error while fetching file from s3!!");
+      if (!res.ok) throw new Error("Error while fetching classes data!!");
       const jsonResponse = await res.json();
       setData(jsonResponse);
-
-      return jsonResponse;
     } catch (e) {
-      console.error(e?.message || "Error while fetching data from s3..");
-      setError(e?.message || "Error while fetching data from s3..");
+      console.error(
+        e?.message || "Error while fetching classes data from s3.."
+      );
+      setError(e?.message || "Error while fetching classes data from s3..");
     }
   }
   return { data, error, fetchClasses };

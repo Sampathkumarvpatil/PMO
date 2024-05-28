@@ -1,15 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useFetchClasses } from "../utils/useFetchClasses";
+import { useFetchTestReport } from "../utils/useFetchTestReport";
 
 const TestsReports = ({ sidebarToggle }) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [dropdown1, setDropdown1] = useState("");
-  const [dropdown2, setDropdown2] = useState("");
-  const [dropdown3, setDropdown3] = useState("");
+  const [selectedClassName, setSelectedClassName] = useState("");
+  const [selectedStatus, setselectedStatus] = useState("");
+  const { data: classes, classesFetchError, fetchClasses } = useFetchClasses();
+  const { error: reportFetchError, fetchReport } = useFetchTestReport();
 
-  const handleSubmit = () => {
+  const { projectName } = useParams();
+
+  useEffect(() => {
+    if (projectName) {
+      const fetchClassNames = async () => {
+        await fetchClasses(projectName);
+      };
+      fetchClassNames();
+    }
+  }, [projectName]);
+
+  useEffect(() => {
+    if (classes) {
+      setSelectedClassName(classes[0]);
+    }
+  }, [classes]);
+  const handleSubmit = async () => {
     // Handle form submission logic
-    console.log({ dropdown1, dropdown2, dropdown3, startDate, endDate });
+    if (projectName && selectedClassName) {
+      await fetchReport({
+        project_name: projectName,
+        class_name: selectedClassName,
+        status: selectedStatus,
+        startDate,
+        endDate,
+      });
+    }
   };
 
   return (
@@ -25,37 +53,40 @@ const TestsReports = ({ sidebarToggle }) => {
               <div className="flex flex-col w-1/5">
                 <label className="text-gray-700">Project Name:</label>
                 <select
-                  value={dropdown1}
-                  onChange={(e) => setDropdown1(e.target.value)}
+                  value={projectName}
                   className="mt-1 border-2 rounded-md shadow-sm hover:border-blue-400 focus:ring focus:ring-blue-200 "
                 >
-                  <option value="">Select an option</option>
-                  <option value="option1">Option 1</option>
-                  <option value="option2">Option 2</option>
+                  <option selected>
+                    {projectName ? projectName : "Loading"}
+                  </option>
                 </select>
               </div>
               <div className="flex flex-col w-1/5">
                 <label className="text-gray-700">Class Name:</label>
                 <select
-                  value={dropdown2}
-                  onChange={(e) => setDropdown2(e.target.value)}
+                  value={selectedClassName}
+                  onChange={(e) => setSelectedClassName(e.target.value)}
                   className="mt-1 block border-2 rounded-md shadow-sm hover:border-blue-400 focus:ring focus:ring-blue-200 transition ease-in-out duration-200"
                 >
                   <option value="">Select an option</option>
-                  <option value="option1">Option 1</option>
-                  <option value="option2">Option 2</option>
+                  {classes &&
+                    classes?.length > 0 &&
+                    classes.map((className) => (
+                      <option value={className}>{className}</option>
+                    ))}
                 </select>
               </div>
               <div className="flex flex-col w-1/5">
                 <label className="text-gray-700">Status:</label>
                 <select
-                  value={dropdown3}
-                  onChange={(e) => setDropdown3(e.target.value)}
+                  value={selectedStatus}
+                  onChange={(e) => setselectedStatus(e.target.value)}
                   className="mt-1 block border-2 rounded-md shadow-sm hover:border-blue-400 focus:ring focus:ring-blue-200 transition ease-in-out duration-200"
                 >
                   <option value="">Select an option</option>
-                  <option value="option1">Option 1</option>
-                  <option value="option2">Option 2</option>
+                  <option value="Passed">Passed</option>
+                  <option value="Failed">Failed</option>
+                  <option value="Skipped">Skipped</option>
                 </select>
               </div>
               <div className="flex flex-col w-1/5">
@@ -80,7 +111,12 @@ const TestsReports = ({ sidebarToggle }) => {
             <div className="flex justify-center">
               <button
                 onClick={handleSubmit}
-                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 transition ease-in-out duration-200"
+                className={`${
+                  !selectedClassName
+                    ? "bg-gray-500"
+                    : "bg-blue-500 hover:bg-blue-600"
+                }  text-white py-2 px-4 rounded-md  focus:outline-none focus:ring focus:ring-blue-300 transition ease-in-out duration-200`}
+                disabled={!selectedClassName}
               >
                 Submit
               </button>

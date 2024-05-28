@@ -1,7 +1,7 @@
 import { useState } from "react";
-
+import MOCK_DATA from "./reportTestData.json";
 export const useFetchTestReport = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(MOCK_DATA);
   const [error, setError] = useState("");
 
   async function fetchReport(body) {

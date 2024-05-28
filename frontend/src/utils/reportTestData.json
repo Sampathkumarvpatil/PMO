@@ -1,0 +1,77 @@
+{
+  "statusCode": 200,
+
+  "body": {
+    "passed_results": {
+      "visitYahoo": {
+        "method_name": "visitYahoo",
+
+        "description": "Executed test method: visitYahoo",
+
+        "status": "PASSED",
+
+        "timestamp": "2024-05-26 19:40:38",
+
+        "execution_time": "26 seconds",
+
+        "project_name": "sampath",
+
+        "class_name": "basicnavigationtests"
+      },
+
+      "visitBing": {
+        "method_name": "visitBing",
+
+        "description": "Executed test method: visitBing",
+
+        "status": "PASSED",
+
+        "timestamp": "2024-05-26 19:40:06",
+
+        "execution_time": "0 seconds",
+
+        "project_name": "sampath",
+
+        "class_name": "basicnavigationtests"
+      }
+    },
+
+    "failed_results": {
+      "visitGoogle": {
+        "exception": "java.lang.RuntimeException: org.openqa.selenium.WebDriverException: unknown error: net::ERR_NAME_NOT_RESOLVED\n  (Session info: chrome=125.0.6422.112)\nBuild info: version: '4.18.1', revision: 'b1d3319b48'\nSystem info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21'\nDriver info: org.openqa.selenium.chrome.ChromeDriver\nCommand: [4727a0f14ab63ffae637b2c3c3c95d11, get {url=https://www.googl}]\nCapabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 125.0.6422.112, chrome: {chromedriverVersion: 125.0.6422.60 (3ac3319bff9f..., userDataDir: C:\\Users\\drsam\\AppData\\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:59247}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:59247/devtoo..., se:cdpVersion: 125.0.6422.112, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}\nSession ID: 4727a0f14ab63ffae637b2c3c3c95d11",
+
+        "method_name": "visitGoogle",
+
+        "description": "Executed test method: visitGoogle",
+
+        "stack_trace": "[Ljava.lang.StackTraceElement;@37864b77",
+
+        "screenshot": "Base 64 url",
+
+        "status": "FAILED",
+
+        "timestamp": "2024-05-26 19:40:12",
+
+        "execution_time": "5 seconds",
+
+        "project_name": "sampath",
+
+        "class_name": "basicnavigationtests"
+      }
+    },
+
+    "skipped_results": {},
+
+    "total_passed": 2,
+
+    "total_failed": 1,
+
+    "total_skipped": 0,
+
+    "total_test_cases": 3,
+
+    "project_name": "sampath",
+
+    "class_name": "basicnavigationtests"
+  }
+}

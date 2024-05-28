@@ -93,7 +93,10 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                     • Download the{" "}
                     <span className="text-lg">"TestGeniusListener.jar"</span>{" "}
                     file from our website:{" "}
-                    <a className="underline text-blue-700" href="https://testgeniusjar.s3.amazonaws.com/TestGenius.jar">
+                    <a
+                      className="underline text-blue-700"
+                      href="https://testgeniusjar.s3.amazonaws.com/TestGenius.jar"
+                    >
                       Download TestGeniusListener.jar
                     </a>
                   </p>
@@ -406,8 +409,9 @@ const TermsAndConditions = ({ sidebarToggle }) => {
               value={projectName}
               onChange={handleInputChange}
               className=" p-2 rounded"
-              style={{border : "2px solid black"}}
+              style={{ border: "2px solid black" }}
               placeholder="Enter your project name"
+              required
             />
           </div>
           <div className="flex items-center mb-4">
@@ -425,8 +429,12 @@ const TermsAndConditions = ({ sidebarToggle }) => {
           <div className="flex justify-center">
             <button
               onClick={handleButtonClick}
-              className={` py-2 px-10 rounded ${isChecked  ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
-              disabled={!isChecked }
+              className={` py-2 px-10 rounded ${
+                isChecked
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+              disabled={!isChecked}
             >
               Submit
             </button>

@@ -37,7 +37,7 @@ import LoginPage from "./pages/Login";
 import ProjectContext from "./utils/ProjectContext";
 import LastButtons from "./components/LastButtons";
 import TermsAndConditions from "./components/TermsAndConditions";
-import TestsReports from "./components/TestsReports"
+import TestsReports from "./components/TestsReports";
 
 function App() {
   const [sidebarToggle, setSidebarToggle] = useState(true);
@@ -89,10 +89,12 @@ function App() {
                   />
                   <Route
                     path="/TermsAndConditions"
-                    element={<TermsAndConditions sidebarToggle={sidebarToggle} />}
+                    element={
+                      <TermsAndConditions sidebarToggle={sidebarToggle} />
+                    }
                   />
                   <Route
-                    path="/TestsReports"
+                    path="/TestsReports/:projectName"
                     element={<TestsReports sidebarToggle={sidebarToggle} />}
                   />
                   {/* <Route path="/LoginOrSignup" element={<LoginPage sidebarToggle = {sidebarToggle}/>} /> */}
