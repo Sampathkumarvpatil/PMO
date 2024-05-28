@@ -1,5 +1,8 @@
+import CylinderGraph from "./CylinderGraph";
 import PieChart from "./PieChart";
 import ReportPieChart from "./ReportPieChart";
+import BarGraph from "./BarGraph";
+import ErrorGraph from "./ErrorGraph";
 
 function TestResult({ sidebarToggle }) {
     return (
@@ -24,7 +27,8 @@ function TestResult({ sidebarToggle }) {
                         <p className="text-2xl" style={{ color: 'red' }}>1</p>
                     </div>
                 </div>
-                <div className="grid grid-cols-[49%,49%] justify-between mt-12">
+                <div className="grid grid-cols-[33%,33%,33%] justify-between my-12 ">
+                    <div style={{ paddingTop: '44px', border: '1px solid' }}></div>
                     <div className="chart-container" style={{ paddingTop: '44px', border: '1px solid' }}>
                         <ReportPieChart />
                         <span className="flex flex-row items-center mx-4 mt-8 " style={{ borderTop: '1px solid' }}>
@@ -53,9 +57,53 @@ function TestResult({ sidebarToggle }) {
                             <p className="text-lg">&nbsp;others,</p>
                         </span>
                     </div>
+                    <div className="chart-container" style={{ paddingTop: '44px', border: '1px solid', marginTop: "30px" }}>
+                        <CylinderGraph />
+                        <span className="flex flex-row items-center mx-4 mt-8 " style={{ borderTop: '1px solid' }}>
+                            <h1 className="text-2xl font-bold mt-4" style={{ color: 'green' }}>0</h1>
+                            <p className="text-lg mt-4">&nbsp;tests passed</p>
+                        </span>
+                        <span className="flex flex-row items-center ml-4 mt-2" >
+                            <h1 className="text-2xl font-bold" style={{ color: 'red' }}>1</h1>
+                            <p className="text-lg">&nbsp;tests failed,</p>
+                            <h1 className="text-2xl font-bold" style={{ color: 'blue' }}>1</h1>
+                            <p className="text-lg">&nbsp;skipped,</p>
+                            <h1 className="text-2xl font-bold">0</h1>
+                            <p className="text-lg">&nbsp;others,</p>
+                        </span>
+                    </div>
+                    <div className="chart-container" style={{ paddingTop: '44px', border: '1px solid', marginTop: "30px" }}>
+                        <BarGraph />
+                        <span className="flex flex-row items-center mx-4 mt-8 " style={{ borderTop: '1px solid' }}>
+                            <h1 className="text-2xl font-bold mt-4" style={{ color: 'green' }}>0</h1>
+                            <p className="text-lg mt-4">&nbsp;tests passed</p>
+                        </span>
+                        <span className="flex flex-row items-center ml-4 mt-2" >
+                            <h1 className="text-2xl font-bold" style={{ color: 'red' }}>1</h1>
+                            <p className="text-lg">&nbsp;tests failed,</p>
+                            <h1 className="text-2xl font-bold" style={{ color: 'blue' }}>1</h1>
+                            <p className="text-lg">&nbsp;skipped,</p>
+                            <h1 className="text-2xl font-bold">0</h1>
+                            <p className="text-lg">&nbsp;others,</p>
+                        </span>
+                    </div>
+                    <div className="chart-container" style={{ paddingTop: '44px', border: '1px solid', marginTop: "30px" }}>
+                        <ErrorGraph />
+                        <span className="flex flex-row items-center mx-4 mt-8 " style={{ borderTop: '1px solid' }}>
+                            <h1 className="text-2xl font-bold mt-4" style={{ color: 'green' }}>0</h1>
+                            <p className="text-lg mt-4">&nbsp;tests passed</p>
+                        </span>
+                        <span className="flex flex-row items-center ml-4 mt-2" >
+                            <h1 className="text-2xl font-bold" style={{ color: 'red' }}>1</h1>
+                            <p className="text-lg">&nbsp;tests failed,</p>
+                            <h1 className="text-2xl font-bold" style={{ color: 'blue' }}>1</h1>
+                            <p className="text-lg">&nbsp;skipped,</p>
+                            <h1 className="text-2xl font-bold">0</h1>
+                            <p className="text-lg">&nbsp;others,</p>
+                        </span>
+                    </div>
                 </div>
             </div>
-            <div></div>
         </section>
 
     )
