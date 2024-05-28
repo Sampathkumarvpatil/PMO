@@ -35,6 +35,10 @@ import SignupPage from "./pages/Signup";
 import LoginPage from "./pages/Login";
 // import FileUpload from "./components/FileUpload";
 import ProjectContext from "./utils/ProjectContext";
+import LastButtons from "./components/LastButtons";
+import TermsAndConditions from "./components/TermsAndConditions";
+import TestsReports from "./components/TestsReports"
+
 function App() {
   const [sidebarToggle, setSidebarToggle] = useState(true);
   // const [displayPmo, setDisplayPmo] = useState(false);
@@ -82,6 +86,14 @@ function App() {
                   <Route
                     path="/Dashboard"
                     element={<Dashboard sidebarToggle={sidebarToggle} />}
+                  />
+                  <Route
+                    path="/TermsAndConditions"
+                    element={<TermsAndConditions sidebarToggle={sidebarToggle} />}
+                  />
+                  <Route
+                    path="/TestsReports"
+                    element={<TestsReports sidebarToggle={sidebarToggle} />}
                   />
                   {/* <Route path="/LoginOrSignup" element={<LoginPage sidebarToggle = {sidebarToggle}/>} /> */}
                   {/* <Route path="/signup" element={<SignupPage sidebarToggle = {sidebarToggle}/>} /> */}

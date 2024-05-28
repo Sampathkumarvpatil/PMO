@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./lastButtons.css";
 import { useSaveDataToS3 } from "../utils/useSaveDataToS3";
 
-const LastButtons = ({ current }) => {
+const LastButtons = ({ current, handleSave }) => {
   const navigate = useNavigate();
   const { error, saveData, success, isLoading } = useSaveDataToS3();
   const back = async () => {
@@ -26,6 +26,8 @@ const LastButtons = ({ current }) => {
     } else if (current === "FileUpload") {
       await handleSavebtnClick();
       navigate("/KPI's");
+    }else if(current === "Retrospective"){
+      navigate("/KPI's")
     }
   };
   const next = async () => {
@@ -81,7 +83,14 @@ const LastButtons = ({ current }) => {
         key
       );
     }
-  };
+  }
+  const save = () =>{
+    if(current === "Sprints"){
+      handleSave();
+    }else{
+      return;
+    }
+  }
   return (
     <>
       <div className="flex justify-center items-center mt-8 gap-9">
@@ -110,7 +119,7 @@ const LastButtons = ({ current }) => {
           </button>
         </div>
         <div>
-          <button
+          <button onClick={() => save()}
             className="text-white font-bold py-2 px-4 w-40 rounded-xl border-2 border-gray-300 shadow-xl "
             style={{
               background:

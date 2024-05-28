@@ -435,12 +435,12 @@ function Sprints({ sidebarToggle }) {
               Submit
             </button>
           )} */}
-          <button className="save-button" onClick={handleSave}>
+          {/* <button className="save-button" onClick={handleSave}>
             Submit
-          </button>
+          </button> */}
         </div>
       </div>
-      <LastButtons current={"Sprints"} />
+      <LastButtons current={"Sprints"} handleSave={handleSave} />
     </div>
   );
 }

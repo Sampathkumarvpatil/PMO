@@ -175,13 +175,9 @@ const TaskForm = ({ sidebarToggle }) => {
   }, [thrs, tremaining]);
 
   return (
-    <div
-      className={`transition-all duration-300 ${
-        sidebarToggle ? "ml-0" : "ml-64"
-      }`}
-    >
+    <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
       <ProjOptions />
-      <div className="flex justify-end"></div>
+      <div className="flex justify-end">
       <table
         className="p-2 text-[18px] border-collapse border-2 border-[#aaa] m-2"
         ref={targetRef}
@@ -364,8 +360,10 @@ const TaskForm = ({ sidebarToggle }) => {
           Download PDF
         </button>
       </div>
-
-      <LastButtons current={"TaskForm"} />
+     
+      
+    </div>
+    <LastButtons current={"TaskForm"}/>
     </div>
   );
 };
