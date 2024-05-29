@@ -4,7 +4,7 @@ import "./ReportPieChart.css";
 
 function ReportPieChart() {
     useEffect(() => {
-        Highcharts.chart('container', {
+        Highcharts.chart('container1', {
             title: {
                 text: 'Sales of petroleum products March, Norway',
                 align: 'left'
@@ -85,7 +85,7 @@ function ReportPieChart() {
     })
     return (
         <figure class="highcharts-figure">
-            <div id="container"></div>
+            <div id="container1"></div>
         </figure>
     );
 }
