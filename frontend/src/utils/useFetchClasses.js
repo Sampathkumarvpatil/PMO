@@ -6,13 +6,17 @@ export const useFetchClasses = () => {
 
   async function fetchClasses(project_name) {
     try {
-      const res = await fetch(process.env.FETCH_CLASSES_TESTGENIOUS, {
-        method: "POST",
-        headers: {
-          ContentType: "application/json",
-        },
-        body: JSON.stringify({ project_name }),
-      });
+      const res = await fetch(
+        "https://8qlshsosq2.execute-api.us-east-1.amazonaws.com/default/Testgeniusclasses",
+        {
+          method: "POST",
+          headers: {
+            ContentType: "application/json",
+          },
+          body: JSON.stringify({ project_name }),
+        }
+      );
+
       if (!res.ok) throw new Error("Error while fetching classes data!!");
       const jsonResponse = await res.json();
       setData(jsonResponse);

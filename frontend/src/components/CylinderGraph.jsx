@@ -1,72 +1,76 @@
 import { useEffect } from "react";
-import Highcharts from 'highcharts';
+import Highcharts from "highcharts";
 import "./CylinderGraph.css";
 
-function CylinderGraph() {
-    useEffect(() => {
-        Highcharts.chart('container2', {
-            chart: {
-                type: 'cylinder',
-                options3d: {
-                    enabled: true,
-                    alpha: 15,
-                    beta: 15,
-                    depth: 50,
-                    viewDistance: 25
-                }
-            },
-            title: {
-                text: 'Number of confirmed COVID-19'
-            },
-            subtitle: {
-                text: 'Source: ' +
-                    '<a href="https://www.fhi.no/en/id/infectious-diseases/coronavirus/daily-reports/daily-reports-COVID19/"' +
-                    'target="_blank">FHI</a>'
-            },
-            xAxis: {
-                categories: [
-                    '0-9', '10-19', '20-29', '30-39', '40-49', '50-59', '60-69',
-                    '70-79', '80-89', '90+'
-                ],
-                title: {
-                    text: 'Age groups'
-                },
-                labels: {
-                    skew3d: true
-                }
-            },
-            yAxis: {
-                title: {
-                    margin: 20,
-                    text: 'Reported cases'
-                },
-                labels: {
-                    skew3d: true
-                }
-            },
-            tooltip: {
-                headerFormat: '<b>Age: {point.x}</b><br>'
-            },
-            plotOptions: {
-                series: {
-                    depth: 25,
-                    colorByPoint: true
-                }
-            },
-            series: [{
-                data: [
-                    95321, 169339, 121105, 136046, 106800, 58041, 26766, 14291,
-                    7065, 3283
-                ],
-                name: 'Cases',
-                showInLegend: false
-            }]
-        });
-    })
-    return (
-        <figure class="highcharts-figure">
-            <div id="container2"></div>
-        </figure>
-    );
+function CylinderGraph({ data }) {
+  useEffect(() => {
+    if (data) {
+      Highcharts.chart("container2", {
+        chart: {
+          type: "cylinder",
+          options3d: {
+            enabled: true,
+            alpha: 0,
+            beta: 0,
+            depth: 50,
+            viewDistance: 25,
+          },
+        },
+        title: {
+          text: "KPI Summary Report",
+        },
+
+        xAxis: {
+          categories: [
+            "Total Test Cases",
+            "Total Passed",
+            "Total Failed",
+            "Total Skipped",
+          ],
+          title: {
+            text: "KPI Summary",
+          },
+          labels: {
+            skew3d: true,
+          },
+        },
+        yAxis: {
+          title: {
+            margin: 20,
+            text: "Count",
+          },
+          labels: {
+            skew3d: true,
+          },
+        },
+        tooltip: {
+          headerFormat: "<b>Tests: {point.x}</b><br>",
+        },
+        plotOptions: {
+          series: {
+            depth: 25,
+            colorByPoint: true,
+          },
+        },
+        series: [
+          {
+            data: [
+              { y: data?.body?.total_test_cases, color: "#0000FF" },
+              { y: data?.body?.total_passed, color: "#00FF00" },
+              { y: data?.body?.total_failed, color: "#FF0000" },
+              { y: data?.body?.total_skipped, color: "#FFFF00" },
+            ],
+            name: "Count",
+            showInLegend: false,
+          },
+        ],
+      });
+    }
+  }, [data]);
+  return (
+    <figure class="highcharts-figure">
+      <div id="container2"></div>
+    </figure>
+  );
 }
 export default CylinderGraph;
