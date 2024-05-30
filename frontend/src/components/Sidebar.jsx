@@ -49,21 +49,21 @@ const Sidebar = ({ sidebarToggle, role }) => {
         )}
         {role === "Account Manager/Project Manager" && (
           <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
-            <Link to="/TestsReports" className="px-3">
+            <Link to="/TestsReports/:projectName" className="px-3">
               <FaFolderOpen className="inline-block w-6 h-6 mr-2 -mt-2"></FaFolderOpen>
               TestGenius Reports
             </Link>
           </li>
         )}
 
-        {role === "Account Manager/Project Manager" && (
+        {/* {role === "Account Manager/Project Manager" && (
           <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
-            <Link to="/TestResult" className="px-3">
+            <Link to="/FailedTest" className="px-3">
               <FaFolderOpen className="inline-block w-6 h-6 mr-2 -mt-2"></FaFolderOpen>
-              Test Result
+              FailedTest
             </Link>
           </li>
-        )}
+        )} */}
 
         {/* {role === "Account Manager/Project Manager" && (
           <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">

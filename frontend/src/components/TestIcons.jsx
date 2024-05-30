@@ -1,0 +1,22 @@
+import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
+function TestIcons() {
+    return (
+        <div>
+            <div className="flex justify-center mt-6 py-4" >
+                <Link to="/TestsReports/:projectName" className="px-3">
+                    <FaThumbsUp size={40} style={{ border: '1px solid' }} color={'green'} className="p-2 rounded-full" />
+                </Link>
+
+            </div>
+            <div className="flex justify-center mt-6 py-4">
+                <Link to="/FailedTest" className="px-3">
+                    <FaThumbsDown size={40} color={'red'} style={{ border: '1px solid' }} className="p-2 rounded-full" />
+                </Link>
+
+            </div>
+        </div>
+    );
+}
+export default TestIcons;
