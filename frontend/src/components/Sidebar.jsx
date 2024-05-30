@@ -39,6 +39,22 @@ const Sidebar = ({ sidebarToggle, role }) => {
             </Link>
           </li>
         )}
+        {role === "Account Manager/Project Manager" && (
+          <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
+            <Link to="/TermsAndConditions" className="px-3">
+              <FaFolderOpen className="inline-block w-6 h-6 mr-2 -mt-2"></FaFolderOpen>
+              TestGenius Instructions
+            </Link>
+          </li>
+        )}
+        {role === "Account Manager/Project Manager" && (
+          <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
+            <Link to="/TestsReports" className="px-3">
+              <FaFolderOpen className="inline-block w-6 h-6 mr-2 -mt-2"></FaFolderOpen>
+              TestGenius Reports
+            </Link>
+          </li>
+        )}
 
         {role === "Account Manager/Project Manager" && (
           <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
@@ -48,6 +64,15 @@ const Sidebar = ({ sidebarToggle, role }) => {
             </Link>
           </li>
         )}
+
+        {/* {role === "Account Manager/Project Manager" && (
+          <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
+            <Link to="/TestResult" className="px-3">
+              <FaFolderOpen className="inline-block w-6 h-6 mr-2 -mt-2"></FaFolderOpen>
+              Test Result
+            </Link>
+          </li>
+        )} */}
 
         {/* <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/NewSprint" className="px-3">
@@ -107,12 +132,12 @@ const Sidebar = ({ sidebarToggle, role }) => {
           </li>
         )}
 
-        <li className=" rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
+        {/* <li className=" rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/uploadFile" className="px-3">
             <FaList className="inline-block w-6 h-6 mr-2 -mt-2"></FaList>
             Upload Files
           </Link>
-        </li>
+        </li> */}
 
         <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link to="/retrospective" className="px-3">

@@ -1,0 +1,114 @@
+{
+  "body": {
+    "passed_results": [
+      {
+        "method_name": "visitAOL",
+        "description": "Executed test method: visitAOL",
+        "status": "PASSED",
+        "timestamp": "2024-05-30 08:17:31",
+        "execution_time": "30 seconds"
+      },
+      {
+        "method_name": "visitDuckDuckGo",
+        "description": "Executed test method: visitDuckDuckGo",
+        "status": "PASSED",
+        "timestamp": "2024-05-30 08:17:37",
+        "execution_time": "0 seconds"
+      },
+      {
+        "method_name": "visitYahoo",
+        "description": "Executed test method: visitYahoo",
+        "status": "PASSED",
+        "timestamp": "2024-05-30 08:17:52",
+        "execution_time": "12 seconds"
+      },
+      {
+        "method_name": "visitBing",
+        "description": "Executed test method: visitBing",
+        "status": "PASSED",
+        "timestamp": "2024-05-30 08:17:36",
+        "execution_time": "0 seconds"
+      },
+      {
+        "method_name": "visitGoogle",
+        "description": "Executed test method: visitGoogle",
+        "status": "PASSED",
+        "timestamp": "2024-05-30 08:17:39",
+        "execution_time": "1 seconds"
+      },
+      {
+        "method_name": "failVisitBing",
+        "description": "Executed test method: failVisitBing",
+        "status": "PASSED",
+        "timestamp": "2024-05-30 08:16:45",
+        "execution_time": "2 seconds"
+      },
+      {
+        "method_name": "visitAsk",
+        "description": "Executed test method: visitAsk",
+        "status": "PASSED",
+        "timestamp": "2024-05-30 08:17:35",
+        "execution_time": "3 seconds"
+      }
+    ],
+    "total_passed": 7,
+    "total_failed": 5,
+    "project_name": "DefaultProject",
+    "class_name": "BasicNavigationTests",
+    "total_skipped": 0,
+    "total_test_cases": 12,
+    "failed_results": [
+      {
+        "exception": "java.lang.RuntimeException: org.openqa.selenium.WebDriverException: unknown error: net::ERR_NAME_NOT_RESOLVED\n  (Session info: chrome=125.0.6422.112)\nBuild info: version: '4.18.1', revision: 'b1d3319b48'\nSystem info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21'\nDriver info: org.openqa.selenium.chrome.ChromeDriver\nCommand: [f7eae4ec6e655a9239576eea32260c10, get {url=https://www.duckduckg}]\nCapabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 125.0.6422.112, chrome: {chromedriverVersion: 125.0.6422.60 (3ac3319bff9f..., userDataDir: C:\\Users\\drsam\\AppData\\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:59270}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:59270/devtoo..., se:cdpVersion: 125.0.6422.112, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}\nSession ID: f7eae4ec6e655a9239576eea32260c10",
+        "method_name": "failVisitDuckDuckGo",
+        "description": "Executed test method: failVisitDuckDuckGo",
+        "stack_trace": "[Ljava.lang.StackTraceElement;@15e0fe05",
+        "screenshot": "iVBORw0KGgoAAAANSUhEUgAAB4AAAAN9CAIAAAD9g/NFAAAAAXNSR0IArs4c6QAAIABJREFUeJzs3X90lfWdL/qPFc1IpzmL1UlMQKa3Be8tisPaGOmoc+bam2vRXBplWe3c1nhyKlCCTG+dijgOHm6OlBHU2mMtYEBXjqlzpv5YYOSClJWrp7fikYbsS0WZc8V6HCDZJONynVixUSn3j713svObX48Ivl6LP5Jnf5/vr+dxLdc73/XZZxw+fDgAAAAAAOBE+AAEQI0AAAAAAARAjQAAAAAABECNAAAAAAAEQI0AAAAAAARAjQAAAAAABECNAAAAAAAEQI0AAAAAAARAjQAAAAAABECNAAAAAAAEQI0AAAAAAARAjQAAAAAABECNAAAAAAAEQI0AAAAAAARAjQAAAAAAARAjQAAAAAABECNAAAAAAAEQI0AAAAAAARAjQAAAAAABECNAAAAAAAEQI0AAAAAAARAjQAAAAAABECNAAAAAAAEQI0AAAAAABDh/3IjRtW4lM0CAAAAASUVORK5CYII=",
+        "status": "FAILED",
+        "timestamp": "2024-05-30 08:16:50",
+        "execution_time": "5 seconds"
+      },
+      {
+        "exception": "java.lang.RuntimeException: org.openqa.selenium.WebDriverException: unknown error: net::ERR_NAME_NOT_RESOLVED\n  (Session info: chrome=125.0.6422.112)\nBuild info: version: '4.18.1', revision: 'b1d3319b48'\nSystem info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21'\nDriver info: org.openqa.selenium.chrome.ChromeDriver\nCommand: [f7eae4ec6e655a9239576eea32260c10, get {url=https://www.yaho}]\nCapabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 125.0.6422.112, chrome: {chromedriverVersion: 125.0.6422.60 (3ac3319bff9f..., userDataDir: C:\\Users\\drsam\\AppData\\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:59270}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:59270/devtoo..., se:cdpVersion: 125.0.6422.112, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}\nSession ID: f7eae4ec6e655a9239576eea32260c10",
+        "method_name": "failVisitYahoo",
+        "description": "Executed test method: failVisitYahoo",
+        "stack_trace": "[Ljava.lang.StackTraceElement;@22590e3e",
+        "screenshot": "iVBORw0KGgoAAAANSUhEUgAAB4AAAAN9CAIAAAD9g/NFAAAAAXNSR0IArs4c6QAAIABJREFUeJzs3X90lfWdL/qPFU2l08xidRITkOltwXuLYlkbIx10zlx7cy3CpVGW1c5tjSenAiWU6a1TEcfB4eZIGUGtHauAAV05ps6Z+mOBkQtSVq5Ob4UjhexLRZlzxXocINkk43KdWLFRKfePvXey85tfjwi+Xos/kuf5Pt9f+gRoAAAAAAAiBGgAAAAAACL+HydRTWdgQTl+AAAAAElFTkSuQmCC",
+        "status": "FAILED",
+        "timestamp": "2024-05-30 08:17:01",
+        "execution_time": "5 seconds"
+      },
+      {
+        "exception": "java.lang.RuntimeException: org.openqa.selenium.WebDriverException: unknown error: net::ERR_NAME_NOT_RESOLVED\n  (Session info: chrome=125.0.6422.112)\nBuild info: version: '4.18.1', revision: 'b1d3319b48'\nSystem info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21'\nDriver info: org.openqa.selenium.chrome.ChromeDriver\nCommand: [f7eae4ec6e655a9239576eea32260c10, get {url=https://www.askk}]\nCapabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 125.0.6422.112, chrome: {chromedriverVersion: 125.0.6422.60 (3ac3319bff9f..., userDataDir: C:\\Users\\drsam\\AppData\\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:59270}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:59270/devtoo..., se:cdpVersion: 125.0.6422.112, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}\nSession ID: f7eae4ec6e655a9239576eea32260c10",
+        "method_name": "failVisitAsk",
+        "description": "Executed test method: failVisitAsk",
+        "stack_trace": "[Ljava.lang.StackTraceElement;@87b5b49",
+        "screenshot": "iVBORw0KGgoAAAANSUhEUgAAB4AAAAN9CAIAAAD9g/NFAAAAAXNSR0IArs4c6QAAIABJREFUeJzs3X90lfWdL/qPFU3FMbNYncQEZHpb8N6iWNbGSEedM1cv16K5NMryR+e2xpNTgRJkeutUxHFwuDlSRlBrxypgQFeOqXOm/lhg5IKUlavTW+FIIftSUeZcsZ4OkGyScblOrNiolPvH3s7PLufm+dU/f/ecDfDPiMJt/RM77+n0vbn7q3puvvqAk9w6NGnfhn39j3rKnl87oLvhcNPn25/+fJ++IAIARoAAAAAgAgBGgAAAACACAEaAAAAAIAIARoAAAAAgAgBGgAAAACACAEaAAAAAIAIARoAAAAAgAgBGgAAAACACAEaAAAAAIAIARoAAAAAgAgBGgAAAACACAEaAAAAAIAIARoAAAAAICI/wfCnkZRLYDYnwAAAABJRU5ErkJggg==",
+        "status": "FAILED",
+        "timestamp": "2024-05-30 08:16:42",
+        "execution_time": "5 seconds"
+      },
+      {
+        "exception": "java.lang.RuntimeException: org.openqa.selenium.WebDriverException: unknown error: net::ERR_NAME_NOT_RESOLVED\n  (Session info: chrome=125.0.6422.112)\nBuild info: version: '4.18.1', revision: 'b1d3319b48'\nSystem info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21'\nDriver info: org.openqa.selenium.chrome.ChromeDriver\nCommand: [f7eae4ec6e655a9239576eea32260c10, get {url=https://www.aoll}]\nCapabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 125.0.6422.112, chrome: {chromedriverVersion: 125.0.6422.60 (3ac3319bff9f..., userDataDir: C:\\Users\\drsam\\AppData\\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:59270}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:59270/devtoo..., se:cdpVersion: 125.0.6422.112, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}\nSession ID: f7eae4ec6e655a9239576eea32260c10",
+        "method_name": "failVisitAOL",
+        "description": "Executed test method: failVisitAOL",
+        "stack_trace": "[Ljava.lang.StackTraceElement;@6be7bf6d",
+        "screenshot": "iVBORw0KGgoAAAANSUhEUgAAB4AAAAN9CAIAAAD9g/NFAAAAAXNSR0IArs4c6QAAIABJREFUeJzs3X90lfWdL/qPFU2l08xidRITkOltwXuLYlkbIx10zlx7cy2aS6Msq53bGk9OBQrI9NapiOPgcHOkjKDWjrWAAV05ps6Z+mOBkQtSVq5Ob4UjhexLRZlzxXqcQLJJxuU6sWKjUu4fe+9k5ze/HhF8vRZ/JM/zfb6/9uNarne+AAEQI0AAAAAAARAjQAAAAAABECNAAAAAAAEQI0AAAAAAARAjQAAAAAABECNAAAAAAAEQI0AAAAAAARAjQAAAAAABE/D/hg3HqcHGYuQAAAABJRU5ErkJggg==",
+        "status": "FAILED",
+        "timestamp": "2024-05-30 08:16:37",
+        "execution_time": "5 seconds"
+      },
+      {
+        "exception": "java.lang.RuntimeException: org.openqa.selenium.WebDriverException: unknown error: net::ERR_NAME_NOT_RESOLVED\n  (Session info: chrome=125.0.6422.112)\nBuild info: version: '4.18.1', revision: 'b1d3319b48'\nSystem info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21'\nDriver info: org.openqa.selenium.chrome.ChromeDriver\nCommand: [f7eae4ec6e655a9239576eea32260c10, get {url=https://www.googl}]\nCapabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 125.0.6422.112, chrome: {chromedriverVersion: 125.0.6422.60 (3ac3319bff9f..., userDataDir: C:\\Users\\drsam\\AppData\\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:59270}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:59270/devtoo..., se:cdpVersion: 125.0.6422.112, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}\nSession ID: f7eae4ec6e655a9239576eea32260c10",
+        "method_name": "failVisitGoogle",
+        "description": "Executed test method: failVisitGoogle",
+        "stack_trace": "[Ljava.lang.StackTraceElement;@2babf189",
+        "screenshot": "iVBORw0KGgoAAAANSUhEUgAAB4AAAAN9CAIAAAD9g/NFAAAAAXNSR0IArs4c6QAAIABJREFUeJzs3X90lfWdL/qPFU2l08xidRITkOltwXuLYlkbIx11zlx7cy2aS6Msq53bGk9OBQrI9NapiOPgcHOkjKDWjrWAAV05ps6Z+mOBkQtSVq5Ob4UjhexLRZlzxXqcQLJJxuU6sWKjUu4fe+9k5ze/HhF8vRZ/JM/zfb6/9uNarne+AAEQI0AAAAAAARAjQAAAAAABECNAAAAAAAEQI0AAAAAAARAjQAAAAAABECNAAAAAAAEQI0AAAAAAARAjQAAAAAABE/D/hg3HqcHGYuQAAAABJRU5ErkJggg==",
+        "status": "FAILED",
+        "timestamp": "2024-05-30 08:16:55",
+        "execution_time": "5 seconds"
+      }
+    ],
+    "skipped_results": []
+  }
+}

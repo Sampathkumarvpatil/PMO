@@ -26,6 +26,8 @@ const LastButtons = ({ current, handleSave }) => {
     } else if (current === "FileUpload") {
       await handleSavebtnClick();
       navigate("/KPI's");
+    }else if(current === "Retrospective"){
+      navigate("/KPI's")
     }
   };
   const next = async () => {
@@ -81,12 +83,12 @@ const LastButtons = ({ current, handleSave }) => {
         key
       );
     }
-  };
-  const save = () => {
-    if (current === "Sprints") {
-      handleSave()
-    } else {
-      return
+  }
+  const save = () =>{
+    if(current === "Sprints"){
+      handleSave();
+    }else{
+      return;
     }
   }
   return (
