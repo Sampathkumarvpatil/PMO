@@ -16,7 +16,7 @@ const TermsAndConditions = ({ sidebarToggle }) => {
 
   const handleButtonClick = () => {
     if (isChecked) {
-      navigate(`/testReport/${projectName}`);
+      navigate(`/TestsReports/${projectName}`);
     }
   };
 
