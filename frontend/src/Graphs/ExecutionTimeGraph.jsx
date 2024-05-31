@@ -72,7 +72,7 @@ function ExecutionTimeGraph({ data }) {
     }
   }, [data]);
   return (
-    <figure class="highcharts-figure">
+    <figure class="highcharts-figure !mt-0">
       <div id="execution"></div>
     </figure>
   );
