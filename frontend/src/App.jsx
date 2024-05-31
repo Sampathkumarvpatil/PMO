@@ -94,13 +94,16 @@ function App() {
                       <TermsAndConditions sidebarToggle={sidebarToggle} />
                     }
                   />
+
                   <Route
                     path="/TestsReports/:projectName"
-                    element={<TestsReports sidebarToggle={sidebarToggle} />}>
-                      <Route path="/TestsReports/:projectName" element={<TestsReports sidebarToggle={sidebarToggle} />}></Route>
-                      <Route path="/TestsReports/:projectName/FailedTest" element={<FailedTest sidebarToggle={sidebarToggle} />} ></Route>
-                    </Route>
-                  
+                    element={<TestsReports sidebarToggle={sidebarToggle} />}
+                  ></Route>
+                  <Route
+                    path="/TestsReports/:projectName/FailedTest"
+                    element={<FailedTest sidebarToggle={sidebarToggle} />}
+                  ></Route>
+
                   <Route
                     path="/FailedTest"
                     element={<FailedTest sidebarToggle={sidebarToggle} />}
