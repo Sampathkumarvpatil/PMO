@@ -126,7 +126,7 @@ const LastButtons = ({ current, handleSave }) => {
         <div>
           <button
             className={isLoading ? "disabled-animated" : "animated-button"}
-            onClick={() => next()}
+            onClick={current === "KPI's" ? handleSavebtnClick : () => next()}
             disabled={isLoading}
           >
             <svg
