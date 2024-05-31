@@ -26,8 +26,8 @@ const LastButtons = ({ current, handleSave }) => {
     } else if (current === "FileUpload") {
       await handleSavebtnClick();
       navigate("/KPI's");
-    }else if(current === "Retrospective"){
-      navigate("/KPI's")
+    } else if (current === "Retrospective") {
+      navigate("/KPI's");
     }
   };
   const next = async () => {
@@ -53,6 +53,9 @@ const LastButtons = ({ current, handleSave }) => {
     // }
   };
   const handleSavebtnClick = async () => {
+    if (current === "Sprints") {
+      handleSave();
+    }
     let projectNeedToUpdate = localStorage.getItem("currentProject");
     let currentSprint = localStorage.getItem("currentSprint");
 
@@ -83,14 +86,8 @@ const LastButtons = ({ current, handleSave }) => {
         key
       );
     }
-  }
-  const save = () =>{
-    if(current === "Sprints"){
-      handleSave();
-    }else{
-      return;
-    }
-  }
+  };
+
   return (
     <>
       <div className="flex justify-center items-center mt-8 gap-9">
@@ -119,7 +116,7 @@ const LastButtons = ({ current, handleSave }) => {
           </button>
         </div>
         <div>
-          <button onClick={() => save()}
+          <button
             className="text-white font-bold py-2 px-4 w-40 rounded-xl border-2 border-gray-300 shadow-xl "
             style={{
               background:
@@ -134,13 +131,9 @@ const LastButtons = ({ current, handleSave }) => {
 
         <div>
           <button
-            className={
-              isLoading || current === "Sprints"
-                ? "disabled-animated"
-                : "animated-button"
-            }
+            className={isLoading ? "disabled-animated" : "animated-button"}
             onClick={() => next()}
-            disabled={isLoading || current === "Sprints"}
+            disabled={isLoading}
           >
             <svg
               viewBox="0 0 24 24"
