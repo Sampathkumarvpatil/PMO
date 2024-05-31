@@ -104,7 +104,7 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                 1. Download and Add the External Jar File
               </p>
               <div className="">
-                <p className="mb-3 text-lg">Download the Jar File</p>
+                <p className="mb-3 text-lg pl-10">Download the Jar File</p>
                 <div className="px-16">
                   <p className="mb-4">
                     • Download the{" "}
@@ -122,7 +122,7 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                 </div>
               </div>
               <div>
-                <p className="mb-3 text-lg">Add the Jar to Your Project</p>
+                <p className="mb-3 text-lg pl-10">Add the Jar to Your Project</p>
                 <div className="px-16">
                   <p className="mb-3 text-[#3333CC]">
                     1. Open Your Project Properties:
@@ -213,32 +213,26 @@ const TermsAndConditions = ({ sidebarToggle }) => {
               </p>
               <div className="pl-16 mb-8">
                 <p className="mb-8">
-                  1.{" "}
-                  <span className="text-[#3333CC] text-lg">
-                    Import the Listener
-                  </span>
-                  : Add the following import statement at the top of your test
-                  class: <br />{" "}
-                  <span className="text-lg">
+                  1. <span className="text-[#3333CC] text-lg">Import the Listener</span>: Add the following import statement at
+                  the top of your test class: <br />{" "}
+                  <span className="text-lg pl-8">
                     "import Listener. TestGeniusListener"
                   </span>
                 </p>
                 <p>
                   2.{" "}
                   <span className="text-lg text-[#3333CC]">
-                    Annotate the Class with the Listener
+                    Annotate the Class with the Listener :
                   </span>
-                  : <br />
-                  Add the{" "}
-                  <span className="text-lg text-yellow-700">
-                    @Listeners
-                  </span>{" "}
-                  annotation to your test class:
+                 </p> 
+                 <p className="pl-8"> 
+                  Add the <span className="text-lg text-yellow-700">@Listeners</span> annotation to your test class:
                 </p>
               </div>
-              <p className="text-lg mb-2">
+              <p className="text-lg mb-2 pl-32">
                 @Listeners (TestGeniusListener.class)
               </p>
+              <div className="pl-40">
               <div
                 className="mb-8 code-container"
                 style={{ border: "1px solid black", padding: "10px" }}
@@ -249,9 +243,11 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                   &#125;
                 </code>
               </div>
-              <p className="text-lg mb-3" style={{ fontWeight: "800" }}>
+              </div>
+              <p className="text-lg mb-3 pl-32" style={{ fontWeight: "800" }}>
                 Here is a very concise example:
               </p>
+              <div className="pl-40">
               <div
                 className="mb-4 code-container"
                 style={{ border: "1px solid black", padding: "10px" }}
@@ -273,12 +269,11 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                   &#125;
                 </code>
               </div>
+              </div>
             </div>
             <div className="mb-16">
-              <p className="text-lg mb-3 text-red-600">
-                3. Update Your testng.xml File
-              </p>
-              <p className="mb-3">
+              <p className="text-lg mb-3 text-red-600">3. Update Your testng.xml File</p>
+              <p className="mb-3 pl-16">
                 Add the following listener configuration to your{" "}
                 <span className="text-lg text-yellow-700">"testng.xml"</span>{" "}
                 file to integrate{" "}
@@ -286,6 +281,7 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                   "TestGeniusListener":
                 </span>
               </p>
+              <div className="pl-24">
               <div
                 className="mb-4"
                 style={{ border: "1px solid black", padding: "10px" }}
@@ -323,12 +319,11 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                   {"</suite>"}
                 </code>
               </div>
+              </div>
             </div>
             <div className="mb-20">
-              <p className="text-lg mb-3 text-red-600">
-                4. Add Necessary Dependencies to pom.xml
-              </p>
-              <p className="mb-3">
+              <p className="text-lg mb-3 text-red-600">4. Add Necessary Dependencies to pom.xml</p>
+              <p className="mb-3 pl-16">
                 Add the following dependencies{" "}
                 <span className="text-lg text-yellow-700">
                   "AWS SDK", "slf4j API" and "SLF4J"
@@ -340,6 +335,7 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                 <span className="underline">selenium</span>,{" "}
                 <span className="underline">Testing</span> etc.
               </p>
+              <div className="pl-24">
               <div
                 className="mb-4 code-container"
                 style={{ border: "1px solid black", padding: "10px" }}
@@ -385,6 +381,7 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                   <br />
                   &lt;/dependencies&gt;
                 </code>
+              </div>
               </div>
             </div>
             <div>
