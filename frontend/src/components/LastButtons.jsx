@@ -7,6 +7,8 @@ import { useSaveDataToS3 } from "../utils/useSaveDataToS3";
 const LastButtons = ({ current, handleSave }) => {
   const navigate = useNavigate();
   const { error, saveData, success, isLoading } = useSaveDataToS3();
+
+  console.log(current);
   const back = async () => {
     if (current === "Dashboard") {
       await handleSavebtnClick();
@@ -47,9 +49,6 @@ const LastButtons = ({ current, handleSave }) => {
     // }
   };
   const handleSavebtnClick = async () => {
-    if (current === "Sprints") {
-      handleSave();
-    }
     let projectNeedToUpdate = localStorage.getItem("currentProject");
     let currentSprint = localStorage.getItem("currentSprint");
 
@@ -126,7 +125,7 @@ const LastButtons = ({ current, handleSave }) => {
         <div>
           <button
             className={isLoading ? "disabled-animated" : "animated-button"}
-            onClick={current === "KPI's" ? handleSavebtnClick : () => next()}
+            onClick={current === "Sprints" ? handleSave : () => next()}
             disabled={isLoading}
           >
             <svg
