@@ -34,14 +34,14 @@ const TermsAndConditions = ({ sidebarToggle }) => {
           <h3 className="text-2xl font-extrabold mb-3 text-red-600">
             Introduction :
           </h3>
-          <p className="mb-20">
+          <p className="mb-10">
             The <span className="font-bold text-yellow-700">"Test Genius"</span>{" "}
             is a powerful tool designed to streamline your automated testing
             process by capturing test results and screenshots, and directly
             uploading detailed reports to TestGenius.ai. You can enjoy the
             following features:
           </p>
-          <div className="px-16 mb-16">
+          <div className="px-16 mb-10">
             <p className="mb-2">
               •{" "}
               <span className="ml-4 text-lg font-bold text-[#3333CC] ">
@@ -97,10 +97,10 @@ const TermsAndConditions = ({ sidebarToggle }) => {
               </span>
             </p>
           </div>
-          <h3 className="text-xl mb-12 underline">Step-by-Step Instructions</h3>
+          <h3 className="text-xl mb-8 underline">Step-by-Step Instructions</h3>
           <div>
             <div className="mb-10">
-              <p className="mb-6 text-lg text-red-600">
+              <p className="mb-3 text-lg text-red-600">
                 1. Download and Add the External Jar File
               </p>
               <div className="">
@@ -127,7 +127,7 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                   <p className="mb-3 text-[#3333CC]">
                     1. Open Your Project Properties:
                   </p>
-                  <div className="pl-12 mb-8">
+                  <div className="pl-12 mb-4">
                     <p className="text-sm">
                       • <span>Right-click</span> on your project in your IDE
                       (e.g., Eclipse).
@@ -140,14 +140,10 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                   <p className="mb-3 text-[#3333CC]">
                     2. Add the External Jar:
                   </p>
-                  <div className="pl-5 mb-12">
-                    {/* <img src="../assets/JavaBuildPath.png" alt="" /> */}
-                    <img
-                      className="mb-6"
-                      src="https://www.unco.edu/college-bound-colorado/images/group-friends-jumping.jpg"
-                      alt=""
-                    />
-                    <div className="pl-4">
+                  <div className="pl-5 mb-8">
+                    <img className="pl-4 mb-6" src="../1st_IntroPage_Img.png" alt="" />
+                    
+                    <div className="pl-12">
                       <p className="mb-2">
                         • Go to{" "}
                         <span className="text-lg text-yellow-700">
@@ -174,13 +170,8 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                   </div>
                   <p className="mb-3 text-[#3333CC]">3. Export the Jar:</p>
                   <div className="pl-5">
-                    {/* <img src="../assets/JavaBuildPath.png" alt="" /> */}
-                    <img
-                      className="mb-6"
-                      src="https://www.unco.edu/college-bound-colorado/images/group-friends-jumping.jpg"
-                      alt=""
-                    />
-                    <div className="pl-4">
+                  <img className="pl-4 mb-6" src="../2nd_IntroPage_Img.png" alt="" />
+                    <div className="pl-12">
                       <p className="mb-2">
                         • Go to the{" "}
                         <span className="text-lg text-yellow-700">
@@ -207,12 +198,12 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                 </div>
               </div>
             </div>
-            <div className="mb-14">
+            <div className="mb-10">
               <p className="mb-6 text-lg text-red-600">
                 2. Update Your Test Class
               </p>
               <div className="pl-16 mb-8">
-                <p className="mb-8">
+                <p className="mb-4">
                   1. <span className="text-[#3333CC] text-lg">Import the Listener</span>: Add the following import statement at
                   the top of your test class: <br />{" "}
                   <span className="text-lg pl-8">
@@ -271,7 +262,7 @@ const TermsAndConditions = ({ sidebarToggle }) => {
               </div>
               </div>
             </div>
-            <div className="mb-16">
+            <div className="mb-10">
               <p className="text-lg mb-3 text-red-600">3. Update Your testng.xml File</p>
               <p className="mb-3 pl-16">
                 Add the following listener configuration to your{" "}
@@ -321,7 +312,7 @@ const TermsAndConditions = ({ sidebarToggle }) => {
               </div>
               </div>
             </div>
-            <div className="mb-20">
+            <div className="mb-10">
               <p className="text-lg mb-3 text-red-600">4. Add Necessary Dependencies to pom.xml</p>
               <p className="mb-3 pl-16">
                 Add the following dependencies{" "}
@@ -388,7 +379,7 @@ const TermsAndConditions = ({ sidebarToggle }) => {
               <div className="mb-4 code-container">
                 <h2 className="text-xl mb-3 underline text-red-600">Summary</h2>
                 <div className="summary-text">
-                  <p className="mb-8">
+                  <p className="mb-6">
                     By following these steps, you will successfully integrate
                     the <span className="text-yellow-700">"Test Genius"</span>{" "}
                     into your TestNG project. This setup will enable automatic
