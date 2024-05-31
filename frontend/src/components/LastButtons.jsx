@@ -23,9 +23,6 @@ const LastButtons = ({ current, handleSave }) => {
     } else if (current === "Sprints") {
       await handleSavebtnClick();
       navigate("/list");
-    } else if (current === "FileUpload") {
-      await handleSavebtnClick();
-      navigate("/KPI's");
     } else if (current === "Retrospective") {
       navigate("/KPI's");
     }
@@ -43,9 +40,6 @@ const LastButtons = ({ current, handleSave }) => {
     } else if (current === "TaskForm") {
       await handleSavebtnClick();
       navigate("/KPI's");
-    } else if (current === "Sprints") {
-      await handleSavebtnClick();
-      navigate("/uploadFile");
     }
     // else if (current === "FileUpload") {
     //   await handleSavebtnClick();
