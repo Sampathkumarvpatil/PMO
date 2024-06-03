@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./newInputs.css";
 import { useNavigate } from "react-router-dom";
 import { useGetS3Folders } from "../utils/useGetS3Folders";
-import { useFetchDataFromS3 } from "../utils/useFetchDataFromS3";
 import { useSaveDataToS3 } from "../utils/useSaveDataToS3";
-import { loggedUserValidationKey } from "../utils/temp";
 
 const NewSprint = ({ refreshSprint, newProject }) => {
   const [startDate, setStartDate] = useState("");
