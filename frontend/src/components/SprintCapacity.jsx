@@ -170,7 +170,6 @@ const SprintCapacity = ({ showGraph, setShowGraph, selectedValues }) => {
         );
 
         let cellValue = storedAllocationsData[rowIndex].hrPerDay; // Default value is (Present)
-        let allocationPercentage = storedAllocationsData[rowIndex].hrPerDay;
 
         if (attendance) {
           if (attendance.selectedValue === "0") {
@@ -178,10 +177,6 @@ const SprintCapacity = ({ showGraph, setShowGraph, selectedValues }) => {
           } else if (attendance.selectedValue === "4") {
             cellValue = 4; // Half-day
           }
-        }
-
-        if (allocationPercentage === 4 && attendance?.selectedValue == "4") {
-          cellValue = cellValue / 2;
         }
 
         subTotal += cellValue;
