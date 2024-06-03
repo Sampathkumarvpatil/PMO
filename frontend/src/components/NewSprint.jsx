@@ -6,9 +6,7 @@ import { useFetchDataFromS3 } from "../utils/useFetchDataFromS3";
 import { useSaveDataToS3 } from "../utils/useSaveDataToS3";
 import { loggedUserValidationKey } from "../utils/temp";
 
-const NewSprint = ({ refreshSprint }) => {
-  const [mainCompanyArr, setMainCompanyArr] = useState([]);
-
+const NewSprint = ({ refreshSprint, newProject }) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [numOfResources, setNumOfResources] = useState("");
@@ -25,6 +23,7 @@ const NewSprint = ({ refreshSprint }) => {
     saveData,
     error: singleProjectSaveError,
     success,
+    isLoading,
   } = useSaveDataToS3();
   const [isPageError, setIsPageError] = useState(false);
   const navigate = useNavigate();
@@ -35,7 +34,7 @@ const NewSprint = ({ refreshSprint }) => {
       await fetchS3Folders(key);
     };
     fetchFolders();
-  }, []);
+  }, [newProject]);
 
   useEffect(() => {
     if (
@@ -61,6 +60,12 @@ const NewSprint = ({ refreshSprint }) => {
     setSelectedProject(project);
     setNumOfResources(project?.baseInfo?.resources);
   };
+
+  useEffect(() => {
+    if (success) {
+      navigate("/Dashboard");
+    }
+  }, [success]);
 
   const handleCreateSprint = async () => {
     if (selectedProject) {
@@ -112,6 +117,7 @@ const NewSprint = ({ refreshSprint }) => {
         setIsPageError(true);
         return;
       }
+
       // const updatedProject = {
       //   ...selectedProject,
       //   sprints: [...(selectedProject.sprints || []), newSprint],
@@ -177,10 +183,6 @@ const NewSprint = ({ refreshSprint }) => {
     // }
 
     // localStorage.setItem("sprintsData", JSON.stringify(data));
-
-    setTimeout(() => {
-      navigate("/Dashboard");
-    }, 2000);
   };
 
   return (
@@ -291,14 +293,24 @@ const NewSprint = ({ refreshSprint }) => {
           >
             Create Sprint
           </button>
+          {}
+          {success && !isLoading && (
+            <div className="text-green-500 font-bold mt-4 text-center">
+              Your Sprint is created!
+            </div>
+          )}
+          {isLoading && (
+            <div className="text-yellow-500 font-bold mt-4 text-center">
+              Creating sprint...
+            </div>
+          )}
 
-          <div>
-            {SprintCreated && (
-              <div className="text-green-500 font-bold mt-4 text-center">
-                Your Sprint is created!
+          {singleProjectSaveError &&
+            !isLoading(
+              <div className="text-red-500 font-bold mt-4 text-center">
+                {singleProjectSaveError}
               </div>
             )}
-          </div>
         </div>
       </div>
     </div>

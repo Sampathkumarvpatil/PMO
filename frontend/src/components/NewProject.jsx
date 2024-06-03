@@ -10,7 +10,7 @@ const NewProject = ({ sidebarToggle }) => {
   const [resourcesTotalNumber, setResourcesTotalNumber] = useState("");
   const [projectCreated, setProjectCreated] = useState(false);
   const [refreshSprint, setRefreshSprint] = useState(true);
-  const { error, saveData, success } = useSaveDataToS3();
+  const { error, saveData, success, isLoading } = useSaveDataToS3();
   const [projectCreationError, setProjetCreationError] = useState(false);
 
   const handleCreateProject = async () => {
@@ -136,13 +136,19 @@ const NewProject = ({ sidebarToggle }) => {
                 (e.target.style.background =
                   "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)")
               }
+              disabled={isLoading}
             >
               Create Project
             </button>
           </div>
-          {projectCreated && (
+          {success && !isLoading && (
             <div className="text-green-500 font-bold mt-4 text-center">
-              Your project is created!
+              Your project created successfully!
+            </div>
+          )}
+          {isLoading && (
+            <div className="text-yellow-500 font-bold mt-4 text-center">
+              Creating Project...
             </div>
           )}
           {projectCreationError && (
@@ -152,7 +158,10 @@ const NewProject = ({ sidebarToggle }) => {
           )}
         </div>
       </div>
-      <NewSprint refreshSprint={refreshSprint} />
+      <NewSprint
+        refreshSprint={refreshSprint}
+        newProject={success ? projectName : ""}
+      />
     </div>
   );
 };
