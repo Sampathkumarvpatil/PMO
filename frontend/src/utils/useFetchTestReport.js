@@ -1,7 +1,7 @@
 import { useState } from "react";
-import MOCK_DATA from "./reportTestData.json";
+// import MOCK_DATA from "./reportTestData.json";
 export const useFetchTestReport = () => {
-  const [data, setData] = useState(MOCK_DATA);
+  const [data, setData] = useState({});
   const [error, setError] = useState("");
 
   async function fetchReport(body) {
@@ -18,6 +18,7 @@ export const useFetchTestReport = () => {
       );
       if (!res.ok) throw new Error("Error while fetching file from s3!!");
       const jsonResponse = await res.json();
+
       setData(jsonResponse);
     } catch (e) {
       console.error(e?.message || "Error while fetching data from s3..");

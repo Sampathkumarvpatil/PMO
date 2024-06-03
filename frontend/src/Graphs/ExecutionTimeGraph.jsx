@@ -7,30 +7,13 @@ function ExecutionTimeGraph({ data }) {
   useEffect(() => {
     if (data) {
       const categories = [
-        data?.body?.passed_results?.map((res) => {
-          return {
-            method_name: res?.method_name,
-            execution_time: res?.execution_time,
-            status: res?.status,
-          };
-        }),
-        data?.body?.failed_results?.map((res) => {
-          return {
-            method_name: res?.method_name,
-            execution_time: res?.execution_time,
-            status: res?.status,
-          };
-        }),
+        {
+          method_name: data?.method_name,
+          execution_time: data?.execution_time,
+          status: data?.status,
+        },
+      ];
 
-        data?.body?.skipped_results?.map((res) => {
-          return {
-            method_name: res?.method_name,
-            execution_time: res?.execution_time,
-            status: res?.status,
-          };
-        }),
-      ].flat();
-      console.log(categories);
       Highcharts.chart("execution", {
         chart: {
           type: "timeline",

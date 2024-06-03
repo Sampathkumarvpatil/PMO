@@ -6,14 +6,13 @@ import TestResult from "./TestResult";
 import TestIcons from "./TestIcons";
 import { FaArrowCircleDown } from "react-icons/fa";
 
-
 const TestsReports = ({ sidebarToggle }) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [selectedClassName, setSelectedClassName] = useState("");
   const [selectedStatus, setselectedStatus] = useState("");
   const { data: classes, classesFetchError, fetchClasses } = useFetchClasses();
-  const { error: reportFetchError, fetchReport } = useFetchTestReport();
+  const { error: reportFetchError, fetchReport, data } = useFetchTestReport();
   const [visibility, setVisibility] = useState(false);
 
   const { projectName } = useParams();
@@ -22,6 +21,13 @@ const TestsReports = ({ sidebarToggle }) => {
     if (projectName) {
       const fetchClassNames = async () => {
         await fetchClasses(projectName);
+        await fetchReport({
+          project_name: projectName,
+          class_name: selectedClassName,
+          status: selectedStatus,
+          startDate,
+          endDate,
+        });
       };
       fetchClassNames();
     }
@@ -50,32 +56,36 @@ const TestsReports = ({ sidebarToggle }) => {
 
   return (
     <div
-      className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"
-        }`}
+      className={`transition-all duration-300 ${
+        sidebarToggle ? "ml-0" : "ml-64"
+      }`}
     >
       <div className="bg-gray-100 min-h-screen">
         <div className="grid grid-cols-[5%,94%] justify-between">
-          <div style={{ backgroundColor: '#e2e3f3' }}>
-            <TestIcons />
+          <div style={{ backgroundColor: "#e2e3f3" }}>
+            <TestIcons report={data} />
           </div>
           <div className="justify-center w-full pt-2">
             <div className="flex justify-center">
               {/* <FaArrowCircleUp size={25} color={blue} onClick={toggleOpen} /> */}
-              {visibility ?
-                <FaArrowCircleDown size={25}
+              {visibility ? (
+                <FaArrowCircleDown
+                  size={25}
                   strokeWidth={2.5}
                   className="transition-transform cursor-pointer"
                   onClick={toggleOpen}
-                /> :
-                <FaArrowCircleDown size={25}
+                />
+              ) : (
+                <FaArrowCircleDown
+                  size={25}
                   strokeWidth={2.5}
                   className="transition-transform cursor-pointer transform rotate-180"
                   onClick={toggleOpen}
                 />
-              }
+              )}
             </div>
-            {visibility
-              ? <div className="bg-white p-4 rounded-lg shadow-lg w-full space-y-10">
+            {visibility ? (
+              <div className="bg-white p-4 rounded-lg shadow-lg w-full space-y-10">
                 <div className="flex items-center space-x-10">
                   <div className="flex flex-col w-1/5">
                     <label className="text-gray-700">Project Name:</label>
@@ -138,19 +148,22 @@ const TestsReports = ({ sidebarToggle }) => {
                 <div className="flex justify-center !mt-2">
                   <button
                     onClick={handleSubmit}
-                    className={`${!selectedClassName
-                      ? "bg-gray-500"
-                      : "bg-blue-500 hover:bg-blue-600"
-                      }  text-white py-2 px-4 rounded-md  focus:outline-none focus:ring focus:ring-blue-300 transition ease-in-out duration-200`}
+                    className={`${
+                      !selectedClassName
+                        ? "bg-gray-500"
+                        : "bg-blue-500 hover:bg-blue-600"
+                    }  text-white py-2 px-4 rounded-md  focus:outline-none focus:ring focus:ring-blue-300 transition ease-in-out duration-200`}
                     disabled={!selectedClassName}
                   >
                     Submit
                   </button>
                 </div>
               </div>
-              : ""}
+            ) : (
+              ""
+            )}
             <div>
-              <TestResult />
+              <TestResult reportData={data} />
             </div>
           </div>
         </div>
