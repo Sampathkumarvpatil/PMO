@@ -51,7 +51,7 @@ const FunnelChartComponent = () => {
       borderWidth: 0, // Add this line
     },
     title: {
-      text: "Completion Rate Overview  ",
+      text: "Completion Rate Overview",
     },
     plotOptions: {
       funnel3d: {
@@ -62,7 +62,7 @@ const FunnelChartComponent = () => {
         dataLabels: {
           enabled: true,
           format: "<b>{point.name}</b> ({point.y:,.0f})",
-          allowOverlap: true,
+          allowOverlap: false,
           y: 10,
           x: -100,
         },

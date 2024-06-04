@@ -62,7 +62,7 @@ const GaugeChartComponent = () => {
         name: "Tasks",
         data: [
           {
-            name: "Planned Tasks",
+            name: "Completed Tasks",
             y: formattedPlannedTasks,
             color: "rgba(54, 162, 235, 0.7)",
             dataLabels: {

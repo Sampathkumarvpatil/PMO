@@ -39,6 +39,7 @@ import LastButtons from "./components/LastButtons";
 import TermsAndConditions from "./components/TermsAndConditions";
 import TestsReports from "./components/TestsReports";
 import FailedTest from "./components/FailedTest";
+import WordCloudForKpi from "./Graphs/WordCloudForKpi";
 
 function App() {
   const [sidebarToggle, setSidebarToggle] = useState(true);
@@ -178,6 +179,7 @@ function App() {
                         <WorkEfficiencyRatiochart />
                         <CompletionRateOverviewbysprintsComponent />
                         <Problemdetcationratesprintchart />
+                        <WordCloudForKpi />
                       </div>
                     }
                   />

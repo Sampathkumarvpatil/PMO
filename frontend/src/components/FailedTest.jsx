@@ -41,7 +41,7 @@ function FailedTest({ sidebarToggle }) {
           <TestIcons data={data} />
         </div>
 
-        <table className="p-5 m-5">
+        <table className="p-5 m-5 border-x-2 border-black border-t-2 border-black">
           <tr>
             <th colSpan={3} className="p-2 m-2">
               <div className="flex items-center justify-center gap-3">
@@ -54,8 +54,8 @@ function FailedTest({ sidebarToggle }) {
               </div>
             </th>
           </tr>
-          <tr className="p-2 m-2">
-            <th className="p-2 m-2">
+          <tr className="p-2 m-2 border-2 border-black">
+            <th className="p-2 m-2 border-r-2 border-black">
               <h3
                 className="rounded-lg inline-block px-2 py-1"
                 style={{ backgroundColor: "#aee7ae", color: "green" }}
@@ -63,7 +63,7 @@ function FailedTest({ sidebarToggle }) {
                 TIMESTAMP
               </h3>
             </th>
-            <th className="p-2 m-2">
+            <th className="p-2 m-2 border-r-2 border-black">
               <h3
                 className="ml-2 rounded-lg inline-block px-2 py-1"
                 style={{ backgroundColor: "#aee7ae", color: "green" }}
@@ -71,7 +71,7 @@ function FailedTest({ sidebarToggle }) {
                 SCREENSHOT
               </h3>
             </th>
-            <th className="p-2 m-2">
+            <th className="p-2 m-2 border-r-2 border-black">
               <h3
                 className="ml-2 rounded-lg inline-block px-2 py-1"
                 style={{ backgroundColor: "#aee7ae", color: "green" }}
@@ -82,8 +82,11 @@ function FailedTest({ sidebarToggle }) {
           </tr>
 
           {data?.body?.failed_results?.map((failCase) => (
-            <tr key={failCase?.method_name} className="p-2 m-2">
-              <td className="p-2 m-2 w-auto">
+            <tr
+              key={failCase?.method_name}
+              className="p-2 m-2 border-b-2 border-black"
+            >
+              <td className="p-2 m-2 w-auto border-r-2 border-black">
                 <h1 className="px-4 py-0 pt-4">
                   Method name: {failCase?.method_name}
                 </h1>
@@ -102,8 +105,8 @@ function FailedTest({ sidebarToggle }) {
                   Executed Time: {failCase?.execution_time}
                 </p>
               </td>
-              <td className="p-2 m-2 ">
-                <div style={{ borderRight: "1px solid" }}>
+              <td className="p-2 m-2 border-r-2 border-black">
+                <div>
                   <img
                     src={`data:image/png;base64,${failCase?.screenshot}`}
                     width={700}

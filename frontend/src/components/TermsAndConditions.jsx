@@ -29,13 +29,13 @@ const TermsAndConditions = ({ sidebarToggle }) => {
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
         <div className="bg-white px-16 py-6 rounded-lg shadow-lg max-w-6xl w-full">
           <h1 className="text-3xl flex justify-center underline font-bold mb-4 font-serif text-purple-700">
-            Test &nbsp; Genius
+            TestGenius
           </h1>
           <h3 className="text-2xl font-extrabold mb-3 text-red-600">
             Introduction :
           </h3>
           <p className="mb-10">
-            The <span className="font-bold text-yellow-700">"Test Genius"</span>{" "}
+            The <span className="font-bold text-yellow-700">"TestGenius"</span>{" "}
             is a powerful tool designed to streamline your automated testing
             process by capturing test results and screenshots, and directly
             uploading detailed reports to TestGenius.ai. You can enjoy the
@@ -122,7 +122,9 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                 </div>
               </div>
               <div>
-                <p className="mb-3 text-lg pl-10">Add the Jar to Your Project</p>
+                <p className="mb-3 text-lg pl-10">
+                  Add the Jar to Your Project
+                </p>
                 <div className="px-16">
                   <p className="mb-3 text-[#3333CC]">
                     1. Open Your Project Properties:
@@ -141,8 +143,12 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                     2. Add the External Jar:
                   </p>
                   <div className="pl-5 mb-8">
-                    <img className="pl-4 mb-6" src="../1st_IntroPage_Img.png" alt="" />
-                    
+                    <img
+                      className="pl-4 mb-6"
+                      src="../1st_IntroPage_Img.png"
+                      alt=""
+                    />
+
                     <div className="pl-12">
                       <p className="mb-2">
                         • Go to{" "}
@@ -170,7 +176,11 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                   </div>
                   <p className="mb-3 text-[#3333CC]">3. Export the Jar:</p>
                   <div className="pl-5">
-                  <img className="pl-4 mb-6" src="../2nd_IntroPage_Img.png" alt="" />
+                    <img
+                      className="pl-4 mb-6"
+                      src="../2nd_IntroPage_Img.png"
+                      alt=""
+                    />
                     <div className="pl-12">
                       <p className="mb-2">
                         • Go to the{" "}
@@ -204,8 +214,12 @@ const TermsAndConditions = ({ sidebarToggle }) => {
               </p>
               <div className="pl-16 mb-8">
                 <p className="mb-4">
-                  1. <span className="text-[#3333CC] text-lg">Import the Listener</span>: Add the following import statement at
-                  the top of your test class: <br />{" "}
+                  1.{" "}
+                  <span className="text-[#3333CC] text-lg">
+                    Import the Listener
+                  </span>
+                  : Add the following import statement at the top of your test
+                  class: <br />{" "}
                   <span className="text-lg pl-8">
                     "import Listener. TestGeniusListener"
                   </span>
@@ -215,55 +229,59 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                   <span className="text-lg text-[#3333CC]">
                     Annotate the Class with the Listener :
                   </span>
-                 </p> 
-                 <p className="pl-8"> 
-                  Add the <span className="text-lg text-yellow-700">@Listeners</span> annotation to your test class:
+                </p>
+                <p className="pl-8">
+                  Add the{" "}
+                  <span className="text-lg text-yellow-700">@Listeners</span>{" "}
+                  annotation to your test class:
                 </p>
               </div>
               <p className="text-lg mb-2 pl-32">
                 @Listeners (TestGeniusListener.class)
               </p>
               <div className="pl-40">
-              <div
-                className="mb-8 code-container"
-                style={{ border: "1px solid black", padding: "10px" }}
-              >
-                <code className="code">
-                  public class YourTestClass &#123; <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;// Your test methods <br />
-                  &#125;
-                </code>
-              </div>
+                <div
+                  className="mb-8 code-container"
+                  style={{ border: "1px solid black", padding: "10px" }}
+                >
+                  <code className="code">
+                    public class YourTestClass &#123; <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;// Your test methods <br />
+                    &#125;
+                  </code>
+                </div>
               </div>
               <p className="text-lg mb-3 pl-32" style={{ fontWeight: "800" }}>
                 Here is a very concise example:
               </p>
               <div className="pl-40">
-              <div
-                className="mb-4 code-container"
-                style={{ border: "1px solid black", padding: "10px" }}
-              >
-                <code className="code">
-                  package pages;
-                  <br />
-                  import org.testng.annotations.Listeners;
-                  <br />
-                  import Listener.TestGeniusListener;
-                  <br />
-                  <br />
-                  @Listeners(TestGeniusListener.class) // &lt;-- Add this line
-                  <br />
-                  public class ExampleTest &#123;
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;// Your test methods or other code
-                  <br />
-                  &#125;
-                </code>
-              </div>
+                <div
+                  className="mb-4 code-container"
+                  style={{ border: "1px solid black", padding: "10px" }}
+                >
+                  <code className="code">
+                    package pages;
+                    <br />
+                    import org.testng.annotations.Listeners;
+                    <br />
+                    import Listener.TestGeniusListener;
+                    <br />
+                    <br />
+                    @Listeners(TestGeniusListener.class) // &lt;-- Add this line
+                    <br />
+                    public class ExampleTest &#123;
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;// Your test methods or other code
+                    <br />
+                    &#125;
+                  </code>
+                </div>
               </div>
             </div>
             <div className="mb-10">
-              <p className="text-lg mb-3 text-red-600">3. Update Your testng.xml File</p>
+              <p className="text-lg mb-3 text-red-600">
+                3. Update Your testng.xml File
+              </p>
               <p className="mb-3 pl-16">
                 Add the following listener configuration to your{" "}
                 <span className="text-lg text-yellow-700">"testng.xml"</span>{" "}
@@ -273,47 +291,51 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                 </span>
               </p>
               <div className="pl-24">
-              <div
-                className="mb-4"
-                style={{ border: "1px solid black", padding: "10px" }}
-              >
-                <code className="code">
-                  {
-                    '<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">'
-                  }
-                  <br />
-                  {'<suite name="Suite" verbose="1">'}
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;{"<listeners>"}
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  {'<listener class-name="Listener.TestGeniusListener"/>'}
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;{"</listeners>"}
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;{'<test name="Test">'}
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  {
-                    '<parameter name="projectName" value="Enter your project name here"/>'
-                  }
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"<classes>"}
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  {'<class name="pages.ExampleTest"/>'}
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"</classes>"}
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;{"</test>"}
-                  <br />
-                  {"</suite>"}
-                </code>
-              </div>
+                <div
+                  className="mb-4"
+                  style={{ border: "1px solid black", padding: "10px" }}
+                >
+                  <code className="code">
+                    {
+                      '<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">'
+                    }
+                    <br />
+                    {'<suite name="Suite" verbose="1">'}
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;{"<listeners>"}
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {'<listener class-name="Listener.TestGeniusListener"/>'}
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;{"</listeners>"}
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;{'<test name="Test">'}
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {
+                      '<parameter name="projectName" value="Enter your project name here"/>'
+                    }
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {"<classes>"}
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {'<class name="pages.ExampleTest"/>'}
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {"</classes>"}
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;{"</test>"}
+                    <br />
+                    {"</suite>"}
+                  </code>
+                </div>
               </div>
             </div>
             <div className="mb-10">
-              <p className="text-lg mb-3 text-red-600">4. Add Necessary Dependencies to pom.xml</p>
+              <p className="text-lg mb-3 text-red-600">
+                4. Add Necessary Dependencies to pom.xml
+              </p>
               <p className="mb-3 pl-16">
                 Add the following dependencies{" "}
                 <span className="text-lg text-yellow-700">
@@ -327,52 +349,52 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                 <span className="underline">Testing</span> etc.
               </p>
               <div className="pl-24">
-              <div
-                className="mb-4 code-container"
-                style={{ border: "1px solid black", padding: "10px" }}
-              >
-                <code className="code">
-                  &lt;dependencies&gt;
-                  <br />
-                  &nbsp;&nbsp;&lt;!-- AWS SDK for Java --&gt;
-                  <br />
-                  &nbsp;&nbsp;&lt;dependency&gt;
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;groupId&gt;com.amazonaws&lt;/groupId&gt;
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;artifactId&gt;aws-java-sdk&lt;/artifactId&gt;
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;version&gt;1.12.505&lt;/version&gt;
-                  <br />
-                  &nbsp;&nbsp;&lt;/dependency&gt;
-                  <br />
-                  &nbsp;&nbsp;&lt;!-- SLF4J API --&gt;
-                  <br />
-                  &nbsp;&nbsp;&lt;dependency&gt;
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;groupId&gt;org.slf4j&lt;/groupId&gt;
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;version&gt;1.7.32&lt;/version&gt;
-                  <br />
-                  &nbsp;&nbsp;&lt;/dependency&gt;
-                  <br />
-                  &nbsp;&nbsp;&lt;!-- SLF4J Simple Binding --&gt;
-                  <br />
-                  &nbsp;&nbsp;&lt;dependency&gt;
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;groupId&gt;org.slf4j&lt;/groupId&gt;
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
-                  <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;version&gt;1.7.32&lt;/version&gt;
-                  <br />
-                  &nbsp;&nbsp;&lt;/dependency&gt;
-                  <br />
-                  &lt;/dependencies&gt;
-                </code>
-              </div>
+                <div
+                  className="mb-4 code-container"
+                  style={{ border: "1px solid black", padding: "10px" }}
+                >
+                  <code className="code">
+                    &lt;dependencies&gt;
+                    <br />
+                    &nbsp;&nbsp;&lt;!-- AWS SDK for Java --&gt;
+                    <br />
+                    &nbsp;&nbsp;&lt;dependency&gt;
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;groupId&gt;com.amazonaws&lt;/groupId&gt;
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;artifactId&gt;aws-java-sdk&lt;/artifactId&gt;
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;version&gt;1.12.505&lt;/version&gt;
+                    <br />
+                    &nbsp;&nbsp;&lt;/dependency&gt;
+                    <br />
+                    &nbsp;&nbsp;&lt;!-- SLF4J API --&gt;
+                    <br />
+                    &nbsp;&nbsp;&lt;dependency&gt;
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;version&gt;1.7.32&lt;/version&gt;
+                    <br />
+                    &nbsp;&nbsp;&lt;/dependency&gt;
+                    <br />
+                    &nbsp;&nbsp;&lt;!-- SLF4J Simple Binding --&gt;
+                    <br />
+                    &nbsp;&nbsp;&lt;dependency&gt;
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;version&gt;1.7.32&lt;/version&gt;
+                    <br />
+                    &nbsp;&nbsp;&lt;/dependency&gt;
+                    <br />
+                    &lt;/dependencies&gt;
+                  </code>
+                </div>
               </div>
             </div>
             <div>
