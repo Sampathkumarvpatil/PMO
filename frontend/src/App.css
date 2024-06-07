@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: "Manrope", sans-serif;
+  font-family: "Georama", sans-serif;
 }
 
 .task-row:hover {
@@ -60,4 +60,15 @@ td {
 
 .highcharts-credits {
   display: none;
+}
+
+.MuiStepLabel-label {
+  font-weight: 600 !important;
+  color: #414141 !important;
+  font-size: larger !important;
+}
+
+.MuiSvgIcon-fontSizeMedium {
+  background-color: white !important;
+  color: #105aed !important;
 }
