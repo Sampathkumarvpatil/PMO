@@ -4,8 +4,7 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import StepContent from "@mui/material/StepContent";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
+
 import Typography from "@mui/material/Typography";
 
 const steps = [
@@ -139,7 +138,10 @@ const steps = [
         </div>
         <p className=" mb-1 pl-32">@Listeners (TestGeniusListener.class)</p>
         <div className="pl-40">
-          <div className="mb-8 " style={{ padding: "10px" }}>
+          <div
+            className="mb-8 "
+            style={{ padding: "10px", border: "1px solid black" }}
+          >
             <code className="text-sm">
               public class YourTestClass &#123; <br />
               &nbsp;&nbsp;&nbsp;&nbsp;// Your test methods <br />
@@ -151,8 +153,15 @@ const steps = [
           Here is a very concise example:
         </p>
         <div className="pl-40">
-          <div className="mb-4 " style={{ padding: "10px", paddingTop: "2px" }}>
-            <code className="text-sm">
+          <div
+            className="mb-4 "
+            style={{
+              padding: "10px",
+              paddingTop: "2px",
+              border: "1px solid black",
+            }}
+          >
+            <code className="text-sm ">
               package pages;
               <br />
               import org.testng.annotations.Listeners;
@@ -183,7 +192,7 @@ const steps = [
           <span className="font-semibold"> TestGeniusListener:</span>
         </p>
         <div className="pl-24">
-          <div className="mb-4 text-sm">
+          <div className="mb-4 text-sm border border-black p-[10px]">
             <code className="">
               {'<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">'}
               <br />
@@ -232,7 +241,7 @@ const steps = [
           etc.
         </p>
         <div className="pl-24">
-          <div className="mb-4 text-sm">
+          <div className="mb-4 text-sm border border-black p-[10px]">
             <code>
               &lt;dependencies&gt;
               <br />

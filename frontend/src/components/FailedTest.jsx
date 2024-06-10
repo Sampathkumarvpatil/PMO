@@ -6,6 +6,7 @@ import Dialog from "@mui/material/Dialog";
 
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import Modal from "./Modal";
 
 function FailedTest({ sidebarToggle }) {
   const [openDialog, setOpenDialog] = useState(false);
@@ -41,41 +42,30 @@ function FailedTest({ sidebarToggle }) {
           <TestIcons data={data} />
         </div>
 
-        <table className="p-5 m-5 border-x-2 border-black border-t-2 border-black">
-          <tr>
-            <th colSpan={3} className="p-2 m-2">
-              <div className="flex items-center justify-center gap-3">
-                <h3 className="font-bold text-neutral-700 text-xl">
-                  {data?.body?.project_name} -
-                </h3>
-                <h3 className="font-semibold text-gray-600">
-                  {data?.body?.class_name}
-                </h3>
-              </div>
+        <table className="p-5 m-5 border-x-[0.5px] border-[#E6E6E6] border-t-[1px] text-[#414141] rounded-t-xl overflow-hidden">
+          <thead className="bg-[#EEEEEE] text-[#414141]">
+            <tr>
+              <th colSpan={3} className="p-2 m-2">
+                <div className="flex items-center justify-center gap-3">
+                  <h3 className="font-semibold text-xl">
+                    {data?.body?.project_name} - {data?.body?.class_name}
+                  </h3>
+                </div>
+              </th>
+            </tr>
+          </thead>
+
+          <tr className="p-2 m-2  bg-[#0A1070] text-white">
+            <th className="p-2 m-2 ">
+              <h3 className="rounded-lg inline-block px-2 py-1">TIMESTAMP</h3>
             </th>
-          </tr>
-          <tr className="p-2 m-2 border-2 border-black">
-            <th className="p-2 m-2 border-r-2 border-black">
-              <h3
-                className="rounded-lg inline-block px-2 py-1"
-                style={{ backgroundColor: "#aee7ae", color: "green" }}
-              >
-                TIMESTAMP
-              </h3>
-            </th>
-            <th className="p-2 m-2 border-r-2 border-black">
-              <h3
-                className="ml-2 rounded-lg inline-block px-2 py-1"
-                style={{ backgroundColor: "#aee7ae", color: "green" }}
-              >
+            <th className="p-2 m-2 ">
+              <h3 className="ml-2 rounded-lg inline-block px-2 py-1">
                 SCREENSHOT
               </h3>
             </th>
-            <th className="p-2 m-2 border-r-2 border-black">
-              <h3
-                className="ml-2 rounded-lg inline-block px-2 py-1"
-                style={{ backgroundColor: "#aee7ae", color: "green" }}
-              >
+            <th className="p-2 m-2">
+              <h3 className="ml-2 rounded-lg inline-block px-2 py-1">
                 DETAILS
               </h3>
             </th>
@@ -84,11 +74,15 @@ function FailedTest({ sidebarToggle }) {
           {data?.body?.failed_results?.map((failCase) => (
             <tr
               key={failCase?.method_name}
-              className="p-2 m-2 border-b-2 border-black"
+              className="p-2 m-2 border-b-[0.5px]  border-[#E6E6E6] hover:bg-[#F9FAFF]"
+              style={{
+                borderLeft: "1px solid #E6E6E6",
+                borderRight: "1px solid #E6E6E6",
+              }}
             >
-              <td className="p-2 m-2 w-auto border-r-2 border-black">
+              <td className="p-2 m-2 w-auto [0.5px] border-[#E6E6E6]">
                 <h1 className="px-4 py-0 pt-4">
-                  Method name: {failCase?.method_name}
+                  Method Name: {failCase?.method_name}
                 </h1>
 
                 <h1 className="px-4 py-0">Timestamp: {failCase?.timestamp}</h1>
@@ -101,11 +95,11 @@ function FailedTest({ sidebarToggle }) {
                     }}
                   />
                 </div> */}
-                <p className="p-2 m-2 mt-0 text-orange-900">
+                <p className="p-2 m-2 mt-0 text-[#D10505]">
                   Executed Time: {failCase?.execution_time}
                 </p>
               </td>
-              <td className="p-2 m-2 border-r-2 border-black">
+              <td className="p-2 m-2">
                 <div>
                   <img
                     src={`data:image/png;base64,${failCase?.screenshot}`}
@@ -123,61 +117,63 @@ function FailedTest({ sidebarToggle }) {
                     <div className="flex flex-row ml-4 mt-3">
                       <h3>MethodName : {failCase.method_name}</h3>
                     </div>
-                    <div
-                      className="flex flex-row justify-center items-center ml-4 my-2 rounded-lg"
-                      style={{ backgroundColor: "#edcbed", width: "50%" }}
+
+                    <Modal
+                      modalContent={failCase?.exception}
+                      title={"Exception"}
+                      key={failCase?.method_name}
+                    />
+                    {/* <Dialog
+                      open={openDialog}
+                      onClose={handleCloseDialog}
+                      fullWidth
                     >
-                      <h3
-                        className="px-1 py-2 text-lg cursor-pointer"
-                        style={{ color: "purple" }}
-                        onClick={handleOpenDialog}
-                      >
-                        Exception
-                      </h3>
-                      <Dialog
-                        open={openDialog}
-                        onClose={handleCloseDialog}
-                        fullWidth
-                      >
-                        <div className="flex flex-row justify-between">
-                          <DialogTitle
-                            className="!pb-0 !pt-3"
-                            style={{
-                              fontWeight: "bold",
-                              fontSize: "1.5rem",
-                              textAlign: "center",
-                            }}
+                      <div className="flex flex-row justify-between">
+                        <DialogTitle
+                          className="!pb-0 !pt-3"
+                          style={{
+                            fontWeight: "bold",
+                            fontSize: "1.5rem",
+                            textAlign: "center",
+                          }}
+                        >
+                          Exception
+                        </DialogTitle>
+                        <button
+                          className="bg-red-600 rounded-full text-white mt-2 mr-8"
+                          onClick={handleCloseDialog}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-10"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
                           >
-                            Exception
-                          </DialogTitle>
-                          <button
-                            className=" bg-red-600 rounded-full text-white mt-2 mr-8"
-                            onClick={handleCloseDialog}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-6 w-10"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M6 18L18 6M6 6l12 12"
-                              />
-                            </svg>
-                            {/* <FaPlusCircle className=" flex justify-end text-xl" onClick={onClose}/> */}
-                          </button>
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                      <DialogContent>
+                        <div
+                          style={{
+                            whiteSpace: "pre-wrap",
+                            wordWrap: "break-word",
+                            padding: "10px",
+                            borderRadius: "4px",
+                            overflowY: "auto",
+                            maxHeight: "70vh", // Add a max height to control the content height
+                          }}
+                        >
+                          {failCase.exception}
                         </div>
-                        <DialogContent>
-                          <textArea rows={20} cols={60}>
-                            {failCase.exception}
-                          </textArea>
-                        </DialogContent>
-                      </Dialog>
-                    </div>
+                      </DialogContent>
+                    </Dialog> */}
                   </div>
                 </div>
               </td>
