@@ -20,36 +20,6 @@ const TaskForm = ({ sidebarToggle }) => {
     }
   }, []);
 
-  // const selectedSprintName = localStorage.getItem("selectedSprintName");
-  // const companyData = localStorage.getItem("mainCompanyData");
-
-  // const data =
-  //   companyData && companyData !== "undefined"
-  //     ? JSON.parse(companyData ?? {})
-  //     : null;
-  // let projectNo;
-  // for (projectNo in data) {
-  //   if (
-  //     data &&
-  //     projectNo &&
-  //     data[projectNo]?.projectName ===
-  //       selectedProject?.baseInfo?.selectedProject
-  //   )
-  //     break;
-  // }
-
-  // let sprintNo;
-  // if (sprintNo && data && projectNo) {
-  //   for (sprintNo in data[projectNo]?.sprints) {
-  //     if (
-  //       projectNo &&
-  //       data &&
-  //       data[projectNo]?.sprints[sprintNo]?.sprintName === selectedSprintName
-  //     )
-  //       break;
-  //   }
-  // }
-
   const allocations = selectedSprint?.allocations || null;
 
   const res = allocations?.map((item) => item.name) || [];
@@ -175,195 +145,197 @@ const TaskForm = ({ sidebarToggle }) => {
   }, [thrs, tremaining]);
 
   return (
-    <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
+    <div
+      className={`transition-all duration-300 ${
+        sidebarToggle ? "ml-0" : "ml-64"
+      }`}
+    >
       <ProjOptions />
       <div className="flex justify-end">
-      <table
-        className="p-2 text-[18px] border-collapse border-2 border-[#aaa] m-2"
-        ref={targetRef}
-      >
-        <thead>
-          <tr>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            >
-              Available
-            </td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            >
-              Hours:
-            </td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            ></td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            ></td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            ></td>
-
-            {Object.values(thrs).map((item, index) => (
+        <table
+          className="p-2 text-[18px] border-collapse border-2 border-[#aaa] m-2"
+          ref={targetRef}
+        >
+          <thead>
+            <tr>
               <td
-                key={index}
                 style={cellStyle}
-                className="p-2 border-solid border-2 border-[#aaa] bg-gray-300 text-center text-blue-700"
+                className="p-2 border-solid  border-[#aaa] bg-gray-300"
               >
-                {item}
+                Available
               </td>
-            ))}
-            <td
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            ></td>
-          </tr>
+              <td
+                style={cellStyle}
+                className="p-2 border-solid  border-[#aaa] bg-gray-300"
+              >
+                Hours:
+              </td>
+              <td
+                style={cellStyle}
+                className="p-2 border-solid  border-[#aaa] bg-gray-300"
+              ></td>
+              <td
+                style={cellStyle}
+                className="p-2 border-solid  border-[#aaa] bg-gray-300"
+              ></td>
+              <td
+                style={cellStyle}
+                className="p-2 border-solid  border-[#aaa] bg-gray-300"
+              ></td>
 
-          <tr className="m-2 sticky top-0">
-            <th
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            >
-              Sr
-            </th>
-            <th
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            >
-              Task ID
-            </th>
-            <th
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            >
-              Title
-            </th>
-            <th
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            >
-              Planning Poker
-            </th>
-            <th
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            >
-              Status
-            </th>
+              {Object.values(thrs).map((item, index) => (
+                <td
+                  key={index}
+                  style={cellStyle}
+                  className="p-2 border-solid border-2 border-[#aaa] bg-gray-300 text-center text-blue-700"
+                >
+                  {item}
+                </td>
+              ))}
+              <td
+                style={cellStyle}
+                className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+              ></td>
+            </tr>
 
-            {res.map((item, index) => (
+            <tr className="m-2 sticky top-0">
               <th
-                key={index}
                 style={cellStyle}
                 className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
               >
-                {item}
+                Sr
               </th>
+              <th
+                style={cellStyle}
+                className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+              >
+                Task ID
+              </th>
+              <th
+                style={cellStyle}
+                className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+              >
+                Title
+              </th>
+              <th
+                style={cellStyle}
+                className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+              >
+                Planning Poker
+              </th>
+              <th
+                style={cellStyle}
+                className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+              >
+                Status
+              </th>
+
+              {res.map((item, index) => (
+                <th
+                  key={index}
+                  style={cellStyle}
+                  className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+                >
+                  {item}
+                </th>
+              ))}
+              <th
+                style={cellStyle}
+                className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+              >
+                Total Hours
+              </th>
+              <th
+                style={cellStyle}
+                className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
+              >
+                Delete Task
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {list.map((item, index) => (
+              <Task
+                key={item.id}
+                item={item}
+                sr={index + 1}
+                list={list}
+                setList={setList}
+                edit={edit}
+              />
             ))}
-            <th
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            >
-              Total Hours
-            </th>
-            <th
-              style={cellStyle}
-              className="p-2 border-solid border-2 border-[#aaa] bg-gray-300"
-            >
-              Delete Task
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {list.map((item, index) => (
-            <Task
-              key={item.id}
-              item={item}
-              sr={index + 1}
-              list={list}
-              setList={setList}
-              edit={edit}
-            />
-          ))}
-        </tbody>
+          </tbody>
 
-        <tfoot>
-          <tr>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            >
-              Remaining{" "}
-            </td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            >
-              Hours:
-            </td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            ></td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            ></td>
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            ></td>
-
-            {Object.values(tremaining).map((item, index) => (
+          <tfoot>
+            <tr>
               <td
                 style={cellStyle}
-                key={index}
-                className="p-2 border-solid border-2 border-[#aaa] bg-gray-300 text-center text-red-600"
+                className="p-2 border-solid  border-[#aaa] bg-gray-300"
               >
-                {item}
+                Remaining{" "}
               </td>
-            ))}
-            <td
-              style={cellStyle}
-              className="p-2 border-solid  border-[#aaa] bg-gray-300"
-            ></td>
-          </tr>
-        </tfoot>
-      </table>
+              <td
+                style={cellStyle}
+                className="p-2 border-solid  border-[#aaa] bg-gray-300"
+              >
+                Hours:
+              </td>
+              <td
+                style={cellStyle}
+                className="p-2 border-solid  border-[#aaa] bg-gray-300"
+              ></td>
+              <td
+                style={cellStyle}
+                className="p-2 border-solid  border-[#aaa] bg-gray-300"
+              ></td>
+              <td
+                style={cellStyle}
+                className="p-2 border-solid  border-[#aaa] bg-gray-300"
+              ></td>
 
-      <div className="flex justify-between">
-        <div>
+              {Object.values(tremaining).map((item, index) => (
+                <td
+                  style={cellStyle}
+                  key={index}
+                  className="p-2 border-solid border-2 border-[#aaa] bg-gray-300 text-center text-red-600"
+                >
+                  {item}
+                </td>
+              ))}
+              <td
+                style={cellStyle}
+                className="p-2 border-solid  border-[#aaa] bg-gray-300"
+              ></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div className="flex justify-between">
+          <div>
+            <button
+              className="bg-blue-600 border-2 border-blue-600 text-white text-[14px] rounded-md px-4 py-3 m-2 hover:bg-white hover:text-blue-600"
+              onClick={handleAddTask}
+            >
+              Add Task
+            </button>
+
+            <button
+              className="bg-blue-600 text-white text-[14px] border-2 border-blue-600 rounded-md px-4 py-3 m-2 hover:bg-white hover:text-blue-600"
+              onClick={() => setEdit(!edit)}
+            >
+              {edit ? "Save" : "Edit"}
+            </button>
+          </div>
+
           <button
+            onClick={() => toPDF()}
             className="bg-blue-600 border-2 border-blue-600 text-white text-[14px] rounded-md px-4 py-3 m-2 hover:bg-white hover:text-blue-600"
-            onClick={handleAddTask}
           >
-            Add Task
-          </button>
-
-          <button
-            className="bg-blue-600 text-white text-[14px] border-2 border-blue-600 rounded-md px-4 py-3 m-2 hover:bg-white hover:text-blue-600"
-            onClick={() => setEdit(!edit)}
-          >
-            {edit ? "Save" : "Edit"}
+            Download PDF
           </button>
         </div>
-
-        <button
-          onClick={() => toPDF()}
-          className="bg-blue-600 border-2 border-blue-600 text-white text-[14px] rounded-md px-4 py-3 m-2 hover:bg-white hover:text-blue-600"
-        >
-          Download PDF
-        </button>
       </div>
-     
-      
-    </div>
-    <LastButtons current={"TaskForm"}/>
+      <LastButtons current={"TaskForm"} />
     </div>
   );
 };

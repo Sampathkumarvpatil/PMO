@@ -3,9 +3,11 @@ import { useState } from "react";
 export const useFetchTestReport = () => {
   const [data, setData] = useState({});
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function fetchReport(body) {
     try {
+      setLoading(true);
       const res = await fetch(
         "https://hgyou0w4xf.execute-api.us-east-1.amazonaws.com/default/TestGeniuss",
         {
@@ -23,7 +25,9 @@ export const useFetchTestReport = () => {
     } catch (e) {
       console.error(e?.message || "Error while fetching data from s3..");
       setError(e?.message || "Error while fetching data from s3..");
+    } finally {
+      setLoading(false);
     }
   }
-  return { data, error, fetchReport };
+  return { data, error, fetchReport, loading };
 };

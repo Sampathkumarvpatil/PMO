@@ -19,7 +19,7 @@ const steps = [
               <span className="">TestGeniusListener.jar </span> file from:{" "}
               <a
                 className="underline text-[#105AED] font-light"
-                href="https://testgeniusjar.s3.amazonaws.com/TestGenius.jar"
+                href="https://testgeniusjar.s3.amazonaws.com/TestGenius+.jar"
               >
                 Download TestGeniusListener.jar
               </a>

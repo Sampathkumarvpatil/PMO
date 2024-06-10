@@ -5,7 +5,7 @@ export default function Modal({ modalContent, title }) {
   return (
     <>
       <button
-        className="flex flex-row justify-center items-center ml-4 my-2 w-[50%] px-1 py-1 text-lg cursor-pointer bg-[#105AED] text-white rounded-lg"
+        className="flex flex-row justify-center items-center ml-4 my-2  px-1 py-1 text-lg cursor-pointer bg-[#105AED] text-white rounded-lg"
         type="button"
         onClick={() => setShowModal(true)}
       >

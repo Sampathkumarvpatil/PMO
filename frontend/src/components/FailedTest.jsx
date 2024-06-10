@@ -2,10 +2,6 @@ import TestIcons from "./TestIcons";
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import Dialog from "@mui/material/Dialog";
-
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import Modal from "./Modal";
 
 function FailedTest({ sidebarToggle }) {
@@ -21,15 +17,6 @@ function FailedTest({ sidebarToggle }) {
     }
   }, [reportData]);
 
-  console.log(data);
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
   // const { data } = useFetchTestReport();
   return (
     <div
@@ -39,7 +26,7 @@ function FailedTest({ sidebarToggle }) {
     >
       <div className="grid grid-cols-[5%,94%] justify-between">
         <div style={{ backgroundColor: "#e2e3f3" }}>
-          <TestIcons data={data} />
+          <TestIcons data={data} projectName={data?.body?.project_name} />
         </div>
 
         <table className="p-5 m-5 border-x-[0.5px] border-[#E6E6E6] border-t-[1px] text-[#414141] rounded-t-xl overflow-hidden">
@@ -114,10 +101,6 @@ function FailedTest({ sidebarToggle }) {
               <td className="p-2 m-2">
                 <div className="py-4">
                   <div key={failCase?.method_name}>
-                    <div className="flex flex-row ml-4 mt-3">
-                      <h3>MethodName : {failCase.method_name}</h3>
-                    </div>
-
                     <Modal
                       modalContent={failCase?.exception}
                       title={"Exception"}

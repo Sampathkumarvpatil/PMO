@@ -11,8 +11,8 @@ const TestsReports = ({ sidebarToggle }) => {
   const [endDate, setEndDate] = useState("");
   const [selectedClassName, setSelectedClassName] = useState("");
   const [selectedStatus, setselectedStatus] = useState("");
-  const { data: classes, classesFetchError, fetchClasses } = useFetchClasses();
-  const { error: reportFetchError, fetchReport, data } = useFetchTestReport();
+  const { data: classes, fetchClasses } = useFetchClasses();
+  const { fetchReport, data, loading } = useFetchTestReport();
   const [visibility, setVisibility] = useState(false);
 
   const { projectName } = useParams();
@@ -40,7 +40,7 @@ const TestsReports = ({ sidebarToggle }) => {
   }, [classes]);
   const handleSubmit = async () => {
     // Handle form submission logic
-    if (projectName && selectedClassName) {
+    if (projectName) {
       await fetchReport({
         project_name: projectName,
         class_name: selectedClassName,
@@ -63,7 +63,7 @@ const TestsReports = ({ sidebarToggle }) => {
       <div className="bg-gray-100 min-h-screen">
         <div className="grid grid-cols-[5%,94%] justify-between">
           <div style={{ backgroundColor: "#e2e3f3" }}>
-            <TestIcons report={data} />
+            <TestIcons report={data} projectName={projectName} />
           </div>
           <div className="justify-center w-full pt-2">
             <div className="flex justify-center">
@@ -148,14 +148,13 @@ const TestsReports = ({ sidebarToggle }) => {
                 <div className="flex justify-center !mt-2">
                   <button
                     onClick={handleSubmit}
-                    className={`${
-                      !selectedClassName
-                        ? "bg-gray-500"
-                        : "bg-blue-500 hover:bg-blue-600"
-                    }  text-white py-2 px-4 rounded-md  focus:outline-none focus:ring focus:ring-blue-300 transition ease-in-out duration-200`}
-                    disabled={!selectedClassName}
+                    className={` ${
+                      loading
+                        ? "bg-gray-500 text-gray-500"
+                        : "bg-blue-500 hover:bg-blue-600 focus:ring focus:ring-blue-300 "
+                    }:  text-white py-2 px-4 rounded-md  focus:outline-none transition ease-in-out duration-200`}
                   >
-                    Submit
+                    {loading ? "Fetching Reports.." : "Submit"}
                   </button>
                 </div>
               </div>

@@ -1,14 +1,12 @@
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-function TestIcons({ report }) {
+function TestIcons({ report, projectName }) {
+  console.log(report);
   return (
     <div>
       <div className="flex justify-center mt-6 py-4">
-        <Link
-          to={`/TestsReports/${report?.body?.project_name}`}
-          className="px-3"
-        >
+        <Link to={`/TestsReports/${projectName}`} className="px-3">
           <FaThumbsUp
             size={40}
             style={{ border: "1px solid" }}
