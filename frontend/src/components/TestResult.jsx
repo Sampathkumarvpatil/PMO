@@ -32,16 +32,14 @@ function TestResult({ reportData }) {
             style={{ backgroundColor: "rgb(208 234 235)" }}
           >
             <div className="flex flex-row">
-              <h2 className="text-base mb-2">Project Name:</h2>
-              <p className="text-sm" style={{ marginTop: "3px" }}>
-                {data?.body?.project_name}
-              </p>
+              <h2 className="text-base mb-2">
+                Project Name: {data?.body?.project_name}
+              </h2>
             </div>
             <div className="flex flex-row">
-              <h2 className="text-base mb-2">Class Name:</h2>
-              <p className="text-sm" style={{ marginTop: "2px" }}>
-                {data?.body?.class_name}
-              </p>
+              <h2 className="text-base mb-2">
+                Class Name: {data?.body?.class_name}
+              </h2>
             </div>
           </div>
           <div
