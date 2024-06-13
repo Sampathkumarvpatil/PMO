@@ -2,7 +2,6 @@ import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 function TestIcons({ report, projectName }) {
-  console.log(report);
   return (
     <div>
       <div className="flex justify-center mt-6 py-4">

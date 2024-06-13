@@ -4,6 +4,11 @@ import "./PieChart.css";
 function PieChart({ data }) {
   useEffect(() => {
     if (data) {
+      let passed = data?.body?.passed_results?.length ?? 0,
+        failed = data?.body?.failed_results?.length ?? 0,
+        skipped = data?.body?.skipped_results?.length ?? 0,
+        total = passed + failed + skipped;
+
       Highcharts.chart("container", {
         chart: {
           type: "pie",
@@ -49,25 +54,19 @@ function PieChart({ data }) {
             data: [
               {
                 name: "Pass Rate",
-                y:
-                  (data?.body?.total_passed / data?.body?.total_test_cases) *
-                  100,
+                y: (passed / total) * 100,
                 color: "green",
               },
               {
                 name: "Fail Rate",
                 sliced: true,
                 selected: true,
-                y:
-                  (data?.body?.total_failed / data?.body?.total_test_cases) *
-                  100,
+                y: (failed / total) * 100,
                 color: "red",
               },
               {
                 name: "Skipped Rate",
-                y:
-                  (data?.body?.total_skipped / data?.body?.total_test_cases) *
-                  100,
+                y: (skipped / total) * 100,
                 color: "yellow",
               },
             ],

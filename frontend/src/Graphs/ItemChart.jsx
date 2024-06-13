@@ -24,30 +24,44 @@ function stringToColor(str) {
 function ItemChart({ data }) {
   useEffect(() => {
     if (data) {
-      const categories = [
-        data?.body?.passed_results?.map((res) => {
-          return {
-            method_name: res?.method_name,
-            execution_time: res?.execution_time,
-            status: res?.status,
-          };
-        }),
-        data?.body?.failed_results?.map((res) => {
-          return {
-            method_name: res?.method_name,
-            execution_time: res?.execution_time,
-            status: res?.status,
-          };
-        }),
+      let categories = [];
 
-        data?.body?.skipped_results?.map((res) => {
-          return {
-            method_name: res?.method_name,
-            execution_time: res?.execution_time,
-            status: res?.status,
-          };
-        }),
-      ].flat();
+      if (data?.body?.passed_results) {
+        categories = [
+          ...categories,
+          ...data?.body?.passed_results?.map((res) => {
+            return {
+              method_name: res?.method_name,
+              execution_time: res?.execution_time,
+              status: res?.status,
+            };
+          }),
+        ];
+      }
+      if (data?.body?.failed_results) {
+        categories = [
+          ...categories,
+          ...data?.body?.failed_results?.map((res) => {
+            return {
+              method_name: res?.method_name,
+              execution_time: res?.execution_time,
+              status: res?.status,
+            };
+          }),
+        ];
+      }
+      if (data?.body?.skipped_results) {
+        categories = [
+          ...categories,
+          ...data?.body?.skipped_results?.map((res) => {
+            return {
+              method_name: res?.method_name,
+              execution_time: res?.execution_time,
+              status: res?.status,
+            };
+          }),
+        ];
+      }
 
       const graphData = categories?.map((cat) => {
         return [

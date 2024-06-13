@@ -5,13 +5,11 @@ import { useLocation } from "react-router-dom";
 import Modal from "./Modal";
 
 function FailedTest({ sidebarToggle }) {
-  const [openDialog, setOpenDialog] = useState(false);
   const location = useLocation();
   const reportData = location?.state?.report;
   const [data, setData] = useState(null);
-  console.log(location);
+
   useEffect(() => {
-    console.log(reportData);
     if (reportData) {
       setData(reportData);
     }

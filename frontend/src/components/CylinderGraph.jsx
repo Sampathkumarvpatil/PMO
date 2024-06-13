@@ -5,6 +5,18 @@ import "./CylinderGraph.css";
 function CylinderGraph({ data }) {
   useEffect(() => {
     if (data) {
+      let passed = data?.body?.passed_results?.length ?? 0,
+        failed = data?.body?.failed_results?.length ?? 0,
+        skipped = data?.body?.skipped_results?.length ?? 0,
+        total = passed + failed + skipped;
+
+      // if (data?.body?.total_passed?.length > 0)
+      //   passed = data?.body?.total_passed?.length;
+      // if (data?.body?.total_failed) failed = data?.body?.total_failed?.length;
+      // if (data?.body?.total_skipped)
+      //   skipped = data?.body?.total_skipped?.length;
+      // total = passed + failed + skipped;
+
       Highcharts.chart("container2", {
         chart: {
           type: "cylinder",
@@ -55,10 +67,13 @@ function CylinderGraph({ data }) {
         series: [
           {
             data: [
-              { y: data?.body?.total_test_cases, color: "#0000FF" },
-              { y: data?.body?.total_passed, color: "#00FF00" },
-              { y: data?.body?.total_failed, color: "#FF0000" },
-              { y: data?.body?.total_skipped, color: "#FFFF00" },
+              {
+                y: total,
+                color: "#0000FF",
+              },
+              { y: passed, color: "#00FF00" },
+              { y: failed, color: "#FF0000" },
+              { y: skipped, color: "#FFFF00" },
             ],
             name: "Count",
             showInLegend: false,

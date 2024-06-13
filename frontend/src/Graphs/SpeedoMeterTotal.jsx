@@ -5,18 +5,28 @@ import "./SpeedoMeterTotal.css";
 function SpeedoMeterTotal({ data }) {
   useEffect(() => {
     if (data) {
-      const totalTime = data?.body?.passed_results?.reduce(
-        (acc, current) => acc + Number(current?.execution_time?.split(" ")[0]),
-        data?.body?.failed_results?.reduce(
+      let totalTime = 0;
+
+      if (data?.body?.passed_results?.length > 0)
+        totalTime += data?.body?.passed_results?.reduce(
           (acc, current) =>
             acc + Number(current?.execution_time?.split(" ")[0]),
-          data?.body?.skipped_results?.reduce(
-            (acc, current) =>
-              acc + Number(current?.execution_time?.split(" ")[0]),
-            0
-          )
-        )
-      );
+          0
+        );
+      if (data?.body?.failed_results?.length > 0) {
+        totalTime += data?.body?.failed_results?.reduce(
+          (acc, current) =>
+            acc + Number(current?.execution_time?.split(" ")[0]),
+          0
+        );
+      }
+
+      if (data?.body?.skipped_results)
+        totalTime += data?.body?.skipped_results?.reduce(
+          (acc, current) =>
+            acc + Number(current?.execution_time?.split(" ")[0]),
+          0
+        );
       Highcharts.chart("spedoTotal", {
         chart: {
           type: "gauge",

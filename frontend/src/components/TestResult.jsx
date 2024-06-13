@@ -7,7 +7,7 @@ import ItemChart from "../Graphs/ItemChart";
 import WordCloud from "../Graphs/WordCloud";
 import { useEffect, useState } from "react";
 
-function TestResult({ reportData }) {
+function TestResult({ reportData, projectName, class_name }) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -33,12 +33,13 @@ function TestResult({ reportData }) {
           >
             <div className="flex flex-row">
               <h2 className="text-base mb-2">
-                Project Name: {data?.body?.project_name}
+                Project Name: {data?.body?.project_name ?? projectName}
               </h2>
             </div>
             <div className="flex flex-row">
               <h2 className="text-base mb-2">
-                Class Name: {data?.body?.class_name}
+                Class Name:{" "}
+                {data?.body?.class_name ?? class_name ?? "all_classes"}
               </h2>
             </div>
           </div>
@@ -47,7 +48,17 @@ function TestResult({ reportData }) {
             style={{ backgroundColor: "rgb(216 216 242)" }}
           >
             <h2 className="text-base mb-2">Total Test Cases</h2>
-            <p className="text-base">{data?.body?.total_test_cases}</p>
+            <p className="text-base">
+              {data?.body?.passed_results?.length ??
+              0 + data?.body?.failed_results?.length ??
+              0 + data?.body?.skipped_results?.length ??
+              0
+                ? data?.body?.passed_results?.length ??
+                  0 + data?.body?.failed_results?.length ??
+                  0 + data?.body?.skipped_results?.length ??
+                  0
+                : 0}
+            </p>
           </div>
           <div
             className="mt-8 border shadow px-4 py-3 flex-1 mr-4 rounded-lg transform hover:scale-105 transition-transform duration-300"
@@ -55,7 +66,7 @@ function TestResult({ reportData }) {
           >
             <h2 className="text-base mb-2">Test passed</h2>
             <p className="text-base" style={{ color: "green" }}>
-              {data?.body?.total_passed}
+              {data?.body?.passed_results?.length ?? 0}
             </p>
           </div>
           <div
@@ -64,7 +75,7 @@ function TestResult({ reportData }) {
           >
             <h2 className="text-base mb-2">Test Failed</h2>
             <p className="text-base" style={{ color: "red" }}>
-              {data?.body?.total_failed}
+              {data?.body?.failed_results?.length ?? 0}
             </p>
           </div>
           <div
@@ -73,7 +84,7 @@ function TestResult({ reportData }) {
           >
             <h2 className="text-base mb-2">Test Skipped </h2>
             <p className="text-base" style={{ color: "red" }}>
-              {data?.body?.total_skipped}
+              {data?.body?.skipped_results?.length ?? 0}
             </p>
           </div>
         </div>

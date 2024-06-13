@@ -157,7 +157,11 @@ const TestsReports = ({ sidebarToggle }) => {
               ""
             )}
             <div>
-              <TestResult reportData={data} />
+              <TestResult
+                reportData={data}
+                projectName={projectName}
+                class_name={selectedClassName}
+              />
             </div>
           </div>
         </div>
