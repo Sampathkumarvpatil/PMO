@@ -136,13 +136,14 @@ const steps = [
             <span className="">@Listeners</span> annotation to your test class:
           </p>
         </div>
-        <p className=" mb-1 pl-32">@Listeners (TestGeniusListener.class)</p>
+
         <div className="pl-40">
           <div
             className="mb-8 "
             style={{ padding: "10px", border: "1px solid black" }}
           >
             <code className="text-sm">
+              <p className=" mb-1">@Listeners (TestGeniusListener.class)</p>
               public class YourTestClass &#123; <br />
               &nbsp;&nbsp;&nbsp;&nbsp;// Your test methods <br />
               &#125;

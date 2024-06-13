@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GetInstructionsSteps from "./Stepper";
+import { useFetchClasses } from "../utils/useFetchClasses";
 
 const TermsAndConditions = ({ sidebarToggle }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [projectName, setProjectName] = useState("");
+
+  const { data, error, fetchClasses, loading } = useFetchClasses();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (data && projectName) {
+      navigate(`/TestsReports/${projectName}`);
+    }
+  }, [data, projectName]);
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
@@ -15,9 +24,9 @@ const TermsAndConditions = ({ sidebarToggle }) => {
     setProjectName(event.target.value);
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     if (isChecked) {
-      navigate(`/TestsReports/${projectName}`);
+      await fetchClasses(projectName);
     }
   };
 
@@ -194,7 +203,7 @@ const TermsAndConditions = ({ sidebarToggle }) => {
                     </div>
                   </div>
 
-                  <p className="text-[#FC5125] font-medium">
+                  <p className="text-[#105AED] font-medium">
                     For any further assistance or queries, please contact our
                     support team.
                   </p>
@@ -230,18 +239,21 @@ const TermsAndConditions = ({ sidebarToggle }) => {
               I agree to the Terms and Conditions
             </label>
           </div>
-          <div className="flex justify-left">
+          <div className="flex justify-left flex-col gap-2">
             <button
               onClick={handleButtonClick}
-              className={` py-1 px-4 rounded uppercase font-medium text-sm ${
-                isChecked
-                  ? "bg-[#105AED] text-white"
+              className={` py-1 px-4 rounded uppercase font-medium text-sm w-[12%]  ${
+                isChecked && !loading
+                  ? "bg-[#105AED] text-white "
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
               disabled={!isChecked}
             >
-              Submit
+              {loading ? "Loading.." : "Submit"}
             </button>
+            {error && !loading && (
+              <p className="text-[#FC5125] font-medium">{error}</p>
+            )}
           </div>
         </div>
       </div>

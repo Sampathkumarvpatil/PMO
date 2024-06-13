@@ -13,7 +13,7 @@ const TestsReports = ({ sidebarToggle }) => {
   const [selectedStatus, setselectedStatus] = useState("");
   const { data: classes, fetchClasses } = useFetchClasses();
   const { fetchReport, data, loading } = useFetchTestReport();
-  const [visibility, setVisibility] = useState(false);
+  const [visibility, setVisibility] = useState(true);
 
   const { projectName } = useParams();
 
@@ -33,11 +33,6 @@ const TestsReports = ({ sidebarToggle }) => {
     }
   }, [projectName]);
 
-  useEffect(() => {
-    if (classes) {
-      setSelectedClassName(classes[0]);
-    }
-  }, [classes]);
   const handleSubmit = async () => {
     // Handle form submission logic
     if (projectName) {

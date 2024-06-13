@@ -8,7 +8,11 @@ import Navbar from "./Navbar";
 export const Main = ({ changeToogle, sidebarToggle, role }) => {
   return (
     <div className="flex">
-      <Sidebar sidebarToggle={sidebarToggle} role={role} />
+      <Sidebar
+        sidebarToggle={sidebarToggle}
+        role={role}
+        changeToogle={changeToogle}
+      />
       {/* <Dashboard sidebarToggle={sidebarToggle}
       setSidebarToggle = {setSidebarToggle}/> */}
       <Navbar sidebarToggle={sidebarToggle} changeToogle={changeToogle} />

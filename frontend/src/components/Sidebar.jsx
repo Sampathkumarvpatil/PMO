@@ -11,7 +11,7 @@ import {
   FaProjectDiagram,
   FaChartBar,
 } from "react-icons/fa";
-const Sidebar = ({ sidebarToggle, role }) => {
+const Sidebar = ({ sidebarToggle, role, changeToogle }) => {
   return (
     <div
       className={`${sidebarToggle ? " hidden " : " block "}w-80 fixed h-full`}
@@ -33,7 +33,7 @@ const Sidebar = ({ sidebarToggle, role }) => {
         </li> */}
         {role === "Account Manager/Project Manager" && (
           <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
-            <Link to="/" className="px-3">
+            <Link to="/" className="px-3" onClick={changeToogle}>
               <FaFolderOpen className="inline-block w-6 h-6 mr-2 -mt-2"></FaFolderOpen>
               Add New Project/Sprint
             </Link>
@@ -41,17 +41,13 @@ const Sidebar = ({ sidebarToggle, role }) => {
         )}
         {role === "Account Manager/Project Manager" && (
           <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
-            <Link to="/TermsAndConditions" className="px-3">
+            <Link
+              to="/TermsAndConditions"
+              className="px-3"
+              onClick={changeToogle}
+            >
               <FaFolderOpen className="inline-block w-6 h-6 mr-2 -mt-2"></FaFolderOpen>
               TestGenius Instructions
-            </Link>
-          </li>
-        )}
-        {role === "Account Manager/Project Manager" && (
-          <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
-            <Link to="/TestsReports/:projectName" className="px-3">
-              <FaFolderOpen className="inline-block w-6 h-6 mr-2 -mt-2"></FaFolderOpen>
-              TestGenius Reports
             </Link>
           </li>
         )}
@@ -82,7 +78,7 @@ const Sidebar = ({ sidebarToggle, role }) => {
         </li> */}
         {role === "Account Manager/Project Manager" && (
           <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
-            <Link to="/Dashboard" className="px-3">
+            <Link to="/Dashboard" className="px-3" onClick={changeToogle}>
               <FaTable className="inline-block w-6 h-6 mr-2 -mt-2"></FaTable>
               Sprint Ceremony Organiser
             </Link>
@@ -90,7 +86,11 @@ const Sidebar = ({ sidebarToggle, role }) => {
         )}
         {role === "Account Manager/Project Manager" && (
           <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
-            <Link to="/AllocationAndHoliday" className="px-3">
+            <Link
+              to="/AllocationAndHoliday"
+              className="px-3"
+              onClick={changeToogle}
+            >
               <FaCalendarDay className="inline-block w-6 h-6 mr-2 -mt-2"></FaCalendarDay>
               Hours & Holidays
             </Link>
@@ -98,7 +98,7 @@ const Sidebar = ({ sidebarToggle, role }) => {
         )}
         {role === "Account Manager/Project Manager" && (
           <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-4 leftBtn">
-            <Link to="/AttendanceTable" className="px-3">
+            <Link to="/AttendanceTable" className="px-3" onClick={changeToogle}>
               <FaCheckSquare className="inline-block w-6 h-6 mr-2 -mt-2"></FaCheckSquare>
               Sprint Attendence/Capacity
             </Link>
@@ -118,14 +118,14 @@ const Sidebar = ({ sidebarToggle, role }) => {
           </Link>
         </li> */}
         <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
-          <Link to="/list" className="px-3">
+          <Link to="/list" className="px-3" onClick={changeToogle}>
             <FaProjectDiagram className="inline-block w-6 h-6 mr-2 -mt-2"></FaProjectDiagram>
             Sprint Status
           </Link>
         </li>
         {role === "Account Manager/Project Manager" && (
           <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
-            <Link to="/KPI's" className="px-3">
+            <Link to="/KPI's" className="px-3" onClick={changeToogle}>
               <FaChartBar className="inline-block w-6 h-6 mr-2 -mt-2"></FaChartBar>
               Sprint KPI's
             </Link>
@@ -140,7 +140,7 @@ const Sidebar = ({ sidebarToggle, role }) => {
         </li> */}
 
         <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
-          <Link to="/retrospective" className="px-3">
+          <Link to="/retrospective" className="px-3" onClick={changeToogle}>
             <FaList className="inline-block w-6 h-6 mr-2 -mt-2"></FaList>
             Sprint Retrospective
           </Link>
