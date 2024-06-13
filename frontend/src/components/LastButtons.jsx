@@ -8,7 +8,6 @@ const LastButtons = ({ current, handleSave }) => {
   const navigate = useNavigate();
   const { error, saveData, success, isLoading } = useSaveDataToS3();
 
-  console.log(current);
   const back = async () => {
     if (current === "Dashboard") {
       await handleSavebtnClick();
