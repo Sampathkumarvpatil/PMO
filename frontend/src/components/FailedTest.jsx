@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 
 import Modal from "./Modal";
 
-function FailedTest({ sidebarToggle }) {
+function FailedTest({ sidebarToggle, projectName }) {
   const location = useLocation();
   const reportData = location?.state?.report;
   const [data, setData] = useState(null);
@@ -24,7 +24,10 @@ function FailedTest({ sidebarToggle }) {
     >
       <div className="grid grid-cols-[5%,94%] justify-between">
         <div style={{ backgroundColor: "#e2e3f3" }}>
-          <TestIcons data={data} projectName={data?.body?.project_name} />
+          <TestIcons
+            data={data}
+            projectName={reportData?.projectName ?? projectName}
+          />
         </div>
 
         <table className="p-5 m-5 border-x-[0.5px] border-[#E6E6E6] border-t-[1px] text-[#414141] rounded-t-xl overflow-hidden">

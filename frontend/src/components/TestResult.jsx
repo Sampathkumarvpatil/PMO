@@ -48,17 +48,7 @@ function TestResult({ reportData, projectName, class_name }) {
             style={{ backgroundColor: "rgb(216 216 242)" }}
           >
             <h2 className="text-base mb-2">Total Test Cases</h2>
-            <p className="text-base">
-              {data?.body?.passed_results?.length ??
-              0 + data?.body?.failed_results?.length ??
-              0 + data?.body?.skipped_results?.length ??
-              0
-                ? data?.body?.passed_results?.length ??
-                  0 + data?.body?.failed_results?.length ??
-                  0 + data?.body?.skipped_results?.length ??
-                  0
-                : 0}
-            </p>
+            <p className="text-base">{data?.body?.total_test_cases}</p>
           </div>
           <div
             className="mt-8 border shadow px-4 py-3 flex-1 mr-4 rounded-lg transform hover:scale-105 transition-transform duration-300"
