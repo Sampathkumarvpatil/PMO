@@ -56,7 +56,7 @@ function TestResult({ reportData, projectName, class_name }) {
           >
             <h2 className="text-base mb-2">Test passed</h2>
             <p className="text-base" style={{ color: "green" }}>
-              {data?.body?.passed_results?.length ?? 0}
+              {data?.body?.total_passed ?? 0}
             </p>
           </div>
           <div
@@ -65,7 +65,7 @@ function TestResult({ reportData, projectName, class_name }) {
           >
             <h2 className="text-base mb-2">Test Failed</h2>
             <p className="text-base" style={{ color: "red" }}>
-              {data?.body?.failed_results?.length ?? 0}
+              {data?.body?.total_failed ?? 0}
             </p>
           </div>
           <div
@@ -74,7 +74,7 @@ function TestResult({ reportData, projectName, class_name }) {
           >
             <h2 className="text-base mb-2">Test Skipped </h2>
             <p className="text-base" style={{ color: "red" }}>
-              {data?.body?.skipped_results?.length ?? 0}
+              {data?.body?.total_skipped ?? 0}
             </p>
           </div>
         </div>
