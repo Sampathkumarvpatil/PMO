@@ -132,6 +132,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(5000, () => {
+server.listen(process.env.PLANNING_POKER_HOST_PORT, () => {
   console.log("Server Started");
 });

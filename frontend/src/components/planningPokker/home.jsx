@@ -5,8 +5,9 @@ import io from "socket.io-client";
 import { FaUser } from "react-icons/fa";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useSaveDataToS3 } from "../../utils/useSaveDataToS3";
-
-const socket = io.connect("http://localhost:5000");
+const SOCKET_URL =
+  process.env.HOST_BASE_URL + process.env.PLANNING_POKER_HOST_PORT;
+const socket = io.connect(SOCKET_URL);
 
 const Home = ({ sidebarToggle }) => {
   const [message, setMessage] = useState("");

@@ -13,7 +13,10 @@ const Home = ({ sidebarToggle }) => {
   );
   const [showNumSections, setShowNumSections] = useState(false); // State to track visibility of the second dropdown
   const navigate = useNavigate();
-  const socket = io("http://localhost:8000");
+  const SOCKET_URL = `${
+    process.env.HOST_BASE_URL + process.env.RETROSPECTIVE_HOST_PORT
+  }`;
+  const socket = io(SOCKET_URL);
 
   const defaultModels = {
     "4Ls Model": [
@@ -132,103 +135,104 @@ const Home = ({ sidebarToggle }) => {
 
   return (
     <div>
-    <div
-      className={`transition-all duration-300 ${
-        sidebarToggle ? "ml-0" : "ml-64"
-      }`}
-    >
-      <ProjOptions />
       <div
-        style={{
-          backgroundImage:
-            'url("https://conceptboard.com/wp-content/uploads/Header_retro_article_V2-01.png"), linear-gradient(to right, #ffffff, #000000)',
-          backgroundSize: "cover",
-          position: "relative",
-          // left: '10%',
-          // width: sidebarToggle ? '60%':'100%'
-          width: "60%",
-        }}
-        className={`hero w-full flex justify-center items-center h-screen bg-gray-100 `}
+        className={`transition-all duration-300 ${
+          sidebarToggle ? "ml-0" : "ml-64"
+        }`}
       >
-        <div className="bg-transparent bg-white relative left-[65%] rounded-lg shadow-2xl border-[4px] border-gray-400 p-10 max-w-md w-full">
-          <div className="mb-6">
-            <input
-              type="text"
-              placeholder="Description"
-              onChange={(e) => {
-                setDesc(e.target.value);
-                setShowNumSections(false); // Hide the second dropdown when the description changes
-              }}
-              className="input-field"
-            />
-          </div>
-          <div className="mb-6">
-            <select
-              value={desc}
-              onChange={(e) => {
-                if (e.target.value === "Custom") {
-                  setShowNumSections(true); // Show the second dropdown when "Custom" is selected
-                } else {
-                  handleDefaultOption(e.target.value);
-                }
-              }}
-              className="input-field"
-            >
-              <option value="">Select a default option or choose Custom</option>
-              {Object.keys(defaultModels).map((model) => (
-                <option key={model} value={model}>
-                  {model}
-                </option>
-              ))}
-              <option value="Custom">Custom</option>
-            </select>
-          </div>
-          {showNumSections && (
+        <ProjOptions />
+        <div
+          style={{
+            backgroundImage:
+              'url("https://conceptboard.com/wp-content/uploads/Header_retro_article_V2-01.png"), linear-gradient(to right, #ffffff, #000000)',
+            backgroundSize: "cover",
+            position: "relative",
+            // left: '10%',
+            // width: sidebarToggle ? '60%':'100%'
+            width: "60%",
+          }}
+          className={`hero w-full flex justify-center items-center h-screen bg-gray-100 `}
+        >
+          <div className="bg-transparent bg-white relative left-[65%] rounded-lg shadow-2xl border-[4px] border-gray-400 p-10 max-w-md w-full">
+            <div className="mb-6">
+              <input
+                type="text"
+                placeholder="Description"
+                onChange={(e) => {
+                  setDesc(e.target.value);
+                  setShowNumSections(false); // Hide the second dropdown when the description changes
+                }}
+                className="input-field"
+              />
+            </div>
             <div className="mb-6">
               <select
-                value={numSections}
-                onChange={(e) =>
-                  handleNumSectionsChange(parseInt(e.target.value))
-                }
+                value={desc}
+                onChange={(e) => {
+                  if (e.target.value === "Custom") {
+                    setShowNumSections(true); // Show the second dropdown when "Custom" is selected
+                  } else {
+                    handleDefaultOption(e.target.value);
+                  }
+                }}
                 className="input-field"
               >
-                {[1, 2, 3, 4, 5].map((value) => (
-                  <option key={value} value={value}>
-                    {value} Sections
+                <option value="">
+                  Select a default option or choose Custom
+                </option>
+                {Object.keys(defaultModels).map((model) => (
+                  <option key={model} value={model}>
+                    {model}
                   </option>
                 ))}
+                <option value="Custom">Custom</option>
               </select>
             </div>
-          )}
-          {sectionInputs}
-          <button
-            onClick={handleSubmit}
-            className="note-btn-primary w-full mt-6"
-          >
-            Create Room
-          </button>
-          <p className="text-gray-600 text-sm mt-4 text-center">or</p>
-          <div className="mt-4">
-            <input
-              type="text"
-              placeholder="Enter Room Description"
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
-              className="input-field"
-            />
+            {showNumSections && (
+              <div className="mb-6">
+                <select
+                  value={numSections}
+                  onChange={(e) =>
+                    handleNumSectionsChange(parseInt(e.target.value))
+                  }
+                  className="input-field"
+                >
+                  {[1, 2, 3, 4, 5].map((value) => (
+                    <option key={value} value={value}>
+                      {value} Sections
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+            {sectionInputs}
+            <button
+              onClick={handleSubmit}
+              className="note-btn-primary w-full mt-6"
+            >
+              Create Room
+            </button>
+            <p className="text-gray-600 text-sm mt-4 text-center">or</p>
+            <div className="mt-4">
+              <input
+                type="text"
+                placeholder="Enter Room Description"
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+                className="input-field"
+              />
+            </div>
+            <button
+              onClick={navigateToRoom}
+              className="note-btn-secondary w-full mt-4"
+            >
+              Join Room
+            </button>
           </div>
-          <button
-            onClick={navigateToRoom}
-            className="note-btn-secondary w-full mt-4"
-          >
-            Join Room
-          </button>
         </div>
       </div>
-    </div>
-        <LastButtons current={"Retrospective"} />
-
+      <LastButtons current={"Retrospective"} />
     </div>
   );
 };

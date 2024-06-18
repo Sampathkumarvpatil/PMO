@@ -1,8 +1,9 @@
 // App.js
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
-
-const socket = io("http://localhost:5000");
+const SOCKET_URL =
+  process.env.HOST_BASE_URL + process.env.PLANNING_POKER_HOST_PORT;
+const socket = io(SOCKET_URL);
 
 function Test() {
   const [message, setMessage] = useState("");

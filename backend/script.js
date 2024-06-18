@@ -64,6 +64,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(8000, () => {
-  console.log("Listening to port 8000");
+server.listen(process.env.RETROSPECTIVE_HOST_PORT, () => {
+  console.log(`Listening to port ${process.env.RETROSPECTIVE_HOST_PORT}`);
 });
