@@ -5,9 +5,16 @@ import io from "socket.io-client";
 import { FaUser } from "react-icons/fa";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useSaveDataToS3 } from "../../utils/useSaveDataToS3";
-const SOCKET_URL =
-  process.env.HOST_BASE_URL + process.env.PLANNING_POKER_HOST_PORT;
-const socket = io.connect(SOCKET_URL);
+// const hostBaseUrl = process.env.REACT_APP_HOST_BASE_URL;
+// const port = Number(process.env.REACT_APP_PLANNING_POKER_HOST_PORT);
+
+// if (isNaN(port)) {
+//   throw new Error("REACT_APP_PLANNING_POKER_HOST_PORT is not a valid number");
+// }
+
+// const SOCKET_URL = `${hostBaseUrl}:${port}`;
+// console.log("SOCKET_URL:", SOCKET_URL);
+const socket = io.connect("http://localhost:5000");
 
 const Home = ({ sidebarToggle }) => {
   const [message, setMessage] = useState("");

@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const http = require("http");
 const cors = require("cors");
@@ -132,6 +134,7 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(process.env.PLANNING_POKER_HOST_PORT, () => {
+console.log(process.env.PLANNING_POKER_HOST_PORT);
+server.listen(Number(process.env.PLANNING_POKER_HOST_PORT), () => {
   console.log("Server Started");
 });

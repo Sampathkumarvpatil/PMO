@@ -1,3 +1,3 @@
 import { io } from "socket.io-client";
-const URL = process.env.HOST_BASE_URL + process.env.RETROSPECTIVE_HOST_PORT;
+const URL = "http://localhot:8000";
 export const socket = io(URL);

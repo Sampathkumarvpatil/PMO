@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
@@ -63,7 +65,7 @@ io.on("connection", (socket) => {
     }
   });
 });
-
-server.listen(process.env.RETROSPECTIVE_HOST_PORT, () => {
+console, log(process.env.RETROSPECTIVE_HOST_PORT);
+server.listen(Number(process.env.RETROSPECTIVE_HOST_PORT), () => {
   console.log(`Listening to port ${process.env.RETROSPECTIVE_HOST_PORT}`);
 });

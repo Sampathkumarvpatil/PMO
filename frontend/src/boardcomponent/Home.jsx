@@ -13,10 +13,17 @@ const Home = ({ sidebarToggle }) => {
   );
   const [showNumSections, setShowNumSections] = useState(false); // State to track visibility of the second dropdown
   const navigate = useNavigate();
-  const SOCKET_URL = `${
-    process.env.HOST_BASE_URL + process.env.RETROSPECTIVE_HOST_PORT
-  }`;
-  const socket = io(SOCKET_URL);
+  // const hostBaseUrl = process.env.REACT_APP_HOST_BASE_URL;
+  // const port = Number(process.env.REACT_APP_PLANNING_POKER_HOST_PORT);
+
+  // if (isNaN(port)) {
+  //   throw new Error("REACT_APP_PLANNING_POKER_HOST_PORT is not a valid number");
+  // }
+
+  // const SOCKET_URL = `${hostBaseUrl}:${port}`;
+  const SOCKET_URL = "http://localhost:5000";
+  console.log("SOCKET_URL:", SOCKET_URL);
+  const socket = io.connect(SOCKET_URL);
 
   const defaultModels = {
     "4Ls Model": [
