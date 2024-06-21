@@ -6,6 +6,7 @@ import SpeedoMeterAvg from "../Graphs/SpeedoMeterAvg";
 import ItemChart from "../Graphs/ItemChart";
 import WordCloud from "../Graphs/WordCloud";
 import { useEffect, useState } from "react";
+import HeatMap from "../Graphs/HeatMap";
 
 function TestResult({ reportData, projectName, class_name }) {
   const [data, setData] = useState(null);
@@ -79,14 +80,17 @@ function TestResult({ reportData, projectName, class_name }) {
           </div>
         </div>
         <div className="grid grid-cols-[49%,49%] justify-between my-6 ">
-          <div style={{ paddingTop: "44px", border: "1px solid" }}>
-            <WordCloud data={data} />
-          </div>
           <div
             className="chart-container"
             style={{ paddingTop: "44px", border: "1px solid" }}
           >
             <CylinderGraph data={data} />
+          </div>
+          <div
+            className="chart-container"
+            style={{ paddingTop: "44px", border: "1px solid" }}
+          >
+            <HeatMap data={data} />
           </div>
           <div
             className="chart-container"

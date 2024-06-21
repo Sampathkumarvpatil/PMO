@@ -9,12 +9,10 @@ export const useFetchClasses = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        "https://8qlshsosq2.execute-api.us-east-1.amazonaws.com/default/Testgeniusclasses",
+        "https://8qlshsosq2.execute-api.us-east-1.amazonaws.com/prod/Testgeniusclasses",
         {
           method: "POST",
-          headers: {
-            ContentType: "application/json",
-          },
+
           body: JSON.stringify({ project_name }),
         }
       );

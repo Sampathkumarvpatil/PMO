@@ -8,9 +8,7 @@ export const useFetchDataFromS3 = () => {
     try {
       const res = await fetch(process.env.FETCH_S3_FILE, {
         method: "POST",
-        headers: {
-          ContentType: "application/json",
-        },
+
         body: JSON.stringify({ file_key }),
       });
       if (!res.ok) throw new Error("Error while fetching file from s3!!");

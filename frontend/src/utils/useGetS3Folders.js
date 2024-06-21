@@ -7,12 +7,10 @@ export const useGetS3Folders = () => {
   async function fetchData(validationKey) {
     try {
       const res = await fetch(
-        "https://evllpzt6ya.execute-api.us-east-1.amazonaws.com/default/pmofroms3",
+        "https://evllpzt6ya.execute-api.us-east-1.amazonaws.com/prod/pmofroms3",
         {
           method: "POST",
-          headers: {
-            ContentType: "application/json",
-          },
+
           body: JSON.stringify({ folder_name: validationKey }),
         }
       );

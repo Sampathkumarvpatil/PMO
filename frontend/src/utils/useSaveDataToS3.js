@@ -9,12 +9,10 @@ export const useSaveDataToS3 = () => {
     setIsLoading(true);
     try {
       const res = await fetch(
-        "https://4wh4tjy3s1.execute-api.us-east-1.amazonaws.com/default/pmotojson",
+        "https://4wh4tjy3s1.execute-api.us-east-1.amazonaws.com/prod/pmotojson",
         {
           method: "POST",
-          headers: {
-            ContentType: "application/json",
-          },
+
           body: JSON.stringify({ file_name, json_data, validation_key }),
         }
       );

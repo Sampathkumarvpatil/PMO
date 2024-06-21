@@ -14,9 +14,6 @@ export const useRegisterOrLoginUser = () => {
         "https://si70ohe6hc.execute-api.us-east-1.amazonaws.com/default/pmologin",
         {
           method: "POST",
-          headers: {
-            ContentType: "application/json",
-          },
           body: JSON.stringify({ ...userData }),
         }
       );

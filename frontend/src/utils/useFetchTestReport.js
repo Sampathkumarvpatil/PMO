@@ -9,12 +9,10 @@ export const useFetchTestReport = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        "https://hgyou0w4xf.execute-api.us-east-1.amazonaws.com/default/TestGeniuss",
+        "https://hgyou0w4xf.execute-api.us-east-1.amazonaws.com/prod/TestGeniuss",
         {
           method: "POST",
-          headers: {
-            ContentType: "application/json",
-          },
+
           body: JSON.stringify({ ...body }),
         }
       );
