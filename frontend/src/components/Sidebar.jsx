@@ -39,18 +39,6 @@ const Sidebar = ({ sidebarToggle, role, changeToogle }) => {
             </Link>
           </li>
         )}
-        {role === "Account Manager/Project Manager" && (
-          <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
-            <Link
-              to="/TermsAndConditions"
-              className="px-3"
-              onClick={changeToogle}
-            >
-              <FaFolderOpen className="inline-block w-6 h-6 mr-2 -mt-2"></FaFolderOpen>
-              TestGenius Instructions
-            </Link>
-          </li>
-        )}
 
         {/* {role === "Account Manager/Project Manager" && (
           <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
@@ -145,6 +133,18 @@ const Sidebar = ({ sidebarToggle, role, changeToogle }) => {
             Sprint Retrospective
           </Link>
         </li>
+        {role === "Account Manager/Project Manager" && (
+          <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
+            <Link
+              to="/TermsAndConditions"
+              className="px-3"
+              onClick={changeToogle}
+            >
+              <FaFolderOpen className="inline-block w-6 h-6 mr-2 -mt-2"></FaFolderOpen>
+              TestGenius
+            </Link>
+          </li>
+        )}
       </ul>
     </div>
   );

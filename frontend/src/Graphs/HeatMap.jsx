@@ -35,7 +35,7 @@ function HeatMap({ data }) {
           plotBorderWidth: 1,
         },
         title: {
-          text: "Test Result Heatmap (Weekly Aggregated)",
+          text: "Test Result Heatmap",
           style: {
             fontSize: "1em",
           },

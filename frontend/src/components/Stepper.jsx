@@ -15,13 +15,13 @@ const steps = [
         <div className="">
           <div className="px-16">
             <p className="mb-4">
-              <span className="text-[#105AED]">• </span> Download the{" "}
-              <span className="">TestGeniusListener.jar </span> file from:{" "}
+              <span className="text-[#105AED]">• </span> To obtain the
+              TestGeniusListener.jar file, please contact us at
               <a
-                className="underline text-[#105AED] font-light"
-                href="https://testgeniusjar.s3.amazonaws.com/TestGenius+.jar"
+                className="underline text-[#105AED] font-light pl-1"
+                href="mailto:example@example.com"
               >
-                Download TestGeniusListener.jar
+                sales@infogen-labs.com.
               </a>
             </p>
           </div>
@@ -137,19 +137,6 @@ const steps = [
           </p>
         </div>
 
-        <div className="pl-40">
-          <div
-            className="mb-8 "
-            style={{ padding: "10px", border: "1px solid black" }}
-          >
-            <code className="text-sm">
-              <p className=" mb-1">@Listeners (TestGeniusListener.class)</p>
-              public class YourTestClass &#123; <br />
-              &nbsp;&nbsp;&nbsp;&nbsp;// Your test methods <br />
-              &#125;
-            </code>
-          </div>
-        </div>
         <p className=" mb-3 pl-32 text-[#0A1070] font-medium">
           Here is a very concise example:
         </p>
@@ -184,7 +171,8 @@ const steps = [
     ),
   },
   {
-    label: "Update Your testng.xml File",
+    label:
+      "Update Your testng.xml File (If using an XML File, otherwise, no need)",
     description: (
       <div className="mb-10">
         <p className="mb-3 pl-16">
@@ -207,11 +195,6 @@ const steps = [
               &nbsp;&nbsp;&nbsp;&nbsp;{"</listeners>"}
               <br />
               &nbsp;&nbsp;&nbsp;&nbsp;{'<test name="Test">'}
-              <br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              {
-                '<parameter name="projectName" value="Enter your project name here"/>'
-              }
               <br />
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               {"<classes>"}
