@@ -11,7 +11,7 @@ export const useRegisterOrLoginUser = () => {
     try {
       // Simulate an API call
       const res = await fetch(
-        "https://sf9y68sc7b.execute-api.us-east-1.amazonaws.com/default/pmologin",
+        "https://si70ohe6hc.execute-api.us-east-1.amazonaws.com/default/pmologin",
         {
           method: "POST",
           headers: {
