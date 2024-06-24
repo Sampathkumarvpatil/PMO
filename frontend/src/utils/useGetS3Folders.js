@@ -6,14 +6,11 @@ export const useGetS3Folders = () => {
 
   async function fetchData(validationKey) {
     try {
-      const res = await fetch(
-        "https://evllpzt6ya.execute-api.us-east-1.amazonaws.com/prod/pmofroms3",
-        {
-          method: "POST",
+      const res = await fetch(process.env.REACT_APP_FETCH_S3_FOLDERS, {
+        method: "POST",
 
-          body: JSON.stringify({ folder_name: validationKey }),
-        }
-      );
+        body: JSON.stringify({ folder_name: validationKey }),
+      });
       if (!res.ok) throw new Error("Error while fetching folders from s3!!");
       const jsonResponse = await res.json();
       setData(jsonResponse);

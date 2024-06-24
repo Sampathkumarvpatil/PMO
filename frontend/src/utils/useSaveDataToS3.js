@@ -8,14 +8,11 @@ export const useSaveDataToS3 = () => {
   async function saveData(file_name, json_data, validation_key) {
     setIsLoading(true);
     try {
-      const res = await fetch(
-        "https://4wh4tjy3s1.execute-api.us-east-1.amazonaws.com/prod/pmotojson",
-        {
-          method: "POST",
+      const res = await fetch(process.env.REACT_APP_SAVE_DATA_TO_S3, {
+        method: "POST",
 
-          body: JSON.stringify({ file_name, json_data, validation_key }),
-        }
-      );
+        body: JSON.stringify({ file_name, json_data, validation_key }),
+      });
       if (!res.ok) throw new Error("Error while saving file from s3!!");
       await res.json();
       setSuccess(true);

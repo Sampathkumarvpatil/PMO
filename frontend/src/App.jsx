@@ -15,17 +15,6 @@ import Status from "./Status";
 import Home from "./components/planningPokker/home";
 // import Sprints from './Sprint-Pages/sprints';
 import Sprints from "./Graphs/Sprint-Pages/sprints";
-import ChartComponent from "./Graphs/Graphs";
-import FunnelChartComponent from "./Graphs/funnel";
-import CylinderChartComponent from "./Graphs/Cylinder";
-import ColumnChartComponent from "./Graphs/Column";
-import GaugeChartComponent from "./Graphs/Gauge";
-import SprientsColumnChartComponent from "./Graphs/Sprientscolunchart";
-import SpeedometerChartComponent from "./Graphs/Speedoneeter";
-import WorkEfficiencyRatiochart from "./Graphs/WorkEfficiencyRatiochart";
-import Problemdetcationratesprintchart from "./Graphs/Problemdetectionratesprints";
-import ExtraTaskbysprintsChartComponent from "./Graphs/ExtraTaskbysprintsChartComponent";
-import CompletionRateOverviewbysprintsComponent from "./Graphs/CompletionRateOverviewbysprints";
 
 import BoardHome from "../src/boardcomponent/Home";
 import Room from "../src/boardcomponent/Room";
@@ -35,11 +24,11 @@ import SignupPage from "./pages/Signup";
 import LoginPage from "./pages/Login";
 // import FileUpload from "./components/FileUpload";
 import ProjectContext from "./utils/ProjectContext";
-import LastButtons from "./components/LastButtons";
 import TermsAndConditions from "./components/TermsAndConditions";
 import TestsReports from "./components/TestsReports";
 import FailedTest from "./components/FailedTest";
-import WordCloudForKpi from "./Graphs/WordCloudForKpi";
+import Chart from "./components/Chart";
+import MultipleGraph from "./components/MultipleGraph";
 
 function App() {
   const [sidebarToggle, setSidebarToggle] = useState(true);
@@ -139,49 +128,11 @@ function App() {
                   />
                   <Route
                     path="/chart"
-                    element={
-                      <div
-                        className={`transition-all duration-300 ${
-                          sidebarToggle ? "ml-0" : "ml-64"
-                        } flex flex-wrap grid grid-cols-3 overflow-hidden`}
-                      >
-                        <ChartComponent
-                          sidebarToggle={sidebarToggle}
-                          className="col-span-3 md:col-span-1"
-                        />
-                        <GaugeChartComponent className="col-span-3 md:col-span-1" />
-                        <FunnelChartComponent
-                          sidebarToggle={sidebarToggle}
-                          className="col-span-3 md:col-span-1"
-                        />
-                        <SpeedometerChartComponent className="col-span-3 md:col-span-1" />
-                        <CylinderChartComponent
-                          sidebarToggle={sidebarToggle}
-                          className="col-span-3 md:col-span-1"
-                        />
-                        <ColumnChartComponent
-                          sidebarToggle={sidebarToggle}
-                          className="col-span-3 md:col-span-1"
-                        />
-                      </div>
-                    }
+                    element={<Chart sidebarToggle={sidebarToggle} />}
                   />
                   <Route
                     path="/multipleSprintsChart"
-                    element={
-                      <div
-                        className={`transition-all duration-300 ${
-                          sidebarToggle ? "ml-0" : "ml-64"
-                        } flex flex-wrap grid grid-cols-3 h-screen overflow-hidden`}
-                      >
-                        <SprientsColumnChartComponent />
-                        <ExtraTaskbysprintsChartComponent />
-                        <WorkEfficiencyRatiochart />
-                        <CompletionRateOverviewbysprintsComponent />
-                        <Problemdetcationratesprintchart />
-                        <WordCloudForKpi />
-                      </div>
-                    }
+                    element={<MultipleGraph sidebarToggle={sidebarToggle} />}
                   />
                 </>
               )}

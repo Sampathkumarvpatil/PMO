@@ -8,14 +8,11 @@ export const useFetchTestReport = () => {
   async function fetchReport(body) {
     try {
       setLoading(true);
-      const res = await fetch(
-        "https://hgyou0w4xf.execute-api.us-east-1.amazonaws.com/prod/TestGeniuss",
-        {
-          method: "POST",
+      const res = await fetch(process.env.REACT_APP_FETCH_REPORT, {
+        method: "POST",
 
-          body: JSON.stringify({ ...body }),
-        }
-      );
+        body: JSON.stringify({ ...body }),
+      });
       if (!res.ok) throw new Error("Error while fetching file from s3!!");
       const jsonResponse = await res.json();
 

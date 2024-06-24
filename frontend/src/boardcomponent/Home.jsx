@@ -21,7 +21,7 @@ const Home = ({ sidebarToggle }) => {
   // }
 
   // const SOCKET_URL = `${hostBaseUrl}:${port}`;
-  const SOCKET_URL = "http://localhost:5000";
+  const SOCKET_URL = `${process.env.REACT_APP_BACKEND_BASE_URL}:${process.env.REACT_APP_PLANNING_POKER_BACKEND_PORT}}`;
   console.log("SOCKET_URL:", SOCKET_URL);
   const socket = io.connect(SOCKET_URL);
 

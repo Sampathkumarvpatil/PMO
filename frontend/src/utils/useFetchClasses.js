@@ -8,14 +8,11 @@ export const useFetchClasses = () => {
   async function fetchClasses(project_name) {
     try {
       setLoading(true);
-      const res = await fetch(
-        "https://8qlshsosq2.execute-api.us-east-1.amazonaws.com/prod/Testgeniusclasses",
-        {
-          method: "POST",
+      const res = await fetch(process.env.REACT_APP_FETCH_CLASSES, {
+        method: "POST",
 
-          body: JSON.stringify({ project_name }),
-        }
-      );
+        body: JSON.stringify({ project_name }),
+      });
 
       if (!res.ok)
         throw new Error(

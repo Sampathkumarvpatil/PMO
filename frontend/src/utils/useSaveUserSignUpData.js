@@ -10,13 +10,10 @@ export const useRegisterOrLoginUser = () => {
     setError(null);
     try {
       // Simulate an API call
-      const res = await fetch(
-        "https://si70ohe6hc.execute-api.us-east-1.amazonaws.com/default/pmologin",
-        {
-          method: "POST",
-          body: JSON.stringify({ ...userData }),
-        }
-      );
+      const res = await fetch(process.env.REACT_APP_SIGNUP_LOGIN, {
+        method: "POST",
+        body: JSON.stringify({ ...userData }),
+      });
       const jsonRes = await res.json();
       if (!jsonRes.success) {
         setError(jsonRes.message);

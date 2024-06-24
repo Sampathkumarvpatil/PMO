@@ -14,7 +14,9 @@ import { useSaveDataToS3 } from "../../utils/useSaveDataToS3";
 
 // const SOCKET_URL = `${hostBaseUrl}:${port}`;
 // console.log("SOCKET_URL:", SOCKET_URL);
-const socket = io.connect("http://localhost:5000");
+const SOCKET_URL = `${process.env.REACT_APP_BACKEND_BASE_URL}:${process.env.REACT_APP_PLANNING_POKER_BACKEND_PORT}`;
+
+const socket = io.connect(SOCKET_URL);
 
 const Home = ({ sidebarToggle }) => {
   const [message, setMessage] = useState("");

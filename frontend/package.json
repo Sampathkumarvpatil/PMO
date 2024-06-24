@@ -11,6 +11,8 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "highcharts": "^11.4.3",
+    "highcharts-3d": "^0.1.7",
+    "highcharts-funnel": "^0.1.7",
     "highcharts-heatmap": "^0.1.7",
     "highcharts-more": "^0.1.7",
     "highcharts-react-official": "^3.2.1",
