@@ -117,53 +117,65 @@ function App() {
 
               {/* <Route path="/:id/Kpi" element={<KpiRoute sidebarToggle = {sidebarToggle}/>} /> */}
               {/* <Route path='/list' element={<ProjectList sidebarToggle = {sidebarToggle}/>}/> */}
-              <Route
-                path="/list"
-                element={<TaskForm sidebarToggle={sidebarToggle} />}
-              />
-              <Route
-                path="/planningpoker/:id"
-                element={<Home sidebarToggle={sidebarToggle} />}
-              />
-              <Route
-                path="/list/status/:id"
-                element={<Status sidebarToggle={sidebarToggle} />}
-              />
+              {(role === "Developers/Testers" ||
+                role === "Account Manager/Project Manager") && (
+                <>
+                  <Route
+                    path="/list"
+                    element={<TaskForm sidebarToggle={sidebarToggle} />}
+                  />
+                  <Route
+                    path="/planningpoker/:id"
+                    element={<Home sidebarToggle={sidebarToggle} />}
+                  />
+                  <Route
+                    path="/list/status/:id"
+                    element={<Status sidebarToggle={sidebarToggle} />}
+                  />
 
-              <Route
-                path="/retrospective"
-                element={<BoardHome sidebarToggle={sidebarToggle} />}
-              ></Route>
-              <Route
-                path="/retrospective/:id"
-                element={<Room sidebarToggle={sidebarToggle} />}
-              ></Route>
-              <Route
-                path="/retrospective/:id/download"
-                element={<Getpdf sidebarToggle={sidebarToggle} />}
-              ></Route>
-              <Route
-                path="/TermsAndConditions"
-                element={<TermsAndConditions sidebarToggle={sidebarToggle} />}
-              />
+                  <Route
+                    path="/retrospective"
+                    element={<BoardHome sidebarToggle={sidebarToggle} />}
+                  ></Route>
+                  <Route
+                    path="/retrospective/:id"
+                    element={<Room sidebarToggle={sidebarToggle} />}
+                  ></Route>
+                  <Route
+                    path="/retrospective/:id/download"
+                    element={<Getpdf sidebarToggle={sidebarToggle} />}
+                  ></Route>
+                  <Route
+                    path={
+                      role === "Developers/Testers"
+                        ? "/"
+                        : "/TermsAndConditions"
+                    }
+                    element={
+                      <TermsAndConditions sidebarToggle={sidebarToggle} />
+                    }
+                  />
 
-              <Route
-                path="/TestsReports/:projectName"
-                element={<TestsReports sidebarToggle={sidebarToggle} />}
-              ></Route>
-              <Route
-                path="/TestsReports/:projectName/FailedTest"
-                element={<FailedTest sidebarToggle={sidebarToggle} />}
-              ></Route>
+                  <Route
+                    path="/TestsReports/:projectName"
+                    element={<TestsReports sidebarToggle={sidebarToggle} />}
+                  ></Route>
+                  <Route
+                    path="/TestsReports/:projectName/FailedTest"
+                    element={<FailedTest sidebarToggle={sidebarToggle} />}
+                  ></Route>
 
-              <Route
-                path="/FailedTest"
-                element={<FailedTest sidebarToggle={sidebarToggle} />}
-              />
-              <Route
-                path="/TestResult"
-                element={<TestResult sidebarToggle={sidebarToggle} />}
-              />
+                  <Route
+                    path="/FailedTest"
+                    element={<FailedTest sidebarToggle={sidebarToggle} />}
+                  />
+                  <Route
+                    path="/TestResult"
+                    element={<TestResult sidebarToggle={sidebarToggle} />}
+                  />
+                </>
+              )}
+
               {/* <Route
                 path="/uploadFile"
                 element={<FileUpload sidebarToggle={sidebarToggle} />}

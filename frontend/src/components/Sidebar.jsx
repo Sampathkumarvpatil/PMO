@@ -136,7 +136,7 @@ const Sidebar = ({ sidebarToggle, role, changeToogle }) => {
 
         <li className="mb-2 rounded hover:shadow hover:bg-blue-500 py-2 leftBtn">
           <Link
-            to="/TermsAndConditions"
+            to={role === "Developers/Testers" ? "/" : "/TermsAndConditions"}
             className="px-3"
             onClick={changeToogle}
           >
