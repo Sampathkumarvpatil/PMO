@@ -31,7 +31,7 @@ import Chart from "./components/Chart";
 import MultipleGraph from "./components/MultipleGraph";
 
 function App() {
-  const [sidebarToggle, setSidebarToggle] = useState(true);
+  const [sidebarToggle, setSidebarToggle] = useState(false);
   // const [displayPmo, setDisplayPmo] = useState(false);
   const [project, setProject] = useState({});
   const [role, setRole] = useState(null);
