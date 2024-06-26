@@ -78,26 +78,7 @@ function App() {
                     path="/Dashboard"
                     element={<Dashboard sidebarToggle={sidebarToggle} />}
                   />
-                  <Route
-                    path="/TermsAndConditions"
-                    element={
-                      <TermsAndConditions sidebarToggle={sidebarToggle} />
-                    }
-                  />
 
-                  <Route
-                    path="/TestsReports/:projectName"
-                    element={<TestsReports sidebarToggle={sidebarToggle} />}
-                  ></Route>
-                  <Route
-                    path="/TestsReports/:projectName/FailedTest"
-                    element={<FailedTest sidebarToggle={sidebarToggle} />}
-                  ></Route>
-
-                  <Route
-                    path="/FailedTest"
-                    element={<FailedTest sidebarToggle={sidebarToggle} />}
-                  />
                   {/* <Route path="/LoginOrSignup" element={<LoginPage sidebarToggle = {sidebarToggle}/>} /> */}
                   {/* <Route path="/signup" element={<SignupPage sidebarToggle = {sidebarToggle}/>} /> */}
 
@@ -106,10 +87,7 @@ function App() {
                     path="/AllocationAndHoliday"
                     element={<AllocationInput sidebarToggle={sidebarToggle} />}
                   />
-                  <Route
-                    path="/TestResult"
-                    element={<TestResult sidebarToggle={sidebarToggle} />}
-                  />
+
                   <Route
                     path="/AttendanceTable"
                     element={<AttendanceTable sidebarToggle={sidebarToggle} />}
@@ -164,6 +142,28 @@ function App() {
                 path="/retrospective/:id/download"
                 element={<Getpdf sidebarToggle={sidebarToggle} />}
               ></Route>
+              <Route
+                path="/TermsAndConditions"
+                element={<TermsAndConditions sidebarToggle={sidebarToggle} />}
+              />
+
+              <Route
+                path="/TestsReports/:projectName"
+                element={<TestsReports sidebarToggle={sidebarToggle} />}
+              ></Route>
+              <Route
+                path="/TestsReports/:projectName/FailedTest"
+                element={<FailedTest sidebarToggle={sidebarToggle} />}
+              ></Route>
+
+              <Route
+                path="/FailedTest"
+                element={<FailedTest sidebarToggle={sidebarToggle} />}
+              />
+              <Route
+                path="/TestResult"
+                element={<TestResult sidebarToggle={sidebarToggle} />}
+              />
               {/* <Route
                 path="/uploadFile"
                 element={<FileUpload sidebarToggle={sidebarToggle} />}
