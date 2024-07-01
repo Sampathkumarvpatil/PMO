@@ -1,6 +1,6 @@
 // Home.js
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import io from "socket.io-client";
 import { FaUser } from "react-icons/fa";
 import { RiSendPlaneFill } from "react-icons/ri";
@@ -14,7 +14,9 @@ import { useSaveDataToS3 } from "../../utils/useSaveDataToS3";
 
 // const SOCKET_URL = `${hostBaseUrl}:${port}`;
 // console.log("SOCKET_URL:", SOCKET_URL);
-const SOCKET_URL = `${process.env.REACT_APP_BACKEND_BASE_URL}:${process.env.REACT_APP_PLANNING_POKER_BACKEND_PORT}`;
+const SOCKET_URL = `${process.env.REACT_APP_BACKEND_BASE_URL}:${
+  process.env.REACT_APP_SOCKET_PORT ?? 5000
+}`;
 
 const socket = io.connect(SOCKET_URL);
 
@@ -38,7 +40,7 @@ const Home = ({ sidebarToggle }) => {
   // const selectedProjectName = localStorage.getItem("selectedProjectName");
   // const selectedSprintName = localStorage.getItem("selectedSprintName");
   const { error, saveData, success, isLoading } = useSaveDataToS3();
-
+  const navigate = useNavigate();
   // const data = JSON.parse(localStorage.getItem("mainCompanyData"));
   useEffect(() => {
     let currentProject = localStorage.getItem("currentProject");
@@ -171,6 +173,7 @@ const Home = ({ sidebarToggle }) => {
           );
         }
       }
+      navigate("/list");
     } else {
       // The user is not the creator, simply leave the room
       socket.emit("leave_room", { userName, roomName });
@@ -257,13 +260,13 @@ const Home = ({ sidebarToggle }) => {
             <input
               placeholder="Your Name"
               onChange={userNameChangeHandler}
-              className="p-2 m-4 border border-2 border-gray-500 w-[800px] text-[22px]"
+              className="p-2 m-4  border-2 border-gray-500 w-[800px] text-[22px]"
             />
             <br />
             <input
               placeholder="Room Name"
               onChange={roomNameChangeHandler}
-              className="border border-2 p-2 m-4 border-gray-500 w-[800px] text-[22px]"
+              className=" border-2 p-2 m-4 border-gray-500 w-[800px] text-[22px]"
             />
             <br />
             <button

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import ProjOptions from "../components/ProjOptions";
 import LastButtons from "../components/LastButtons";
+import { socket } from "../utils/socket";
 
 const Home = ({ sidebarToggle }) => {
   const [desc, setDesc] = useState("");
@@ -13,6 +14,7 @@ const Home = ({ sidebarToggle }) => {
   );
   const [showNumSections, setShowNumSections] = useState(false); // State to track visibility of the second dropdown
   const navigate = useNavigate();
+
   // const hostBaseUrl = process.env.REACT_APP_HOST_BASE_URL;
   // const port = Number(process.env.REACT_APP_PLANNING_POKER_HOST_PORT);
 
@@ -21,9 +23,25 @@ const Home = ({ sidebarToggle }) => {
   // }
 
   // const SOCKET_URL = `${hostBaseUrl}:${port}`;
-  const SOCKET_URL = `${process.env.REACT_APP_BACKEND_BASE_URL}:${process.env.REACT_APP_PLANNING_POKER_BACKEND_PORT}}`;
-  console.log("SOCKET_URL:", SOCKET_URL);
-  const socket = io.connect(SOCKET_URL);
+
+  useEffect(() => {
+    socket.connect();
+
+    socket.on("connect", () => {
+      console.log("Socket connected!");
+    });
+
+    socket.on("connect_error", (error) => {
+      console.error("Socket connection error:", error);
+    });
+
+    socket.on("disconnect", (reason) => {
+      console.log("Socket disconnected:", reason);
+    });
+    // return () => {
+    //   socket.disconnect();
+    // };
+  }, []);
 
   const defaultModels = {
     "4Ls Model": [
@@ -83,7 +101,8 @@ const Home = ({ sidebarToggle }) => {
       desc: desc,
       sections: sections,
     };
-    socket.emit("create", details);
+
+    socket.emit("create-r-room", details);
 
     navigate(`/retrospective/${desc}`, {
       state: {

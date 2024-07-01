@@ -3,7 +3,7 @@ import { socket } from "../utils/socket";
 import { useEffect } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { BsHandThumbsUpFill } from "react-icons/bs";
- 
+
 const Section = ({ roomName, section, divs, colorind }) => {
   const colors = [
     "bg-[#64f590]",
@@ -11,60 +11,57 @@ const Section = ({ roomName, section, divs, colorind }) => {
     "bg-[#e1f7a7]",
     "bg-[#f7ada7]",
     "bg-[#b8a7f7]",
-    "bg-[#f8b1e6]"
+    "bg-[#f8b1e6]",
   ];
- 
+
   const [divcnt, setDivcnt] = useState([]);
- 
+
   const addDiv = () => {
     const newDiv = {
       name: `Div${divcnt.length + 1}`,
       content: "",
-      votes: 0
+      votes: 0,
     };
     setDivcnt((prev) => [...prev, newDiv]);
- 
-   
+
     socket.emit("add-div", { roomName, section, newDiv });
   };
- 
+
   const updateContent = (index, content) => {
     const updatedDivs = [...divcnt];
     updatedDivs[index].content = content;
     setDivcnt(updatedDivs);
- 
-   
+
     socket.emit("update-div-content", { roomName, section, index, content });
   };
- 
+
   const voteForDiv = (index) => {
     const updatedDivs = [...divcnt];
     updatedDivs[index].votes += 1;
     setDivcnt(updatedDivs);
- 
-   
+
     socket.emit("vote-for-div", { roomName, section, index });
   };
- 
+
   useEffect(() => {
     if (divs?.length > 0) {
       setDivcnt(divs);
     }
   }, [divs]);
- 
+
   return (
     <div className={`w-1/3 text-center my-10 `}>
       <span className=" text-2xl font-semibold">{section}</span>
       <br />
       <button
-        className={`mx-4 bg-gray-400 m-2 px-2 rounded-md text-white bg-white text-black `}
+        className={`mx-4  m-2 px-2 rounded-md  bg-white text-black `}
         onClick={addDiv}
       >
         <span className="text-xl text-black">
           <IoMdAdd />
         </span>
       </button>
- 
+
       <div className={`flex flex-wrap mx-4 p-4 `}>
         {divcnt.map((item, index) => (
           <div
@@ -93,5 +90,5 @@ const Section = ({ roomName, section, divs, colorind }) => {
     </div>
   );
 };
- 
+
 export default Section;

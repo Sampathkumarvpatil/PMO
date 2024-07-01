@@ -8,7 +8,7 @@ function FailedTest({ sidebarToggle, projectName }) {
   const location = useLocation();
   const reportData = location?.state?.report;
   const [data, setData] = useState(null);
-  console.log(reportData);
+
   useEffect(() => {
     if (reportData?.report) {
       setData(reportData?.report);

@@ -188,6 +188,14 @@ function App() {
                 element={<LoginPage buttonClick={buttonClick} />}
               />
               <Route path="/signup" element={<SignupPage />} />
+              <Route
+                path="/retrospective/:id"
+                element={<Room sidebarToggle={true} />}
+              ></Route>
+              <Route
+                path="/planningpoker/:id"
+                element={<Home sidebarToggle={true} />}
+              />
             </>
           )}
         </Routes>

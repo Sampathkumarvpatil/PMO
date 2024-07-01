@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Section from "./Section";
 import { socket } from "../utils/socket";
-import ProjOptions from "../components/ProjOptions";
 // import { toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
 const Room = ({ sidebarToggle }) => {
   const location = useLocation();
   const { desc, sections } = location.state || {};
-
+  const { id } = useParams();
+  const [role, setRole] = useState("");
   const [roomDetails, setRoomDetails] = useState({});
   const [sec, setSec] = useState(sections);
 
@@ -20,31 +20,47 @@ const Room = ({ sidebarToggle }) => {
   }, [sections]);
 
   useEffect(() => {
-    if (desc) {
-      socket.emit("join-room", desc);
+    const userRole = sessionStorage.getItem("role");
+    setRole(userRole);
+  }, []);
+  useEffect(() => {
+    if (id) {
+      socket.on("connect", () => {
+        console.log("Socket connected!");
+      });
 
-      socket.on("room-details", (details) => {
+      socket.on("connect_error", (error) => {
+        console.error("Socket connection error:", error);
+      });
+
+      socket.on("disconnect", (reason) => {
+        console.log("Socket disconnected:", reason);
+      });
+      socket.emit("join-rroom", id);
+
+      socket.on("rroom-details", (details) => {
+        console.log(details);
         setRoomDetails(details);
         setSec(details.sections);
       });
 
-      socket.on("room-details-updated", (updatedDetails) => {
+      socket.on("rroom-details-updated", (updatedDetails) => {
         setSec(updatedDetails?.sections);
         setRoomDetails(updatedDetails);
       });
 
-      socket.on("rooms", (updatedDetails) => {
-        setSec(updatedDetails[desc]?.sections);
+      socket.on("rrooms", (updatedDetails) => {
+        setSec(updatedDetails[id]?.sections);
       });
 
       return () => {
-        socket.off("room-details-updated");
+        socket.off("rroom-details-updated");
       };
     }
-  }, [socket, desc]);
+  }, [id]);
 
   const showRoomDetails = () => {
-    navigate(`/retrospective/${desc}/download`, {
+    navigate(`/retrospective/${id}/download`, {
       state: roomDetails,
     });
   };
@@ -57,10 +73,10 @@ const Room = ({ sidebarToggle }) => {
     data[selectedProject + selectedSprint] = roomDetails;
     localStorage.setItem("retrospective", JSON.stringify(data));
   };
-
+  console.log(role);
   return (
     <div
-      className={`text-center p-4 shadow-2xl m-10 transition-all duration-300 ${
+      className={`text-center p-4 shadow-2xl min-h-[100vh] transition-all duration-300 ${
         sidebarToggle ? "ml-0" : "ml-64"
       }`}
     >
@@ -68,22 +84,14 @@ const Room = ({ sidebarToggle }) => {
       <ProjOptions />
       </div> */}
       <div>
-        <button
-          onClick={showRoomDetails}
-          className="my-2 absolute top-9 right-10 bg-blue-500 border-[2px]
-      border-blue-400 hover:bg-white hover:text-blue-500 px-4 py-2 text-white rounded-lg mt-14"
-        >
-          Download Retrospective Pdf
-        </button>
-
         <div>
-          <span className="text-4xl font-bold underline">{desc}</span>
+          <span className="text-4xl font-bold underline">{id}</span>
 
           <div className="flex flex-wrap justify-between">
             {Object.keys(sec || {}).map((item, index) => (
               <Section
                 key={index}
-                roomName={desc}
+                roomName={id}
                 section={item}
                 divs={sec[item]}
                 colorind={index}
@@ -92,13 +100,26 @@ const Room = ({ sidebarToggle }) => {
           </div>
         </div>
       </div>
-      <button
-        onClick={saveRoomDetails}
-        className=" bg-blue-500 border-[2px]
+
+      {role === "Account Manager/Project Manager" && (
+        <>
+          <button
+            onClick={saveRoomDetails}
+            className=" bg-blue-500 border-[2px]
       border-blue-400 hover:bg-white hover:text-blue-500 px-4 py-2 text-white rounded-lg mt-14"
-      >
-        Save
-      </button>
+          >
+            Save
+          </button>
+
+          <button
+            onClick={showRoomDetails}
+            className="my-2 mx-4 bg-blue-500 border-[2px]
+      border-blue-400 hover:bg-white hover:text-blue-500 px-4 py-2 text-white rounded-lg mt-14"
+          >
+            Download Retrospective Pdf
+          </button>
+        </>
+      )}
     </div>
   );
 };

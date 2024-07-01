@@ -22,18 +22,18 @@ const io = new Server(server, {
 const rooms = {};
 
 io.on("connection", (socket) => {
-  socket.on("create", (details) => {
+  socket.on("create-r-room", (details) => {
     const roomName = details.desc;
     rooms[roomName] = details;
 
     socket.join(roomName);
   });
 
-  socket.on("join-room", (roomName) => {
+  socket.on("join-rroom", (roomName) => {
     if (rooms[roomName]) {
       socket.join(roomName);
 
-      socket.emit("room-details", rooms[roomName]);
+      socket.emit("rroom-details", rooms[roomName]);
     } else {
       socket.emit("room-not-found");
     }
@@ -42,7 +42,7 @@ io.on("connection", (socket) => {
   socket.on("add-div", ({ roomName, section, newDiv }) => {
     if (rooms[roomName]) {
       rooms[roomName].sections[section].push(newDiv);
-      io.to(roomName).emit("room-details-updated", rooms[roomName]);
+      io.to(roomName).emit("rroom-details-updated", rooms[roomName]);
 
       io.emit("rooms", rooms);
     }
@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
     if (rooms[roomName] && rooms[roomName].sections[section]) {
       rooms[roomName].sections[section][index].content = content;
 
-      io.to(roomName).emit("room-details-updated", rooms[roomName]);
+      io.to(roomName).emit("rroom-details-updated", rooms[roomName]);
     }
   });
 
@@ -61,11 +61,11 @@ io.on("connection", (socket) => {
     if (rooms[roomName] && rooms[roomName].sections[section]) {
       rooms[roomName].sections[section][index].votes += 1;
 
-      io.to(roomName).emit("room-details-updated", rooms[roomName]);
+      io.to(roomName).emit("rroom-details-updated", rooms[roomName]);
     }
   });
 });
-console, log(process.env.RETROSPECTIVE_HOST_PORT);
+console.log(process.env.RETROSPECTIVE_HOST_PORT);
 server.listen(Number(process.env.RETROSPECTIVE_HOST_PORT), () => {
   console.log(`Listening to port ${process.env.RETROSPECTIVE_HOST_PORT}`);
 });

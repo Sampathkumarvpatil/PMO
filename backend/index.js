@@ -4,6 +4,7 @@ const express = require("express");
 const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
+const { join } = require("path");
 
 const server = http.createServer();
 const app = express();
@@ -17,7 +18,7 @@ const io = new Server(server, {
 });
 
 const rooms = {};
-
+const rm = {};
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
@@ -132,9 +133,53 @@ io.on("connection", (socket) => {
       io.to(roomName).emit("option_selected", { userName, selectedOption });
     }
   });
+
+  socket.on("create-r-room", (details) => {
+    const roomName = details.desc;
+    rm[roomName] = details;
+    console.log(roomName, "===============>details=> ", details);
+    socket.join(roomName);
+  });
+
+  socket.on("join-rroom", (roomName) => {
+    if (rm[roomName]) {
+      socket.join(roomName);
+      console.log("jpoined room========> ", roomName, rm);
+      socket.emit("rroom-details", rm[roomName]);
+    } else {
+      socket.emit("room-not-found");
+    }
+  });
+
+  socket.on("add-div", ({ roomName, section, newDiv }) => {
+    if (rm[roomName]) {
+      rm[roomName].sections[section].push(newDiv);
+      console.log("rm=>>>", rm);
+      io.to(roomName).emit("rroom-details-updated", rm[roomName]);
+
+      io.emit("rooms", rm);
+    }
+  });
+
+  //-------------------------------------------------
+  socket.on("update-div-content", ({ roomName, section, index, content }) => {
+    if (rm[roomName] && rm[roomName].sections[section]) {
+      rm[roomName].sections[section][index].content = content;
+
+      io.to(roomName).emit("rroom-details-updated", rm[roomName]);
+    }
+  });
+
+  socket.on("vote-for-div", ({ roomName, section, index }) => {
+    if (rm[roomName] && rm[roomName].sections[section]) {
+      rm[roomName].sections[section][index].votes += 1;
+
+      io.to(roomName).emit("rroom-details-updated", rm[roomName]);
+    }
+  });
 });
 
 console.log(process.env.PLANNING_POKER_HOST_PORT);
-server.listen(Number(process.env.PLANNING_POKER_HOST_PORT), () => {
+server.listen(Number(process.env.PLANNING_POKER_HOST_PORT ?? 5000), () => {
   console.log("Server Started");
 });
