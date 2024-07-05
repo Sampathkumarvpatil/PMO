@@ -29,6 +29,7 @@ import TestsReports from "./components/TestsReports";
 import FailedTest from "./components/FailedTest";
 import Chart from "./components/Chart";
 import MultipleGraph from "./components/MultipleGraph";
+import ManualTest from "./components/ManualTest";
 
 function App() {
   const [sidebarToggle, setSidebarToggle] = useState(false);
@@ -172,6 +173,10 @@ function App() {
                   <Route
                     path="/TestResult"
                     element={<TestResult sidebarToggle={sidebarToggle} />}
+                  />
+                  <Route
+                    path="/manualTest"
+                    element={<ManualTest sidebarToggle={sidebarToggle} />}
                   />
                 </>
               )}
