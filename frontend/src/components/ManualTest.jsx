@@ -40,12 +40,12 @@ const ManualTest = ({ sidebarToggle }) => {
   });
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(null);
 
-  useEffect(() => {
-    // const savedData = JSON.parse(localStorage.getItem("projectsData"));
-    // if (savedData) {
-    //   setProjects(savedData);
-    // }
-  }, []);
+  // useEffect(() => {
+  //   const savedData = JSON.parse(localStorage.getItem("projectsData"));
+  //   if (savedData) {
+  //     setProjects(savedData);
+  //   }
+  // }, []);
 
   const toggleOpen = () => {
     setVisibility(!visibility);
