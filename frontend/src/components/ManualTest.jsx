@@ -41,10 +41,10 @@ const ManualTest = ({ sidebarToggle }) => {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(null);
 
   useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem("projectsData"));
-    if (savedData) {
-      setProjects(savedData);
-    }
+    // const savedData = JSON.parse(localStorage.getItem("projectsData"));
+    // if (savedData) {
+    //   setProjects(savedData);
+    // }
   }, []);
 
   const toggleOpen = () => {
@@ -117,7 +117,9 @@ const ManualTest = ({ sidebarToggle }) => {
   };
 
   const handleSubmit = () => {
-    localStorage.setItem("projectsData", JSON.stringify(projects));
+    // localStorage.setItem("projectsData", JSON.stringify(projects));
+    console.log("ProjectsData after Submit", JSON.stringify(projects));
+
     setSubmitted(true);
   };
 
