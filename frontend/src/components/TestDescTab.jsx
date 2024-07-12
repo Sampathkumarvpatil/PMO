@@ -1,6 +1,6 @@
 import React from "react";
 
-const TestDescTab = ({ sidebarToggle }) => {
+const TestDescTab = () => {
   return (
     
         <div>
