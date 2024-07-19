@@ -14,25 +14,42 @@ import {
 } from "@mui/material";
 import TestDescTab from "./TestDescTab";
 
+import { useFetchManualTests } from "../utils/useFetchManualtestData";
+import { useFetchManualClasses } from "../utils/useFetchManualClasses";
+import { useSaveManualTestDataToS3 } from "../utils/useSaveManualTestData";
+
 const ManualTest = ({ sidebarToggle }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [visibility, setVisibility] = useState(true);
-  const [localProjectDetails, setLocalProjectDetails] = useState({
-    projectName: "",
-    className: "",
-    author: "",
+  const [newProjectData, setNewProjectData] = useState({
+    newClassName: "",
+    newProjectName: "",
   });
   const [projects, setProjects] = useState([]);
-  const [submitted, setSubmitted] = useState(false);
 
+  const [projectName, setProjectName] = useState("");
+
+  const {
+    data: classNames,
+    fetchClasses,
+    loading: classesLoading,
+  } = useFetchManualClasses();
+  const { fetchTests, data, loading: testDataLoading } = useFetchManualTests();
+  const { error, isLoading, saveManualTestData, success } =
+    useSaveManualTestDataToS3();
   const [addingTestCase, setAddingTestCase] = useState(false);
+  const [classes, setClasses] = useState([]);
+  const [testData, setTestData] = useState([]);
+  const [selectedProject, setSelectedProject] = useState("");
+  const [selectedClassName, setSelectedClassName] = useState("");
   const [newTestCase, setNewTestCase] = useState({
-    id: "",
+    test_case_id: "",
     title: "",
+    description: "",
     preconditions: "",
-    steps: "",
-    expectedResults: "",
-    actualResults: "",
+    test_steps: "",
+    expected_results: "",
+    actual_results: "",
     date: "",
     status: "",
     author: "",
@@ -40,12 +57,92 @@ const ManualTest = ({ sidebarToggle }) => {
   });
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(null);
 
+  useEffect(() => {
+    if (data) {
+      //   setTestData([
+      //     {
+      //       test_case_id: "TC001",
+      //       title: "Heelo im your title",
+      //       description: "Test Login Functionality",
+      //       preconditions: "User is registered",
+      //       test_steps:
+      //         "1. Open login page\n2. Enter credentials\n3. Click login",
+      //       expected_results: "User is logged in successfully",
+      //       actual_results: "User is logged in successfully",
+      //       date: "2024-07-01",
+      //       status: "Passed",
+      //       author: "Tester1",
+      //       comments: "Test passed without any issues",
+      //     },
+      //   ]);
+      //   console.log(data);
+      // }
+      if (data?.test_cases.length > 0) {
+        const mappedTestsData = data?.test_cases?.map((test) => {
+          return {
+            test_case_id: test["test_case_id"],
+            title: test["title"],
+            description: test["description"],
+            preconditions: test["preconditions"],
+            test_steps: test["test_steps"],
+            expected_results: test["expected_results"],
+            actual_results: test["actual_results"],
+            date: test["date"],
+            status: test["status"],
+            author: test["author"],
+            comments: test["comments"],
+          };
+        });
+        setTestData(mappedTestsData);
+      }
+    }
+  }, [data]);
+
   // useEffect(() => {
   //   const savedData = JSON.parse(localStorage.getItem("projectsData"));
   //   if (savedData) {
   //     setProjects(savedData);
   //   }
   // }, []);
+
+  // useEffect(() => {
+  //   if (classNames?.length === 0) {
+  //     setClasses([]);
+  //     console.log("im here in if....");
+  //   } else {
+  //     console.log("im herein else....");
+  //     setClasses([...classNames]);
+  //   }
+  // }, [classNames, fetchClasses]);
+
+  // useEffect(() => {
+  //   if (projectName) {
+  //     const fetchClassNames = async () => {
+  //       await fetchClasses(projectName);
+  //       await fetchTests({
+  //         project_name: projectName,
+  //         class_name: localProjectDetails.projectName,
+  //         status: selectedStatus,
+  //         startDate,
+  //         endDate,
+  //       });
+  //     };
+  //     fetchClassNames();
+  //   }
+  // }, [projectName]);
+
+  // const handleFetchSubmit = async () => {
+  //   // Handle form submission logic
+  //   if (projectName) {
+  //     await fetchTests({
+  //       project_name: projectName,
+  //       class_name: selectedClassName,
+  //       status: selectedStatus,
+  //       startDate,
+  //       endDate,
+  //     });
+  //   }
+  // };
 
   const toggleOpen = () => {
     setVisibility(!visibility);
@@ -57,35 +154,56 @@ const ManualTest = ({ sidebarToggle }) => {
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
-    setLocalProjectDetails({
-      projectName: "",
-      className: "",
+    setNewProjectData({
+      newClassName: "",
+      newProjectName: "",
     });
   };
 
-  const handleSaveDetails = () => {
-    const newProject = {
-      ...localProjectDetails,
-      testCases: [],
-    };
-    setProjects([...projects, newProject]);
-    handleCloseDialog();
-  };
+  const handleSaveDetails = async () => {
+    let newClassName = newProjectData.newClassName;
+    const newProjectName = newProjectData.newProjectName;
+    setSelectedProject(newProjectName);
 
-  const handleLocalProjectDetailsChange = (field, value) => {
-    setLocalProjectDetails({ ...localProjectDetails, [field]: value });
+    setSelectedClassName(newClassName);
+    if (projectName === newProjectName) {
+      // console.log("hiii");
+      setClasses((prevClasses) => [...prevClasses, newClassName]);
+    } else {
+      // console.log("hello");
+      setClasses([newClassName]);
+    }
+    setProjectName(newProjectName);
+    // const data = {
+    //   project_name: newProjectData.newProjectName,
+    //   class_name: newProjectData.newClassName,
+    //   test_case_id: "",
+    //   title: "",
+    //   description: "",
+    //   preconditions: "",
+    //   test_steps: "",
+    //   expected_results: "",
+    //   actual_results: "",
+    //   date: "",
+    //   status: "",
+    //   author: "",
+    //   comments: "",
+    // };
+    // await saveManualTestData(data);
+    handleCloseDialog();
   };
 
   const handleAddTestCase = (projectIndex) => {
     setSelectedProjectIndex(projectIndex);
     setAddingTestCase(true);
     setNewTestCase({
-      id: "",
+      test_case_id: "",
       title: "",
+      description: "",
       preconditions: "",
-      steps: "",
-      expectedResults: "",
-      actualResults: "",
+      test_steps: "",
+      expected_results: "",
+      actual_results: "",
       date: "",
       status: "",
       author: "",
@@ -97,16 +215,19 @@ const ManualTest = ({ sidebarToggle }) => {
     setAddingTestCase(false);
   };
 
-  const handleSaveNewTestCase = () => {
+  const handleSaveNewTestCase = async () => {
     const newTestCaseWithId = {
       ...newTestCase,
-      id: `TC_${projects[selectedProjectIndex].testCases.length + 1}`,
+      project_name: selectedProject,
+      class_name: selectedClassName,
+      test_case_id: `TC_${testData.length + 1}`,
     };
-
-    const updatedProjects = [...projects];
-    updatedProjects[selectedProjectIndex].testCases.push(newTestCaseWithId);
-    setProjects(updatedProjects);
-
+    await saveManualTestData({ ...newTestCaseWithId });
+    // console.log(newTestCaseWithId);
+    setTestData([
+      ...testData,
+      { ...newTestCase, test_case_id: `TC_${testData.length + 1}` },
+    ]);
     handleCloseAddTestCaseDialog();
   };
 
@@ -116,15 +237,43 @@ const ManualTest = ({ sidebarToggle }) => {
     setProjects(updatedProjects);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // localStorage.setItem("projectsData", JSON.stringify(projects));
-    console.log("ProjectsData after Submit", JSON.stringify(projects));
-
-    setSubmitted(true);
+    const data = {
+      project_name: selectedProject,
+      class_name: selectedClassName,
+      test_cases: [...testData],
+    };
+    await saveManualTestData(data);
+    // console.log("ProjectsData after Submit", JSON.stringify(projects));
   };
 
+  const handleTestDataFetch = async ({
+    selectedClass,
+    startDate,
+    endDate,
+    status,
+  }) => {
+    setSelectedClassName(selectedClass);
+    await fetchTests({
+      project_name: projectName,
+      class_name: selectedClass,
+      status,
+      start_date: startDate,
+      end_date: endDate,
+    });
+  };
+  const handleProjectSubmit = async () => {
+    setSelectedProject(projectName);
+    const class_data = await fetchClasses(projectName);
+    setClasses(class_data);
+  };
   return (
-    <div className={`transition-all duration-300 ${sidebarToggle ? "ml-0" : "ml-64"}`}>
+    <div
+      className={`transition-all duration-300 ${
+        sidebarToggle ? "ml-0" : "ml-64"
+      }`}
+    >
       <div className="justify-center w-full pt-2">
         <div className="flex justify-center">
           {visibility ? (
@@ -143,38 +292,48 @@ const ManualTest = ({ sidebarToggle }) => {
             />
           )}
         </div>
+
         {visibility && (
           <div className="mb-10">
-            <TestDescTab />
+            <TestDescTab
+              classes={classes}
+              onSubmit={handleTestDataFetch}
+              projectName={projectName}
+              selectedClassName={selectedClassName}
+              handleProjecNameSubmit={handleProjectSubmit}
+              setProjectName={(pname) => setProjectName(pname)}
+              loading={testDataLoading}
+            />
           </div>
         )}
-        {projects.map((project, projectIndex) => (
-          <div key={projectIndex} className="mb-6">
-            {!visibility && (
-              <div>
-                <h2 className="text-xl font-bold text-center mt-4 mb-4">
-                  Project Name: {project.projectName}
-                </h2>
-              </div>
-            )}
 
-            <ManualTestTable
-              testCases={project.testCases}
-              handleTestCaseChange={(testCaseIndex, field, value) =>
-                handleTestCaseChange(projectIndex, testCaseIndex, field, value)
-              }
-            />
-            <div className="flex justify-center gap-6 mt-10">
-              <button
-                className="flex justify-center gap-3 bg-[#848484] px-20 py-3 rounded-lg hover:bg-[#757576]"
-                onClick={() => handleAddTestCase(projectIndex)}
-              >
-                <h3 className="text-white">ADD TEST CASE</h3>
-                <FaPlus className="text-white mt-0.5" />
-              </button>
+        <div className="mb-6">
+          {!visibility && (
+            <div>
+              <h2 className="text-xl font-bold text-center mt-4 mb-4">
+                Project Name: {projectName}
+              </h2>
             </div>
+          )}
+
+          <ManualTestTable
+            testCases={testData}
+            getUpdatedTestCases={(data) => setTestData(data)}
+            handleTestCaseChange={(testCaseIndex, field, value) => {
+              // handleTestCaseChange(projectIndex, testCaseIndex, field, value)
+            }}
+          />
+          <div className="flex justify-center gap-6 mt-10">
+            <button
+              className="flex justify-center gap-3 bg-[#848484] px-20 py-3 rounded-lg hover:bg-[#757576]"
+              onClick={() => handleAddTestCase()}
+            >
+              <h3 className="text-white">ADD TEST CASE</h3>
+              <FaPlus className="text-white mt-0.5" />
+            </button>
           </div>
-        ))}
+        </div>
+
         <div className="flex justify-center gap-1 mt-4">
           <button
             className="flex justify-center gap-3 bg-[#1993f0] px-2 py-3 rounded-lg hover:bg-[#696fc6]"
@@ -205,7 +364,7 @@ const ManualTest = ({ sidebarToggle }) => {
             textAlign: "center",
           }}
         >
-          Add Project
+          Add Class
         </DialogTitle>
         <DialogContent>
           <TextField
@@ -215,9 +374,12 @@ const ManualTest = ({ sidebarToggle }) => {
             type="text"
             fullWidth
             variant="outlined"
-            value={localProjectDetails.projectName}
+            value={newProjectData.newProjectName}
             onChange={(e) =>
-              handleLocalProjectDetailsChange("projectName", e.target.value)
+              setNewProjectData((prevData) => ({
+                ...prevData,
+                newProjectName: e.target.value,
+              }))
             }
             style={{ margin: "5px 0", fontSize: "1rem", padding: "10px" }}
             InputLabelProps={{ style: { fontSize: "1.1rem" } }}
@@ -229,9 +391,12 @@ const ManualTest = ({ sidebarToggle }) => {
             type="text"
             fullWidth
             variant="outlined"
-            value={localProjectDetails.className}
+            value={newProjectData.newClassName}
             onChange={(e) =>
-              handleLocalProjectDetailsChange("className", e.target.value)
+              setNewProjectData((prevData) => ({
+                ...prevData,
+                newClassName: e.target.value,
+              }))
             }
             style={{ margin: "5px 0", fontSize: "1rem", padding: "10px" }}
             InputLabelProps={{ style: { fontSize: "1.1rem" } }}
@@ -267,14 +432,30 @@ const ManualTest = ({ sidebarToggle }) => {
           <TextField
             autoFocus
             margin="normal"
-            label="Description"
+            label="Title"
             type="text"
             fullWidth
             variant="outlined"
             value={newTestCase.title}
             multiline
             rows={8}
-            onChange={(e) => setNewTestCase({ ...newTestCase, title: e.target.value })}
+            onChange={(e) =>
+              setNewTestCase({ ...newTestCase, title: e.target.value })
+            }
+          />
+          <TextField
+            autoFocus
+            margin="normal"
+            label="Description"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={newTestCase.description}
+            multiline
+            rows={8}
+            onChange={(e) =>
+              setNewTestCase({ ...newTestCase, description: e.target.value })
+            }
           />
           <TextField
             margin="normal"
@@ -285,7 +466,9 @@ const ManualTest = ({ sidebarToggle }) => {
             value={newTestCase.preconditions}
             multiline
             rows={8}
-            onChange={(e) => setNewTestCase({ ...newTestCase, preconditions: e.target.value })}
+            onChange={(e) =>
+              setNewTestCase({ ...newTestCase, preconditions: e.target.value })
+            }
           />
           <TextField
             margin="normal"
@@ -296,7 +479,9 @@ const ManualTest = ({ sidebarToggle }) => {
             value={newTestCase.steps}
             multiline
             rows={8}
-            onChange={(e) => setNewTestCase({ ...newTestCase, steps: e.target.value })}
+            onChange={(e) =>
+              setNewTestCase({ ...newTestCase, test_steps: e.target.value })
+            }
           />
           <TextField
             margin="normal"
@@ -304,10 +489,15 @@ const ManualTest = ({ sidebarToggle }) => {
             type="text"
             fullWidth
             variant="outlined"
-            value={newTestCase.expectedResults}
+            value={newTestCase.expected_results}
             multiline
             rows={8}
-            onChange={(e) => setNewTestCase({ ...newTestCase, expectedResults: e.target.value })}
+            onChange={(e) =>
+              setNewTestCase({
+                ...newTestCase,
+                expected_results: e.target.value,
+              })
+            }
           />
           <TextField
             margin="normal"
@@ -315,10 +505,12 @@ const ManualTest = ({ sidebarToggle }) => {
             type="text"
             fullWidth
             variant="outlined"
-            value={newTestCase.actualResults}
+            value={newTestCase.actual_results}
             multiline
             rows={8}
-            onChange={(e) => setNewTestCase({ ...newTestCase, actualResults: e.target.value })}
+            onChange={(e) =>
+              setNewTestCase({ ...newTestCase, actual_results: e.target.value })
+            }
           />
           <TextField
             margin="normal"
@@ -327,13 +519,17 @@ const ManualTest = ({ sidebarToggle }) => {
             fullWidth
             variant="outlined"
             value={newTestCase.date}
-            onChange={(e) => setNewTestCase({ ...newTestCase, date: e.target.value })}
+            onChange={(e) =>
+              setNewTestCase({ ...newTestCase, date: e.target.value })
+            }
             InputLabelProps={{ shrink: true }}
           />
           <InputLabel>Status</InputLabel>
           <Select
             value={newTestCase.status}
-            onChange={(e) => setNewTestCase({ ...newTestCase, status: e.target.value })}
+            onChange={(e) =>
+              setNewTestCase({ ...newTestCase, status: e.target.value })
+            }
             fullWidth
             variant="outlined"
             style={{ marginBottom: "15px" }}
@@ -349,7 +545,9 @@ const ManualTest = ({ sidebarToggle }) => {
             fullWidth
             variant="outlined"
             value={newTestCase.author}
-            onChange={(e) => setNewTestCase({ ...newTestCase, author: e.target.value })}
+            onChange={(e) =>
+              setNewTestCase({ ...newTestCase, author: e.target.value })
+            }
           />
           <TextField
             margin="normal"
@@ -360,12 +558,16 @@ const ManualTest = ({ sidebarToggle }) => {
             value={newTestCase.comments}
             multiline
             rows={8}
-            onChange={(e) => setNewTestCase({ ...newTestCase, comments: e.target.value })}
+            onChange={(e) =>
+              setNewTestCase({ ...newTestCase, comments: e.target.value })
+            }
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseAddTestCaseDialog}>Cancel</Button>
-          <Button onClick={handleSaveNewTestCase} color="primary">Save</Button>
+          <Button onClick={handleSaveNewTestCase} color="primary">
+            Save
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

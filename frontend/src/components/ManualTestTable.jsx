@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -6,43 +6,49 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-} from '@mui/material';
-import { FaEye, FaEdit } from 'react-icons/fa';
+} from "@mui/material";
+import { FaEye, FaEdit } from "react-icons/fa";
 
-const ManualTestTable = ({ testCases, handleTestCaseChange }) => {
+const ManualTestTable = ({
+  testCases,
+  handleTestCaseChange,
+  getUpdatedTestCases,
+}) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(null);
   const [tempTestCase, setTempTestCase] = useState({});
-  const [dialogMode, setDialogMode] = useState('');
-  const [currentField, setCurrentField] = useState('');
+  const [dialogMode, setDialogMode] = useState("");
+  const [currentField, setCurrentField] = useState("");
 
   const headers = [
-    'Test Case ID',
-    'Description',
-    'Preconditions',
-    'Test Steps',
-    'Expected Results',
-    'Actual Results',
-    'Date',
-    'Status',
-    'Author',
-    'Comments',
+    "test_case_id",
+    "title",
+    "description",
+    "preconditions",
+    "test_steps",
+    "expected_results",
+    "actual_results",
+    "date",
+    "status",
+    "author",
+    "comments",
   ];
 
   const fieldMap = {
-    'Test Case ID': 'id',
-    'Description': 'title',
-    'Preconditions': 'preconditions',
-    'Test Steps': 'steps',
-    'Expected Results': 'expectedResults',
-    'Actual Results': 'actualResults',
-    'Date': 'date',
-    'Status': 'status',
-    'Author': 'author',
-    'Comments': 'comments',
+    test_case_id: "test_case_id",
+    title: "title",
+    description: "description",
+    preconditions: "preconditions",
+    test_steps: "test_steps",
+    expected_results: "expected_results",
+    actual_results: "actual_results",
+    date: "date",
+    status: "status",
+    author: "author",
+    comments: "comments",
   };
 
-  const handleOpenDialog = (mode, index, field = '') => {
+  const handleOpenDialog = (mode, index, field = "") => {
     setDialogMode(mode);
     setCurrentIndex(index);
     setCurrentField(field);
@@ -54,13 +60,18 @@ const ManualTestTable = ({ testCases, handleTestCaseChange }) => {
     setOpenDialog(false);
     setCurrentIndex(null);
     setTempTestCase({});
-    setCurrentField('');
+    setCurrentField("");
   };
 
   const handleSave = () => {
-    Object.keys(tempTestCase).forEach((field) => {
-      handleTestCaseChange(currentIndex, field, tempTestCase[field]);
-    });
+    const ind = testCases?.findIndex(
+      (test) => test.test_case_id === tempTestCase.test_case_id
+    );
+    testCases[ind] = tempTestCase;
+    getUpdatedTestCases(testCases);
+    // Object.keys(tempTestCase).forEach((field) => {
+    //   handleTestCaseChange(currentIndex, field, tempTestCase[field]);
+    // });
     handleCloseDialog();
   };
 
@@ -69,7 +80,9 @@ const ManualTestTable = ({ testCases, handleTestCaseChange }) => {
   };
 
   const getDialogTitle = () => {
-    return dialogMode === 'view' ? `View ${headers.find((header) => fieldMap[header] === currentField)}` : 'Edit Test Case';
+    return dialogMode === "view"
+      ? `View ${headers.find((header) => fieldMap[header] === currentField)}`
+      : "Edit Test Case";
   };
 
   return (
@@ -81,7 +94,7 @@ const ManualTestTable = ({ testCases, handleTestCaseChange }) => {
               <th
                 key={header}
                 className="p-2 border border-[#E6E6E6]"
-                style={header === 'Test Case ID' ? { width: '250px' } : {}}
+                style={header === "Test Case ID" ? { width: "250px" } : {}}
               >
                 <h3 className="px-2 py-1">{header}</h3>
               </th>
@@ -91,12 +104,12 @@ const ManualTestTable = ({ testCases, handleTestCaseChange }) => {
         <tbody>
           {testCases.map((testCase, index) => (
             <tr
-              key={testCase.id}
+              key={testCase.test_case_id}
               className="border-b border-[#E6E6E6] hover:bg-[#F9FAFF]"
             >
               {Object.keys(testCase).map((field) => (
                 <td key={field} className="p-2 border border-[#E6E6E6]">
-                  {field === 'date' ? (
+                  {field === "date" ? (
                     <input
                       type="date"
                       value={testCase[field]}
@@ -105,7 +118,7 @@ const ManualTestTable = ({ testCases, handleTestCaseChange }) => {
                       }
                       className="w-full p-2"
                     />
-                  ) : field === 'status' ? (
+                  ) : field === "status" ? (
                     <select
                       value={testCase[field]}
                       onChange={(e) =>
@@ -117,7 +130,7 @@ const ManualTestTable = ({ testCases, handleTestCaseChange }) => {
                       <option value="Failed">Failed</option>
                       <option value="Skipped">Skipped</option>
                     </select>
-                  ) : field === 'id' ? (
+                  ) : field === "test_case_id" ? (
                     <div className="flex justify-between items-center">
                       <textarea
                         value={testCase[field]}
@@ -129,13 +142,13 @@ const ManualTestTable = ({ testCases, handleTestCaseChange }) => {
                       />
                       <Button
                         variant="outlined"
-                        onClick={() => handleOpenDialog('edit', index)}
-                        style={{ border: '2px solid orange', height: '35px' }}
+                        onClick={() => handleOpenDialog("edit", index)}
+                        style={{ border: "2px solid orange", height: "35px" }}
                       >
-                        <FaEdit style={{ color: 'orange', fontSize: '20px' }} />
+                        <FaEdit style={{ color: "orange", fontSize: "20px" }} />
                       </Button>
                     </div>
-                  ): field === 'author' ? (
+                  ) : field === "author" ? (
                     <div className="flex justify-between items-center">
                       <textarea
                         value={testCase[field]}
@@ -146,22 +159,19 @@ const ManualTestTable = ({ testCases, handleTestCaseChange }) => {
                         rows="1"
                       />
                     </div>
-                  ) 
-                  : (
+                  ) : (
                     <div className="text-center">
                       <Button
                         variant="outlined"
-                        onClick={() =>
-                          handleOpenDialog('view', index, field)
-                        }
+                        onClick={() => handleOpenDialog("view", index, field)}
                         style={{
-                          border: '3px solid lightgreen',
-                          width: '50%',
-                          height: '35px',
-                          borderRadius: '15%'
+                          border: "3px solid lightgreen",
+                          width: "50%",
+                          height: "35px",
+                          borderRadius: "15%",
                         }}
                       >
-                        <FaEye style={{ color: 'green', fontSize: '20px' }} />
+                        <FaEye style={{ color: "green", fontSize: "20px" }} />
                       </Button>
                     </div>
                   )}
@@ -180,79 +190,101 @@ const ManualTestTable = ({ testCases, handleTestCaseChange }) => {
       >
         <DialogTitle>{getDialogTitle()}</DialogTitle>
         <DialogContent>
-  {dialogMode === 'view' ? (
-    <div>
-      <strong>{headers.find((header) => fieldMap[header] === currentField)}:</strong> {tempTestCase[currentField]}
-    </div>
-  ) : (
-    headers.map((header) => {
-      const field = fieldMap[header];
-      return (
-        <TextField
-          key={header}
-          margin="normal"
-          label={header}
-          type={header === 'Date' ? 'date' : 'text'}
-          fullWidth
-          variant="outlined"
-          value={tempTestCase[field] || ''}
-          multiline={header === 'Comments' || header === "Preconditions" || header === "Description" || header === "Test Steps" || header === "Expected Results" || header === "Actual Results"}
-          rows={header === 'Comments' || header === "Preconditions" || header === "Description" || header === "Test Steps" || header === "Expected Results" || header === "Actual Results" ? 4 : 1}
-          onChange={(e) =>
-            handleTempTestCaseChange(field, e.target.value)
-          }
-          select={header === 'Status'}
-          SelectProps={{
-            native: true,
-          }}
-          InputLabelProps={
-            header === 'Date'
-              ? {
-                  shrink: true,
-                }
-              : {}
-          }
-          inputProps={
-            header === 'Status'
-              ? {
-                  children: (
-                    <>
-                      <option value="Passed">Passed</option>
-                      <option value="Failed">Failed</option>
-                      <option value="Skipped">Skipped</option>
-                    </>
-                  ),
-                }
-              : {}
-          }
-        />
-      );
-    })
-  )}
-</DialogContent>
+          {dialogMode === "view" ? (
+            <div>
+              <strong>
+                {headers.find((header) => fieldMap[header] === currentField)}:
+              </strong>{" "}
+              {tempTestCase[currentField]}
+            </div>
+          ) : (
+            headers.map((header) => {
+              const field = fieldMap[header];
+
+              return (
+                <TextField
+                  key={header}
+                  margin="normal"
+                  label={header}
+                  type={header === "Date" ? "date" : "text"}
+                  fullWidth
+                  variant="outlined"
+                  value={tempTestCase[field] || ""}
+                  multiline={
+                    header === "comments" ||
+                    header === "preconditions" ||
+                    header === "description" ||
+                    header === "title" ||
+                    header === "test_steps" ||
+                    header === "expected_results" ||
+                    header === "actual_results"
+                  }
+                  rows={
+                    header === "comments" ||
+                    header === "preconditions" ||
+                    header === "description" ||
+                    header === "title" ||
+                    header === "test_steps" ||
+                    header === "expected_results" ||
+                    header === "actual_results"
+                      ? 4
+                      : 1
+                  }
+                  onChange={(e) =>
+                    handleTempTestCaseChange(field, e.target.value)
+                  }
+                  select={header === "status"}
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputLabelProps={
+                    header === "date"
+                      ? {
+                          shrink: true,
+                        }
+                      : {}
+                  }
+                  inputProps={
+                    header === "status"
+                      ? {
+                          children: (
+                            <>
+                              <option value="Passed">Passed</option>
+                              <option value="Failed">Failed</option>
+                              <option value="Skipped">Skipped</option>
+                            </>
+                          ),
+                        }
+                      : {}
+                  }
+                />
+              );
+            })
+          )}
+        </DialogContent>
 
         <DialogActions>
           <Button
             onClick={handleCloseDialog}
             style={{
-              fontWeight: 'bold',
-              fontSize: '1rem',
-              margin: '0 0 10px 2px',
-              padding: '10px 30px',
+              fontWeight: "bold",
+              fontSize: "1rem",
+              margin: "0 0 10px 2px",
+              padding: "10px 30px",
             }}
           >
             Close
           </Button>
-          {dialogMode === 'edit' && (
+          {dialogMode === "edit" && (
             <Button
               onClick={handleSave}
               style={{
-                fontWeight: 'bold',
-                fontSize: '1rem',
-                margin: '0 15px 10px 0',
-                padding: '10px 30px',
-                backgroundColor: '#1976d2',
-                color: 'white',
+                fontWeight: "bold",
+                fontSize: "1rem",
+                margin: "0 15px 10px 0",
+                padding: "10px 30px",
+                backgroundColor: "#1976d2",
+                color: "white",
               }}
             >
               Save
